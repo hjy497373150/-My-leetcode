@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int movingCount(int m, int n, int k) {
+        if(k == 0)
+            return 1;
+        int count = 0;
+        vector<vector<bool>> visited(m,vector<bool>(n,false));
+        return helper(m,n,k,0,0,visited);
+    }
+    int helper(int m,int n,int k,int i,int j,vector<vector<bool>>& visited){
+        int count = 0;
+        if(check(m,n,k,i,j,visited)){
+            visited[i][j] = true;
+            count = 1+helper(m,n,k,i-1,j,visited)+helper(m,n,k,i+1,j,visited)
+                +helper(m,n,k,i,j-1,visited)+helper(m,n,k,i,j+1,visited);
+        }
+        return count;
+    }
+    bool check(int m,int n,int k,int i,int j,vector<vector<bool>>& visited){
+        if(i>=0 && j>=0 && i<m &&j<n && (sum(i)+sum(j))<=k && !visited[i][j])
+            return true;
+        return false;
+    }
+    int sum(int num){
+        int res = 0;
+        while(num>0){
+            res += num%10;
+            num /= 10;
+        }
+        return res;
+    }
+};

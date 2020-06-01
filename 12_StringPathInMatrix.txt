@@ -1,0 +1,65 @@
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int rows = board.size();//行数
+        int cols = board[0].size();//列数
+        int pathlength = 0;
+        for(int row = 0;row<rows;row++){
+            for(int col = 0;col<cols;col++){
+                if(helper(board,row,col,word,pathlength))
+                    return true;
+            }
+        }
+        return false;
+    }
+    bool helper(vector<vector<char>>& board,int row,int col,string& word,int pathlength){
+        if(row>=board.size()||col>=board[0].size()||row<0||col<0||pathlength>=word.size()||
+           word[pathlength]!=board[row][col]){
+            return false;
+        }
+        if(pathlength==word.size()-1 && word[pathlength]==board[row][col])
+            return true;
+        char temp = board[row][col];
+        board[row][col] = '0';
+        bool flag = helper(board,row-1,col,word,pathlength+1) ||helper(board,row+1,col,word,pathlength+1) ||
+            helper(board,row,col-1,word,pathlength+1) || helper(board,row,col+1,word,pathlength+1);
+        board[row][col] = temp;//这一步是为了回到上一步
+        return flag;
+    }
+};
+
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int rows = board.size();//行数
+        int cols = board[0].size();//列数
+        vector<vector<bool>> visited(rows,vector<bool>(cols,false));//初始化访问矩阵
+        int pathlength = 0;
+        for(int row = 0;row<rows;row++){
+            for(int col = 0;col<=cols;col++){
+                if(helper(board,row,col,word,pathlength,visited))
+                    return true;
+            }
+        }
+        return false;
+    }
+    bool helper(vector<vector<char>>& board,int row,int col,string word,int pathlength,
+                vector<vector<bool>>& visited){
+        if(pathlength == word.size()-1)
+            return true;
+        bool hashmap = false;
+        if(board[row][col]==word[pathlength] && !visited[row][col]){
+            ++pathlength;
+            visited[row][col] = true;
+            hashmap = helper(board,row,col-1,word,pathlength,visited) ||
+            helper(board,row,col+1,word,pathlength,visited)||
+            helper(board,row-1,col,word,pathlength,visited)||
+            helper(board,row+1,col,word,pathlength,visited);
+            if(!hashmap){
+                --pathlength;
+                visited[row][col] = false;
+            }
+        }
+        return hashmap;
+    }
+};
