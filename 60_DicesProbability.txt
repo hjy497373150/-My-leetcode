@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<double> twoSum(int n) {
+        vector<vector<double>> dp;
+        int masknum = 6;
+        dp.push_back(vector<double>(masknum,0));
+        for(int i = 0;i<masknum;i++)
+            dp[0][i] = 1;
+        for(int i = 1;i<n;i++){
+            int i_num = masknum + i*(masknum-1);
+            dp.push_back(vector<double>(i_num,0));
+            for(int j = i+1;j<=i_num+i;j++){
+                for(int s = 1;s<=masknum;s++){
+                    if(j-s>=i&&j-s-i<=(masknum-1)*i)
+                        dp[i][j-i-1] += dp[i-1][j-s-i]; 
+                }
+            }
+        }
+        for(int i = 0;i<dp[n-1].size();i++)
+            dp[n-1][i] /= pow(masknum,n);
+        return dp[n-1];
+    }
+};

@@ -1,0 +1,66 @@
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        if(pushed.size()==0 || popped.size()==0)
+            return true;
+        stack<int> st;
+        int n = popped.size();
+        int j = 0;
+        for (int i = 0; i < pushed.size(); ++i){
+            st.push(pushed[i]);
+            while(!st.empty() && j < n && st.top() == popped[j]){
+                st.pop();
+                ++j;
+            }
+        }
+        return st.empty();
+    }
+};
+
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        if(pushed.size()==0 || popped.size()==0)
+            return true;
+        stack<int> stk;
+        int count = 0;
+        for(int i = 0;i<pushed.size();i++){
+            if(pushed[i]!=popped[0])
+                stk.push(pushed[i]);
+            else{
+                stk.push(pushed[i]);
+                count = i+1;
+                break;
+            }
+        }
+        for(int j = 0;j<popped.size();){
+            if(!stk.empty() && popped[j]!=stk.top()){
+                if(count == pushed.size())
+                    return false;
+                while(count < pushed.size()){
+                    stk.push(pushed[count]);
+                    count++;
+                    if(stk.top()==popped[j]){
+                        stk.pop();
+                        break;
+                    }
+                }
+                j++;
+            }
+            else if(stk.empty()){
+                if(count < pushed.size()){
+                    stk.push(pushed[count]);
+                    count++;
+                }
+                else
+                    return false;
+            }
+                
+            else{
+                stk.pop();
+                j++;
+            }
+        }
+        return true;
+    }
+};

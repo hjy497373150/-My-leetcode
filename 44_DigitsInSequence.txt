@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int findNthDigit(int n) {
+        //先计算有多少位
+        long digit = 1;
+        long base = 9;
+        while(n-base*digit > 0){
+            n -= base*digit;
+            base *= 10;
+            digit++;
+        }
+        //然后算出代表那个数字
+        int index = n%digit;
+        if(index==0)
+            index = digit;//index代表是该数字的第n个数字，如index=3 num = 178 则结果为8
+        long num = 1;
+        for(int i = 1;i<digit;i++)
+            num = num*10;
+        num += (index==digit)?n/digit-1:n/digit;
+        for(int i=index;i<digit;i++) 
+            num /= 10;
+        int res = num%10;
+        return res;
+    }
+};

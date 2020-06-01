@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int strToInt(string str) {
+        if(str.size()==0)
+            return 0;
+        int start = 0;
+        bool flag = true;//表示正负号,true为正数
+        int res = 0;
+        //先跳过前面的若干个空格
+        while(str[start]==' '){
+            start++;
+        }
+        //第一个非空字符如果不是正负号或者不是1-9的数字或者整个字符串都是空格，则返回0
+        if(start==str.size())
+            return 0;
+        //提前判断正负
+        else if(str[start]=='+'||str[start]=='-'){
+            if(str[start]=='-')
+                flag = false;
+            start++;
+        }
+        while(start<str.size()){
+            //是数字就正常转换
+            if((int)str[start]<=57 && (int)str[start]>=48){
+                int r = str[start]-'0';
+                if(res>INT_MAX/10 || (res==INT_MAX/10 && r>7))
+                    return flag?INT_MAX:INT_MIN;
+                res = res*10+r;
+                start++;
+            }
+            else
+                break;
+        }
+        return flag?res:-res;
+    }
+};

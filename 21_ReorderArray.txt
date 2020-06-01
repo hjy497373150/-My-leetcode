@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) {
+        int end = nums.size()-1;
+        for(int i = 0;i<nums.size() && i<end;i++){
+            //是偶数需要把后半部分奇数换到前面来
+            if(nums[i]%2==0){
+                for(int j = end;j>i;j--){
+                    if(nums[j]%2!=0){
+                        swap(nums[i],nums[j]);
+                        //换好后，后面的偶数就不再动了
+                        end = j-1;
+                        break;
+                    }
+                }
+            }
+        }
+        return nums;
+    }
+};

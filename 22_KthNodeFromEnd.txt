@@ -1,0 +1,34 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+        if(head==nullptr || k==0)
+            return nullptr;
+        ListNode* p = head;
+        //如果是倒数第一个结点
+        if(k==1){
+            while(p->next!=nullptr)
+                p = p->next;
+            return p;
+        }
+        //先让p走k-1步停下，然后让q从头开始跟p一起往后走，知道p走到链表尾，此时q指向的结点就是倒数第k个
+        for(int i = 1;i<k;i++){
+            if(p->next==nullptr)
+                return nullptr;
+            p = p->next;
+        }
+        ListNode* q = head;
+        while(p->next!=nullptr){
+            q = q->next;
+            p = p->next;
+        }
+        return q;    
+    }
+};

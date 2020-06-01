@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(nums.size()==0)
+            return 0;
+        int left = 0;
+        int right = nums.size()-1;
+        //二分找到第一个出现的位置left
+        while(left<right){
+            int mid = left + (right-left)/2;
+            if(nums[mid] < target){
+                left = mid+1;
+            }
+            else
+                right = mid;
+        }
+        if(nums[left]!=target)
+            return 0;
+        int start = left;//start为第一个target出现的位置
+        right = nums.size();
+        while(left<right){
+            int mid = left + (right-left)/2;
+            if(nums[mid] <= target){
+                left = mid+1;
+            }
+            else
+                right = mid;
+        }
+        //end为最后一个target出现的位置
+        int end = left;
+        return end-start;
+    }
+};

@@ -1,0 +1,103 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        int start = 0;
+        int end = s.size()-1;
+        //处理前后的空格
+        while(s[start]==' ')
+            start++;
+        while(s[end]==' ')
+            end--;
+        string temp = "";
+        string res = "";
+        //单个单词翻转
+        for(int i = start;i<=end;i++){
+            if(s[i]!=' ')
+                temp +=s[i];
+            else{
+                //去除单词之间多余的空格
+                while(s[i]==' ')
+                    i++;
+                i--;
+                res = res + myswap(temp) + " ";
+                temp = "";
+            }
+        }
+        res += myswap(temp);
+        return myswap(res);//再一次整体翻转
+    }
+    string myswap(string temp){
+        int start = 0;
+        int end = temp.size()-1;
+        while(start<end)
+            swap(temp[start++],temp[end--]);
+        return temp;
+    }
+};
+
+剑指offer常规算法
+class Solution {
+public:
+    string reverseWords(string s) {
+        reverse(s.begin(),s.end());
+        int start = 0,end = s.length()-1;
+        //处理前后多余的空格
+        while(start<end && s[start]==' ')
+            start++;
+        while(end>=0 && s[end]==' ')
+            end--;
+        if(start>end)
+            return "";
+        //逐个单词翻转
+        for(int r = start;r<=end;){
+            while(s[r]==' '&&r<=end)
+                r++;
+            int l = r;
+            while(s[l]!=' '&&l<=end)
+                l++;
+            reverse(s.begin()+r,s.begin()+l);
+            r = l;
+        }
+        //处理两个单词之间多余的空格
+        int temp = start;
+        for(int i = start;i<=end;i++){
+            if(s[i]==' ' &&s[i-1]==' ')
+                continue;
+            s[temp++]=s[i];
+        }
+        return s.substr(start,temp-start);
+    }
+};
+方法二：
+class Solution {
+public:
+    string reverseWords(string s) {
+        //先从头到尾遍历一遍s将每个单词存在vector中，所有括号都不保留
+        //然后反向遍历依次取出vector中的单词，每取一个加一个空格
+        vector<string> res;
+        if(s.size()==0)
+            return "";
+        for(int i = 0;i<s.size();){
+            string temp;
+            //去掉多余空格
+            while(s[i]==' ')
+                i++;
+            while(i<s.size() && s[i]!=' '){
+                temp += s[i];
+                i++;
+            }
+            if(temp!="")
+                res.push_back(temp);
+        }
+        if(res.size()==0)
+            return "";
+        string ans;
+        for(int i = res.size()-1;i>=0;i--){
+            if(res[i]!="")
+                ans +=res[i];
+            if(i!=0)
+                ans +=' ';
+        }
+        return ans;
+    }
+};

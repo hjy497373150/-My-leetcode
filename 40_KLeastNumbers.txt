@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        if(arr.size()==0 || k==0)
+            return {};
+        priority_queue<int> maxnum;
+        for(int i = 0;i<arr.size();i++){
+            if(i<k)
+                maxnum.push(arr[i]);
+            else{
+                if(maxnum.top() > arr[i]){
+                    maxnum.pop();
+                    maxnum.push(arr[i]);
+                }
+            }
+        }
+        vector<int> res;
+        int temp;
+        for(int i = 0;i<k;i++){
+            temp = maxnum.top();
+            res.push_back(temp);
+            maxnum.pop();
+        }
+        return res;
+    }
+};
+
+Ö±½Ósort
+class Solution {
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        if(arr.size()==0 || k==0)
+            return {};
+        vector<int> res;
+        sort(arr.begin(),arr.end());
+        for(int i = 0;i<k;i++){
+            res.push_back(arr[i]);
+        }
+        return res;
+    }
+};

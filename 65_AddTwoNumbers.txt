@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int add(int a, int b) {
+        //a&b再左移一位是计算进位
+        //a^b是计算不进位的 (a ^ b) + ((a & b) << 1)——简单相加+进位就是最终结果
+        while(b!=0){
+            auto carry = ((unsigned int)(a&b)<<1);
+            a ^= b;
+            b = carry;
+        }
+        return a;
+    }
+};

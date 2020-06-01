@@ -1,0 +1,73 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA==nullptr || headB==nullptr)
+            return nullptr;
+        ListNode *pa = headA;
+        ListNode *pb = headB;
+        while(pa!=pb){
+            pa = (pa!=nullptr)?pa->next:headB;
+            pb = (pb!=nullptr)?pb->next:headA;
+        }
+        return pa;
+    }
+};
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA==nullptr || headB==nullptr)
+            return nullptr;
+        ListNode *pa = headA;
+        ListNode *pb = headB;
+        int morenuma = 0;
+        int morenumb = 0;
+        while(pa!=nullptr && pb!=nullptr){
+            pa = pa->next;
+            pb = pb->next;
+        }
+        if(pa==nullptr&&pb!=nullptr){
+            while(pb!=nullptr){
+                morenumb++;
+                pb = pb->next;
+            }
+        }
+        else if(pb==nullptr&&pa!=nullptr){
+            while(pa!=nullptr){
+                 morenuma++;
+                pa = pa->next;
+            }
+        }
+        int morenum = (morenuma>=morenumb)?morenuma:morenumb;
+        ListNode *pmore = (morenuma>=morenumb)?headA:headB;
+        ListNode *pless = (pmore==headA)?headB:headA;
+        while(morenum!=0){
+            pmore = pmore->next;
+            morenum--;
+        }
+        while(pmore!=nullptr && pless!=nullptr){
+            if(pmore->val == pless->val)
+                return pmore;
+            pmore = pmore->next;
+            pless = pless->next;
+        }
+        return nullptr;
+    }
+};
+疑似通过但不明白第一个实例

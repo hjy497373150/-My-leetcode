@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        if(nums.size()==0)
+            return {};
+        vector<int> res;//存放最终的结果
+        deque<int> dq;
+        //先得到第一个滑动窗口的最大值
+        for(int i = 0;i<k;i++){
+            while(!dq.empty()&&nums[i]>=nums[dq.back()])
+                dq.pop_back();
+            dq.push_back(i);
+        }
+        for(int i = k;i<nums.size();i++){
+            //精髓在于，我们如何在滑动的同时判断maxnum是否已经滑出
+            //所以我们需要判断当前的maxnun是否在最左边,如果是则我们需要重新计算maxnum
+            res.push_back(nums[dq.front()]);
+            while(!dq.empty()&&nums[i]>nums[dq.back()]){
+                    dq.pop_back();
+            }
+            if(!dq.empty() &&dq.front()<=(i-k))
+                dq.pop_front();
+            dq.push_back(i);
+        }
+        res.push_back(nums[dq.front()]);
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        if(nums.size()==0)
+            return {};
+        vector<int> res(nums.size()-k+1);//存放最终的结果
+        int maxnum = nums[0];
+        //先得到第一个滑动窗口的最大值
+        for(int i = 0;i<k;i++){
+            if(nums[i]>maxnum)
+                maxnum = nums[i];
+        }
+        res[0] = maxnum;
+        for(int i = k;i<nums.size();i++){
+            //精髓在于，我们如何在滑动的同时判断maxnum是否已经滑出
+            //所以我们需要判断当前的maxnun是否在最左边,如果是则我们需要重新计算maxnum
+            if(maxnum==nums[i-k]){
+                maxnum = nums[i-k+1];
+                for(int j = i-k+1;j<=i;j++){
+                    if(nums[j]>maxnum)
+                        maxnum = nums[j];   
+                }
+            }
+            else
+                maxnum = max(maxnum,nums[i]);
+            res[i-k+1] = maxnum;
+        }
+        return res;
+    }
+};

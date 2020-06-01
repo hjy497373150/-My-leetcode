@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        if(postorder.size()==1 || postorder.size()==0)
+            return true;
+        return helper(postorder,0,postorder.size()-1);
+    }
+    //后序遍历的性质，最后一个结点是根结点
+    //左子树全部小于根结点，所以就先找到第一个大于根结点的结点作为左右子树的分界线
+    //依次判断左右节点
+    bool helper(vector<int>& postorder,int start,int end){
+        if(start>=end)
+            return true;
+        int root = postorder[end];
+        int left = start;
+        while(left < end &&postorder[left]<root)
+            left++;
+        int right = left;//right即为分界线
+        while(right < end &&postorder[right]>root)
+            right++;
+        if(right!=end)//right之后的所有结点值全部需要大于root，否则就不是后序遍历
+            return false;
+        return helper(postorder,start,left-1) && helper(postorder,left,end-1);
+    }
+};

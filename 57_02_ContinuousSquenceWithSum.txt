@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        if(target<3)
+            return {};
+        vector<vector<int>> res;
+        int small = 1;
+        int big = 2;
+        vector<int> temp;
+        temp.push_back(1);
+        temp.push_back(2);
+        int count = 3;
+        int mid = (1+target)/2;
+        //»¬¶¯´°¿Ú
+        while(small<mid){
+            if(count == target){
+                res.push_back(temp);
+            }
+            while(count>target && small<big){
+                count -= small;
+                temp.erase(temp.begin());
+                small++;
+                if(count == target)
+                    res.push_back(temp);
+            }
+            big++;
+            temp.push_back(big);
+            count += big;
+        }
+        return res;
+    }
+};

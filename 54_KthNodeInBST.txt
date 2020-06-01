@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int kthLargest(TreeNode* root, int k) {
+        //中序遍历就是按照从小到大的顺序排列的
+        //本题中是用的逆中序遍历更方便
+        if(root==nullptr||k==0)
+            return 0;
+        stack<TreeNode*> sta;
+        TreeNode* p = root;
+        while(!sta.empty()||p!=nullptr){
+            while(p!=nullptr){
+                sta.push(p);
+                p = p->right;
+            }
+            p = sta.top();
+            if(--k==0)
+                return p->val;
+            sta.pop();
+            p = p->left;
+        }
+        return 0;
+    }
+};
