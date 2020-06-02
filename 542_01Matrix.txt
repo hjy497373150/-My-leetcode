@@ -1,0 +1,76 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        //动态规划
+        int row = matrix.size();
+        int col = matrix[0].size();
+        vector<vector<int>> res(row,vector(col,INT_MAX/2));
+        //元素为0的将对应的res也置为0
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(matrix[i][j] == 0)
+                    res[i][j] = 0;
+            }
+        }
+        //水平向左垂直向上
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(i-1>=0){
+                    res[i][j] = min(res[i][j],res[i-1][j]+1);
+                }
+                if(j-1>=0){
+                    res[i][j] = min(res[i][j],res[i][j-1]+1);
+                }
+            }
+        }
+        //水平向右垂直向下
+        for(int i = row-1;i>=0;i--){
+            for(int j = col-1;j>=0;j--){
+                if(i+1<row){
+                    res[i][j] = min(res[i][j],res[i+1][j]+1);
+                }
+                if(j+1<col){
+                    res[i][j] = min(res[i][j],res[i][j+1]+1);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        //BFS
+        int row = matrix.size();
+        int col = matrix[0].size();
+        vector<vector<int>> res(row,vector(col,INT_MAX));
+        vector<pair<int,int>> around = {{0,1},{0,-1},{1,0},{-1,0}};
+        queue<pair<int,int>> q;
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(matrix[i][j] == 0){
+                    res[i][j] = 0;
+                    q.push({i,j});//将所有为0的元素入队
+                }
+            }
+        }
+        //当队列不为空时开始循环
+        while(!q.empty()){
+            auto temp = q.front();
+            q.pop();
+            for(int i = 0;i<4;i++){
+                int x = temp.first + around[i].first;
+                int y = temp.second + around[i].second;
+                //注意在最外一层的不参加计算
+                if(x>=0 && x<row &&y>=0 &&y<col){
+                    if(res[x][y] > res[temp.first][temp.second]+1){
+                        res[x][y] = res[temp.first][temp.second]+1;
+                        q.push({x,y});
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
