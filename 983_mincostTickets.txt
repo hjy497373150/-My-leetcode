@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        //从前往后动态规划(加贪心，一年365天只对出行的天数进行考虑
+        //非出行天 按照dp[i] = dp[i-1]进行处理
+        int dayofpass[3] = {1,7,30};
+        int dp[366] = {0};
+        int i = 1;
+        int start = 0;
+        for(auto day:days){
+            //不需要出行
+            while(i<day){
+                dp[i] = dp[i-1];
+                i++;
+            }
+            //需要出行
+            dp[i] = INT_MAX/2;
+            //分别考虑三种情况，票是越早买越好
+            for(int ticket = 0;ticket<3;ticket++){
+                start = i-dayofpass[ticket];
+                if(start<0)
+                    start = 0;//防止范围出错
+                dp[i] = min(dp[i],dp[start]+costs[ticket]);//核心
+            }
+            i++;
+        }
+        return dp[days.back()];
+    }
+};
