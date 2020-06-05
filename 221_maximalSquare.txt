@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        //动态规划,对二维矩阵中的每一个元素值进行判断，dp值由左边、上边、左上方的元素决定
+        if(matrix.size()==0 || matrix[0].size()==0)
+            return 0;
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        vector<vector<int>> dp(rows,vector<int>(cols));
+        int maxside = 0;
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(matrix[i][j]=='1'){
+                    if(i==0 || j==0)
+                        dp[i][j] = 1;
+                    else
+                        dp[i][j] = min(min(dp[i][j-1],dp[i-1][j]),dp[i-1][j-1])+1;
+                    maxside = max(dp[i][j],maxside);
+                }
+            }
+        }
+        return maxside*maxside;
+    }
+};
