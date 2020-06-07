@@ -1,0 +1,24 @@
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int> ans;
+        backtrace(nums,ans);
+        return res;
+    }
+    void backtrace(vector<int>& nums,vector<int>& ans){
+        if(ans.size()==nums.size()){
+            res.push_back(ans);
+            return;
+        }
+        for(int i = 0;i < nums.size();i++){
+            if(find(ans.begin(),ans.end(),nums[i])!=ans.end())
+                continue;
+            ans.push_back(nums[i]);
+            //回溯到上一步
+            backtrace(nums,ans);
+            ans.pop_back();
+        }
+    }
+};
