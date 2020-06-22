@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        //常规解法超时
+        int n = T.size();
+        vector<int> res(n,0);
+        for(int i = 0;i<n-1;i++){
+            for(int j = i+1;j<n;j++){
+                if(T[i]<T[j]){
+                    res[i] = j-i;
+                    break;
+                }
+            }
+        }
+        return res;
+        
+    }
+};
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        //单调栈
+        int n = T.size();
+        stack<int> stk;
+        vector<int> res(n,0);
+        for(int i = 0;i<n;i++){
+            while(!stk.empty()&&T[i]>T[stk.top()]){
+                res[stk.top()] = i-stk.top();
+                stk.pop();
+            }
+            stk.push(i);
+        }
+        return res;
+    }
+};

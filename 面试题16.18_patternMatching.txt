@@ -1,0 +1,72 @@
+class Solution {
+public:
+    bool patternMatching(string pattern, string value) {
+        //如果pattern为空，则只有value为空时才返回true
+        if(pattern.empty())
+            return value.empty();
+        //如果pattern不为空，value为空，则只有当pattern只存在一个字母时才返回true
+        if(value.empty()){
+            for(int i = 1;i<pattern.size();i++){
+                if(pattern[i]!=pattern[0])
+                    return false;
+            }
+            return true;
+        }
+        //当pattern和value都不为空时开始判断
+        int count_a = 0,count_b = 0;//记录a和b的个数
+        for(auto c:pattern){
+            if(c=='a')
+                count_a++;
+            else
+                count_b++;
+        }
+        //如果其中有一个为空
+        if(count_a==0)
+            return helper(value,count_b);
+        else if(count_b==0)
+            return helper(value,count_a);
+        if(helper(value,count_b) ||helper(value,count_a))
+            return true;
+        //a,b个数都不为0，准备枚举,len_a *count_a + len_b*count_b = value.size()
+        int m = value.size();
+        for(int len_a = 0;len_a*count_a<=m-count_b;len_a++){
+            if((m-len_a*count_a) % count_b !=0)
+                continue;
+            int len_b = (m-len_a*count_a)/count_b;
+            if(check(pattern,value,len_a,len_b))
+                return true;
+        }
+        return false;
+    }
+    //检查匹配的结果
+    bool check(string pattern, string value,int len_a,int len_b){
+        string str_a = "",str_b = "";
+        for(int i = 0,j = 0;i<pattern.size();i++){
+            if(pattern[i] == 'a'){
+                if(str_a=="")
+                    str_a = value.substr(j,len_a);
+                else if(str_a != value.substr(j,len_a))
+                    return false;
+                j += len_a;
+            }
+            else if(pattern[i]=='b'){
+                if(str_b=="")
+                    str_b = value.substr(j,len_b);
+                else if(str_b != value.substr(j,len_b))
+                    return false;
+                j += len_b;
+            }
+        }
+        return true;
+    }
+    bool helper(string value,int n){
+        if(value.size()%n != 0)
+                return false;
+            int len = value.size()/n;
+            for(int i = len;i<value.size();i+=len){
+                if(value.substr(i,len)!=value.substr(0,len))
+                    return false;
+            }
+            return true;
+    }
+};
