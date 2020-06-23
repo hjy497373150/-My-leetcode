@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int maxScoreSightseeingPair(vector<int>& A) {
+	//把A[i] + i 和A[j]-j分开看
+        int now_max = A[0];
+        int res = 0;
+        for(int j = 1;j<A.size();j++){
+            if(A[j-1]+j-1 > now_max)
+                now_max = A[j-1]+j-1;
+            if(A[j]-j+now_max > res)
+                res = A[j]-j+now_max;
+        }
+        return res;
+    }
+};
