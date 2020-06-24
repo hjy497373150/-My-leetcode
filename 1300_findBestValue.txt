@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int findBestValue(vector<int>& arr, int target) {
+        //前缀和 + 二分查找
+        sort(arr.begin(),arr.end());
+        int n = arr.size();
+        vector<int> presum(n+1,0);
+        //得到前缀和
+        for(int i = 1;i<=n;i++){
+            presum[i] = presum[i-1]+arr[i-1];
+        }
+        int l = 1,r = arr[n-1];
+        while(l<r){
+            int mid = (l+r) >> 1;
+            if(getsum(arr,presum,mid) < target)
+                l = mid+1;
+            else
+                r = mid;
+        }
+       return abs(getsum(arr, presum, l) - target) < abs(getsum(arr, presum, l - 1) - target) ?  l : l - 1; 
+    }
+    int getsum(vector<int>& arr,vector<int>& presum,int value){
+        //找到第一个小于value的迭代器位置
+        vector<int>::iterator iter = lower_bound(arr.begin(), arr.end(), value);
+        int sum = presum[iter-arr.begin()] + (arr.end()-iter) * value;
+        return sum;
+    }
+};

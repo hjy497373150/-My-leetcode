@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        //先将数组排序，然后从前往后遍历
+        //遍历的时候维护一个三数之和result值与target相比较
+        //同时设置start和end两个标志位比target大就end--，否则start++。
+        int max = nums.size();
+        sort(nums.begin(), nums.end());
+        int result = nums[0]+nums[1]+nums[2];
+        for(int i = 0;i < max-1;i++){
+            int start = i+1;
+            int end = max-1;
+            while(start < end){
+                int sum = nums[i]+nums[start]+nums[end];
+                if(abs(target - result) > abs(target - sum))
+                    result = sum;
+                if(sum > target)
+                    end--;
+                else if(sum < target)
+                    start++;
+                else
+                    return target;
+                    
+            }
+        }
+        return result;
+    }
+};
