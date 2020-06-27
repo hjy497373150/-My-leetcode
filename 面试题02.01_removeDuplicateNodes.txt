@@ -1,0 +1,33 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeDuplicateNodes(ListNode* head) {
+        //最基本的方法，把每一个出现过的元素存放在set中
+        if(head==nullptr)
+            return nullptr;
+        ListNode* p = head;
+        ListNode* pre = nullptr;
+        unordered_set<int> st;
+        while(p!=nullptr){
+            //set中没有该元素，则加入
+            if(st.find(p->val)==st.end()){
+                st.insert(p->val);
+                pre = p;
+                p = p->next;
+            }
+            //若有该元素则删除该结点
+            else{
+                pre->next = p->next;
+                p = p->next;
+            }
+        }
+        return head;
+    }
+};
