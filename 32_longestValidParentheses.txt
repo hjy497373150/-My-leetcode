@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        //利用栈来计算,栈底元素保存当前未被匹配的右括号下标
+        //遍历s，每一轮更新最长长度
+        stack<int> stk;
+        stk.push(-1);//初始化
+        int res = 0;
+        for(int i = 0;i<s.size();i++){
+            if(s[i]=='('){
+                stk.push(i);
+            }
+            else{
+                stk.pop();
+                if(stk.empty())
+                    stk.push(i);
+                else
+                    res = max(res,i-stk.top());
+            }
+        }
+        return res;
+    }
+};
