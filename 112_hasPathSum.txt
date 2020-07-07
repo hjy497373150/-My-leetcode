@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        //队列，广度优先搜索
+        if(root==nullptr)
+            return false;
+        queue<TreeNode*> que_node;
+        queue<int> que_val;
+        que_node.push(root);
+        que_val.push(root->val);
+        while(!que_node.empty()){
+            TreeNode* node = que_node.front();
+            int temp = que_val.front();
+            que_node.pop();
+            que_val.pop();
+            //已经到了叶子节点，判断是否满足路径总和
+            if(node->left==nullptr && node->right==nullptr){
+                if(sum==temp)
+                    return true;
+                continue;
+            }
+            if(node->left!=nullptr){
+                que_node.push(node->left);
+                que_val.push(temp + node->left->val);
+            }
+            if(node->right!=nullptr){
+                que_node.push(node->right);
+                que_val.push(temp + node->right->val);
+            }
+        }
+        return false;
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        //递归
+        if(root == nullptr)
+            return false;
+        if(root->left == nullptr && root->right ==nullptr)
+            return sum==root->val;
+        return hasPathSum(root->left,sum-root->val) || hasPathSum(root->right,sum-root->val);
+    }
+};
