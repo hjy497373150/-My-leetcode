@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> divingBoard(int shorter, int longer, int k) {
+        if(k==0)
+            return {};
+        if(shorter==longer)
+            return {k*shorter};
+        vector<int> res;
+        int temp = k*shorter;
+        int p = k;
+        while(p>=0){
+            temp = p * shorter + (k-p) * longer;
+            res.push_back(temp);
+            p--;
+        }
+        return res;
+    }
+};

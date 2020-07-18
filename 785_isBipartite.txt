@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        //队列模拟广度优先搜索
+        //用不同的标志来标记每一个节点。不同标记的结点属于不同的边
+        int n = graph.size();
+        vector<int> flag(n,0);
+        for(int i = 0;i<n;i++){
+            if(flag[i]==0){
+                queue<int> q;
+                q.push(i);
+                flag[i] = 1;
+                while(!q.empty()){
+                    int node = q.front();
+                    int x = (flag[node]==1?2:1);
+                    q.pop();
+                    for(int neighbor:graph[node]){
+                        if(flag[neighbor]==0){
+                            q.push(neighbor);
+                            flag[neighbor] = x;
+                        }
+                        else if(flag[neighbor]!=x)
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};
