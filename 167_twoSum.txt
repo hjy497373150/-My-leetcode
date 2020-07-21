@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+	//经典双指针
+        int n = numbers.size();
+        int left = 1,right = n;
+        while(left<right){
+            int sum = numbers[left-1] + numbers[right-1];
+            if(sum == target)
+                return {left,right};
+            else if(sum > target)
+                right--;
+            else
+                left++;
+        }
+        return {left,right};
+    }
+};
