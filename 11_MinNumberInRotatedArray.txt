@@ -1,6 +1,8 @@
 class Solution {
 public:
     int minArray(vector<int>& numbers) {
+        //主要思路就是遍历寻找第一个不是递增的元素就为结果
+        //可以用二分法加快搜素
         if(numbers.size()==1)
             return numbers[0];
         int left = 0;
