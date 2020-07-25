@@ -1,0 +1,10 @@
+class Solution {
+public:
+    bool divisorGame(int N) {
+        //找规律可知
+        //N为偶数时先手必胜，为奇数时先手必败
+        if(N % 2==0)
+            return true;
+        return false;
+    }
+};
