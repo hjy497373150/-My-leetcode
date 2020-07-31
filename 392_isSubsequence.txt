@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        //双指针
+        int s1 = s.size();
+        int s2 = t.size();
+        int p = 0,q = 0;
+        while(p<s1 && q<s2){
+            if(s[p]==t[q])
+                p++;
+            q++;
+        }
+        return p==s1;//如果p移动到s1的末尾则说明已经完成匹配
+    }
+};

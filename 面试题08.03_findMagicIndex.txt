@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int findMagicIndex(vector<int>& nums) {
+        //基本二分查找
+        int n = nums.size();
+        int start = 0,end = n-1;
+        return helper(nums,start,end);
+    }
+    int helper(vector<int>& nums,int start,int end){
+        int res = -1;
+        if(start <= end){
+            int mid = start + (end-start)/2;
+            res = helper(nums,start,mid-1);//去左边找
+            //找到了
+            if(res!=-1)
+                return res;
+            if(nums[mid]==mid){
+                return mid;
+            }
+            return helper(nums,mid+1,end);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int findMagicIndex(vector<int>& nums) {
+        //优化遍历
+        int i = 0;
+        while(nums[i]!=i){
+            if(nums[i]>i){
+                //如果这个数超过了数组长度则不可能满足条件
+                if(nums[i]>nums.size())
+                    return -1;
+                i = nums[i];
+            }
+            else
+                i++;
+        }
+        return i;
+    }
+};

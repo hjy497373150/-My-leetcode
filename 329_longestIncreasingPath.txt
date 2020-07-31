@@ -1,0 +1,35 @@
+class Solution {
+public:
+
+    static constexpr int dire[4][2] = {{-1,0},{1,0},{0,-1},{0,1}};//上下左右四个方向
+    int rows,cols;
+    
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        //深度优先搜索dfs
+        if(matrix.size()==0||matrix[0].size()==0)
+            return 0;
+        rows = matrix.size();
+        cols = matrix[0].size();
+        int res = 0;//最终结果
+        vector<vector<int>> dp(rows,vector<int>(cols,0));//存放从每一个位置开始的最长递增路径长度
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                res = max(res,dfs(matrix,i,j,dp));
+            }
+        }
+        return res;
+    }
+    int dfs(vector<vector<int>>& matrix,int row,int col,vector< vector<int> >& dp){
+        //如果该单元格不为0，说明之前已经遍历得到过它的值，直接返回
+        if(dp[row][col]!=0)
+            return dp[row][col];
+        ++dp[row][col];
+        for(int i = 0;i<4;++i){
+            int newrow = row+dire[i][0];
+            int newcol = col+dire[i][1];
+            if(newrow>=0 && newrow<rows && newcol>=0 && newcol<cols && matrix[newrow][newcol]>matrix[row][col])
+                dp[row][col] = max(dp[row][col],dfs(matrix,newrow,newcol,dp)+1);
+        }
+        return dp[row][col];
+    }
+};
