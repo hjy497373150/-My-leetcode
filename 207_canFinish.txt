@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> indegree(numCourses,0);//保存每个数字的入度
+        vector<vector<int>> ljb(numCourses,vector<int>());//保存每个数字的邻接表
+        int res = 0;//保存入度为0的数字个数，用于判断是否有DAG
+        for(auto v:prerequisites){
+            indegree[v[0]]++;//初始化入度表
+            ljb[v[1]].push_back(v[0]);//初始化邻接表
+        }
+        queue<int> que;
+        for(auto i = 0;i<numCourses;i++){
+            if(indegree[i]==0)
+                que.push(i);//将入度为0的结点入队
+        }
+        while(!que.empty()){
+            auto x = que.front();//得到队首元素
+            que.pop();//队首元素出队
+            res++;//计数+1
+            for(auto y:ljb[x]){//访问该数字的邻接表，将与其相连的数字的入度-1
+                if(--indegree[y]==0)//若-1后为0则入队
+                    que.push(y);
+            }
+        }
+        return res==numCourses;
+    }
+};

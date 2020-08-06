@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    unordered_map<TreeNode*,int> f,nf; 
+public:
+    int rob3(TreeNode* root) {
+        //动态规划，每一个树节点都有选或不选两种选择
+        //遍历所有的节点得出最终的结果
+        dfs(root);
+        return max(f[root],nf[root]);
+    }
+    void dfs(TreeNode* root){
+        if(!root)
+            return;
+        dfs(root->left);
+        dfs(root->right);
+        //如果选了当前节点，那么就不能选他的左右子树了
+        f[root] = root->val + nf[root->left] + nf[root->right];
+        //如果没选，则左右子树可选可不选,取两者之间的最大值
+        nf[root] = max(nf[root->left],f[root->left]) + max(nf[root->right],f[root->right]);
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+struct sel_status{
+    int select;
+    int notselect;
+};
+class Solution {
+public:
+    int rob3(TreeNode* root) {
+        //优化方法,去掉重复的子问题
+        //无论选不选当前这个结点，它的值仅与左右子树选或不选这4个值有关
+        auto rootstatus = dfs(root);
+        return max(rootstatus.select,rootstatus.notselect);
+    }
+    sel_status dfs(TreeNode* root){
+        if(!root)
+            return {0,0};
+        auto l = dfs(root->left);
+        auto r = dfs(root->right);
+        int select = root->val + l.notselect + r.notselect;
+        int notselect = max(l.notselect,l.select) + max(r.select,r.notselect);
+        return {select,notselect};
+    }
+};

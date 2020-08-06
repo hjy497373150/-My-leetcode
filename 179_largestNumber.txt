@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        if(nums.empty())
+            return "";
+        if(nums.size()==1)
+            return to_string(nums[0]);
+        sort(nums.begin(),nums.end(),mycmp);
+        string res = "";
+        for(auto num:nums){
+            res += to_string(num);
+        }
+        if(res[0]=='0')
+            return "0";
+        return res;
+    }
+    static bool mycmp(const int &a,const int &b){
+        string s1 = to_string(a) + to_string(b);
+        string s2 = to_string(b) + to_string(a);
+        return s1 > s2;
+    }
+};
