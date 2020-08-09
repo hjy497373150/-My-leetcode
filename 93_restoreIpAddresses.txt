@@ -1,0 +1,44 @@
+class Solution {
+private:
+    vector<string> res;
+public:
+    vector<string> restoreIpAddresses(string s) {
+        //回溯法，问题转化为在字符串中加.保证相邻.之间数字符合要求
+        //回溯条件是当前加了几个.和上一个.的位置
+        int n = s.size();
+        string cur = s;
+        helper(n,0,-1,cur,s);
+        return res;
+    }
+    void helper(int n, int pointnum,int lastpoint,string& cur,string& s){
+        //pointnum代表当前已经加了几个. lastpoint代表上一个.的位置
+        //如果当前已经有三个.了，则只需要判断最后的数是否符合要求
+        if(pointnum == 3){
+            if(valid(lastpoint+1,n-1,s))
+                res.push_back(cur);
+            return;
+        }
+        //从上一个.的下一个位置开始查找
+        for(int i = lastpoint+1;i<n-1;i++){
+            if(valid(lastpoint+1,i,s)){
+                //开始回溯
+                cur.insert(cur.begin()+i+1+pointnum,'.');
+                helper(n,pointnum+1,i,cur,s);
+                cur.erase(pointnum+1+i,1);
+            }
+        }
+        return;
+    }
+    bool valid(int left,int right,string& s){
+        int sum = 0;
+        for(int i = left;i<=right;i++){
+            //当不止一位数字且开头为0时不符合要求
+            if(left!=right && s[left]=='0')
+                return false;
+            sum = sum*10 + s[i]-'0';
+            if(sum > 255)
+                return false;
+        }
+        return true;
+    }
+};

@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        vector<int> nums;
+        inorder(root,nums);//中序遍历二叉树，将递增结果存在vector数组中
+        pair<int,int> swappair = findfalse(nums);//找到顺序不对的两个位置
+        helper(root,2,swappair.first,swappair.second);
+    }
+    void inorder(TreeNode* root,vector<int>& nums){
+        if(root==nullptr)
+            return;
+        inorder(root->left,nums);
+        nums.push_back(root->val);
+        inorder(root->right,nums);
+    }
+    pair<int,int> findfalse(vector<int>& nums){
+        int x = -1,y = -1;
+        for(int i = 0;i<nums.size()-1;i++){
+            if(nums[i+1] < nums[i]){
+                y = nums[i+1];
+                if(x==-1)
+                    x = nums[i];
+                else
+                    break;
+            }
+        }
+        return {x,y};
+    }
+    void helper(TreeNode* r,int count,int x,int y){
+        if(r!=nullptr){
+            if(r->val == x || r->val == y){
+                r->val = r->val==x?y:x;
+                if(--count == 0)
+                    return;
+            }
+            helper(r->left,count,x,y);
+            helper(r->right,count,x,y);
+        }
+    }
+};
