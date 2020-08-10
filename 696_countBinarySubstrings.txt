@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        //按连续字符分组,count中存放连续的0或1的个数
+        vector<int> count;
+        int n = s.size();
+        int res = 0;
+        int flag = 0;
+        while(flag<n){
+            int sum = 0;
+            char c = s[flag];
+            while(flag<n && s[flag]==c){
+                sum++;
+                flag++;
+            }
+            count.push_back(sum);
+        }
+        for(int i = 1;i<count.size();i++){
+            //最终的结果由所有相邻的连续个数的最小值之和决定
+            res += min(count[i],count[i-1]);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        //按连续字符分组,count中存放连续的0或1的个数
+        //可以进行优化将空间复杂度降到O(1)
+        int n = s.size();
+        int res = 0;
+        int flag = 0;
+        int last = 0;
+        while(flag<n){
+            int sum = 0;
+            char c = s[flag];
+            while(flag<n && s[flag]==c){
+                sum++;
+                flag++;
+            }
+            res += min(last,sum);
+            last  = sum;
+        }
+        return res;
+    }
+};

@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        //目测哈希表
+        vector<vector<string>> res;
+        unordered_map<string,vector<int>> mp;
+        for(int i = 0;i<strs.size();i++){
+            string str = strs[i];
+            sort(str.begin(),str.end());
+            mp[str].push_back(i);//将对应的位置存放在哈希表中
+        }
+        //接下来遍历哈希表中的vector数组按照位置从strs中取出变位词字符串
+        for(auto nums:mp){
+            auto vec = nums.second;
+            vector<string> ans;
+            for(auto x:vec)
+                ans.push_back(strs[x]);
+            res.push_back(ans);
+        }
+        return res;
+    }
+};
