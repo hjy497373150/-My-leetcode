@@ -1,0 +1,36 @@
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        if(board.size()==0)
+            return;
+        int m = board.size();
+        int n = board[0].size();
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j < n;j++){
+                //判断是否在边界,边界上的'O'都不会被填充为'X'
+                bool flag = (i==0 || j==0 || i==m-1 || j==n-1);
+                if(flag && board[i][j]=='O' )
+                    my_dfs(board,i,j);//找到所有与边界上的‘O’相连的‘O’
+            }
+        }
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j < n;j++){
+                //如果不与边界'O'相连则需要被'X'填充
+                if(board[i][j] == 'O')
+                    board[i][j] = 'X';
+                //否则还原为'O'
+                else if(board[i][j] == '#')
+                    board[i][j] = 'O';
+            }
+        }
+    }
+    void my_dfs(vector<vector<char>>& board,int i,int j){
+        if(i >= 0 && i<board.size() && j >= 0 && j<board[0].size() && board[i][j] == 'O'){
+            board[i][j] = '#';//将所有与边界上的‘O’相连的‘O’改为‘#’便于之后的操作
+            my_dfs(board,i-1,j);//上
+            my_dfs(board,i+1,j);//下
+            my_dfs(board,i,j-1);//左
+            my_dfs(board,i,j+1);//右
+        }
+    }
+};

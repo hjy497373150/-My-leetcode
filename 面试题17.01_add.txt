@@ -1,0 +1,12 @@
+class Solution {
+public:
+    int add(int a, int b) {
+        //位运算，只要还有进位就要继续计算
+        while(b!=0){
+            auto carry = (unsigned int)(a&b) << 1;//记录进位
+            a = a^b;//不算进位的相加结果
+            b = carry;
+        }
+        return a;
+    }
+};

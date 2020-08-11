@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int waysToChange(int n) {
+        //典型的动态规划,dp(i,v)表示用i种面值的硬币得到v分的全部方法数
+        //dp(i,v) = dp(i-1,v) + dp(i-1,v-ci) + dp(i-1,v-2ci)...
+        //dp(i,v-ci) = dp(i-1,v-ci) + dp(i-1,v-2ci)...
+        //dp(i,v) = dp(i-1,v) + dp(i,v-ci)
+        const int coins[4] = {25,10,5,1};
+        vector<int> dp(n+1);//第i行只与第i-1行有关，滚动数组
+        dp[0] = 1;
+        for(int c = 0;c<4;c++){
+            int coin = coins[c];
+            for(int i = coin;i<=n;i++){
+                dp[i] = (dp[i] + dp[i-coin]) % 1000000007;
+            }
+        }
+        return dp[n];
+    }
+};

@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int res=0;
+    int multiply(int A, int B) {
+        //用加法代替，总是用数字较小的作为运算次数
+        if(A > B)
+            swap(A,B);
+        if(A==0)
+            return res;
+        res += B;
+        A--;
+        multiply(A,B);
+        return res;
+    }
+};
