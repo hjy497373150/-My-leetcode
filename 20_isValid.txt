@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> sta;
+        if(s[0] == ')' || s[0] == ']' || s[0] == '}')
+            return false;
+        for(int i = 0;i < s.length();i++){
+            if(s[i] == '(' || s[i] == '[' || s[i] == '{')
+                sta.push(s[i]);
+            else{
+                if(sta.empty())
+                    return false;//没有与右括号匹配的左括号，错误
+                char a = sta.top();
+                if((s[i] == ')' && a == '(') || (s[i] == ']' && a == '[') || (s[i] == '}' && a == '{')){
+                    sta.pop();
+                    continue;
+                }
+                else
+                    return false;//括号不匹配，错误
+            }
+        }
+        return sta.empty();
+    }
+};
