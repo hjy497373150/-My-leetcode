@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        //暴力法太傻了
+        // int size = gas.size();
+        // if(size == 1){
+        //     if(gas[0]>=cost[0])
+        //         return 0;
+        //     return -1;
+        // }
+        // for(int i = 0;i<size;i++){
+        //     bool flag = false;
+        //     int cur = gas[i];
+        //     int j = i;
+        //     int count = 0;
+        //     while(count!=size){//还未循环一周
+        //         if(cur >= cost[j]&&j!=size-1)
+        //             cur = gas[j+1]+cur-cost[j];
+        //         else if(j==size-1)
+        //             cur = gas[0]+cur-cost[j];
+        //         else{
+        //             flag = true;
+        //             break;   
+        //         }    
+        //         j = (j == size-1)?0:j+1;
+        //         count++;
+        //     }
+        //     if(flag == false)
+        //         return i;
+        // }
+        // return -1;
+        //一次遍历
+	//双指针一次遍历法
+	//1、首先知道如果gas的总量小于cost的总量 是一定返回-1的
+	//2、考虑size的大小如果为1直接返回0
+	//3、否则开始遍历 初始p=0，q=1（双指针）cur = gas[0]-cost[0]
+	//当p！=q时，如果cur>0则q后移
+        int G = accumulate(gas.begin(), gas.end(), 0);
+        int C = accumulate(cost.begin(), cost.end(), 0);
+        if (G < C) return -1;
+        int N = gas.size();
+        if (N == 1) return 0;
+        int l = 0;
+        int r = 1;
+        int s = gas[0] - cost[0];
+        while (l != r) {
+            if (s > 0) {
+                s += gas[r] - cost[r];
+                r = (r + 1) % N;
+            } else {
+                l = (N + l - 1) % N;
+                s += gas[l] - cost[l];
+            }
+        }
+        return l;
+    }
+};

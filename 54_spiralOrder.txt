@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        if(matrix.size()==0)
+            return {};
+        int u = 0;//上边界
+        int d = matrix.size()-1;//下边界
+        int l = 0;//左边界
+        int r =  matrix[0].size()-1;//右边界
+        //明确螺旋是先第一行到右，再往下，再最后一行到左，再往上
+        while(1){
+            for(int i = l;i<=r;i++)
+                res.push_back(matrix[u][i]);//将上边界加入res
+            if(++u > d)
+                break;//上边界与下边界重合
+            for(int j = u;j<=d;j++)
+                res.push_back(matrix[j][r]);//将右边界加入res
+            if(--r<l)
+                break;//右边界与左边界重合
+            for(int p = r;p >= l;p--)
+                res.push_back(matrix[d][p]);//将下边界加入res
+            if(--d<u)
+                break;//下边界与上边界重合
+            for(int q = d;q >= u;q--)
+                res.push_back(matrix[q][l]);//将左边界加入res
+            if(++l>r)
+                break;//下边界与上边界重合
+        }
+        return res;
+    }
+};

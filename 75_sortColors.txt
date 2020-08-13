@@ -1,0 +1,23 @@
+class Solution {
+public:
+    //荷兰国旗问题
+    //维护三个指针p0,p2,current分别指向0的最右位置，2的最左位置，当前位置
+    void sortColors(vector<int>& nums) {
+        int p0 = 0;
+        int current = 0;
+        int p2 = nums.size()-1;
+        while(current<=p2){//遍历一遍，
+            if(nums[current]==0){//若当前元素为0则p0，current需右移
+                swap(nums[current],nums[p0]);
+                p0++;
+                current++;
+            }
+            else if(nums[current]==2){//若当前元素为2则p2左移，current不变（因为current可能为1或2需要继续判断）
+                swap(nums[current],nums[p2]);
+                p2--;
+            }
+            else
+               current++;//若当前元素为1则current右移
+        }
+    }
+};

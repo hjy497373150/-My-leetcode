@@ -1,0 +1,74 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        reverse(s.begin(),s.end());
+        int start = 0,end = s.length()-1;
+        //处理前后多余的空格
+        while(start<end && s[start]==' ')
+            start++;
+        while(end>=0 && s[end]==' ')
+            end--;
+        if(start>end)
+            return "";
+        //逐个单词翻转
+        for(int r = start;r<=end;){
+            while(s[r]==' '&&r<=end)
+                r++;
+            int l = r;
+            while(s[l]!=' '&&l<=end)
+                l++;
+            reverse(s.begin()+r,s.begin()+l);
+            r = l;
+        }
+        //处理两个单词之间多余的空格
+        int temp = start;
+        for(int i = start;i<=end;i++){
+            if(s[i]==' ' &&s[i-1]==' ')
+                continue;
+            s[temp++]=s[i];
+        }
+        return s.substr(start,temp-start);
+    }
+};
+
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        if(s.size()==0)
+            return "";
+        //先去掉头尾的空格
+        int start = 0;
+        int end = s.size()-1;
+        while(s[start]==' ')
+            start++;
+        while(s[end]==' ')
+            end--;
+        string temp = "";
+        string res = "";
+        //翻转单个单词
+        for(int i = start;i<=end;i++){
+            if(s[i]!=' '){
+                temp += s[i];
+            }
+            else{
+                while(s[i]==' ')
+                    i++;
+                i--;
+                res += myswap(temp) + " ";
+                temp = "";
+            }
+        }
+        //将整体翻转
+        res += myswap(temp);
+        return myswap(res);
+    }
+    string myswap(string s){
+        int start = 0;
+        int end = s.size()-1;
+        while(start<end){
+            swap(s[start++],s[end--]);
+        }
+        return s;
+    }
+};

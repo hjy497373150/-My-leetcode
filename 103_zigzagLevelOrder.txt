@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        if(root == NULL)
+            return {};
+        vector<vector<int>> res;
+        queue<TreeNode*> helper;//辅助队列每次只存放该层的所有元素
+        TreeNode* p;
+        int flag = 0;
+        helper.push(root);//将根节点入队
+        while(helper.empty()==0){//队列不空
+            deque<int> temp;//用双端队列来控制锯齿
+            int size = helper.size();
+            for(int i = 0;i < size;i++){//将本层的元素全部加入到temp中并把下一层元素加入队列中
+                p = helper.front();
+                if(flag%2==0){
+                    temp.push_back(p->val);   
+                }
+                else{
+                    temp.push_front(p->val);   
+                }
+                helper.pop();
+                if(p->left)
+                    helper.push(p->left);
+                if(p->right)
+                    helper.push(p->right);
+            }
+            res.push_back(vector<int>(temp.begin(),temp.end()));
+            flag++;
+        }
+        return res;
+    }
+};

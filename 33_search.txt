@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int l = 0;
+        int r = nums.size()-1;
+        int mid;
+        //优化二分查找
+        while(l < r){
+            mid = l+(r-l)/2;
+            //三个条件异或,发生一个或三个则要动l，否则动r
+            if((nums[0] > target) ^ (nums[mid] < nums[0]) ^ (nums[mid] < target))
+                l = mid+1;
+            else
+                r = mid;
+        }
+        if(l==r && nums[l]== target)
+            return l;
+        return -1;
+    }
+};

@@ -1,0 +1,29 @@
+//动态规划
+//1、先求出第一个窗口中的最大值
+//2、然后开始滑动，判断最大值是否是窗口最左端的值，若不是，直接比较最大值与下一个元素。否则重新求窗口内的最大值
+
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> res(nums.size()-k+1);
+        if(nums.size()==0)
+            return {};
+        int maxnum = nums[0];
+        for(int i = 1;i < k;i++){
+            maxnum = max(maxnum,nums[i]);
+        }
+        res[0] = maxnum;
+        for(int j = k;j<nums.size();j++){
+            if(maxnum == nums[j-k]){
+                maxnum = nums[j-k+1];
+                for(int i = j-k+2;i<=j;i++)
+                    maxnum = max(maxnum,nums[i]);
+            }
+            else
+                maxnum = max(maxnum,nums[j]);
+            res[j-k+1] = maxnum;
+        }
+        return res;
+    }
+};

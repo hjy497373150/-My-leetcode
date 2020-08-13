@@ -1,0 +1,80 @@
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+	//广度优先搜索
+        int m = grid.size();//行数
+        if(m==0)
+            return 0;
+        int n = grid[0].size();//列数
+        int res = 0;//岛屿数量
+        for(int i = 0;i < m;i++){
+            for(int j= 0;j < n;j++){
+                if(grid[i][j] == '1'){
+                    res++;
+                    grid[i][j] = '0';
+                    queue<pair<int,int>> helper;
+                    helper.push({i,j});
+                    while(!helper.empty()){
+                        auto temp = helper.front();
+                        helper.pop();
+                        int row = temp.first;
+                        int col = temp.second;
+                        if(row-1>=0 && grid[row-1][col]=='1'){
+                            grid[row-1][col]='0';
+                            helper.push({row-1,col});
+                        }
+                        if(row+1<m && grid[row+1][col]=='1'){
+                            grid[row+1][col]='0';
+                            helper.push({row+1,col});
+                        }
+                        if(col-1>=0 && grid[row][col-1]=='1'){
+                            grid[row][col-1]='0';
+                            helper.push({row,col-1});
+                        }
+                        if(col+1<n && grid[row][col+1]=='1'){
+                            grid[row][col+1]='0';
+                            helper.push({row,col+1});
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+
+深度优先搜索DFS
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int m = grid.size();//行数
+        if(m==0)
+            return 0;
+        int n = grid[0].size();//列数
+        int res = 0;//岛屿数量
+        for(int i = 0;i < m;i++){
+            for(int j= 0;j < n;j++){
+                if(grid[i][j] == '1'){
+                    res++;
+                    mydfs(grid,i,j);   
+                }
+            }
+        }
+        return res;
+    }
+    void mydfs(vector<vector<char>>& grid,int i,int j){
+        grid[i][j] = '0';
+        int m = grid.size();//行数
+        int n = grid[0].size();//列数
+        //上下左右dfs
+        if(i-1>=0 && grid[i-1][j] == '1')
+            mydfs(grid,i-1,j);
+        if(i+1<m && grid[i+1][j] == '1')
+            mydfs(grid,i+1,j);
+        if(j-1>=0 && grid[i][j-1] == '1')
+            mydfs(grid,i,j-1);
+        if(j+1<n && grid[i][j+1] == '1')
+            mydfs(grid,i,j+1);
+    }
+};
+								 					 

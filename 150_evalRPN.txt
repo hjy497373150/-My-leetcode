@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> stk;
+        for(auto s : tokens){
+            if(s=="+"||s=="-"||s=="*"||s=="/")
+                helper(stk,s);
+            else
+                stk.push(atoi(s.c_str()));
+        }
+        return stk.top();
+    }
+    void helper(stack<int>& stk,string s){
+        int ob1,ob2;
+        ob2 = stk.top();
+        stk.pop();
+        ob1 = stk.top();
+        stk.pop();
+        stk.push(mycal(ob1,ob2,s));
+    }
+    int mycal(int ob1,int ob2,string s){
+        if(s=="+")
+            return ob1+ob2;
+        else if(s=="-")
+            return ob1-ob2;
+        else if(s=="*")
+            return ob1*ob2;
+        else
+            return ob1/ob2;
+    }
+};

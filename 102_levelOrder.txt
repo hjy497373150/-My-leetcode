@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    // vector<vector<int>> levelOrder(TreeNode* root) {
+    //     if(root == NULL)
+    //         return {};
+    //     vector<vector<int>> res;
+    //     helper(res,root,0);
+    //     return res;
+    // }
+    // void helper(vector<vector<int>>& res,TreeNode* p,int level){
+    //     if(p == NULL)
+    //         return;
+    //     if(level>=res.size()){
+    //         vector<int> temp;
+    //         res.push_back(temp);
+    //     }
+    //     res[level].push_back(p->val);
+    //     if(p->left!=NULL)
+    //         helper(res,p->left,level+1);
+    //     if(p->right!=NULL)
+    //         helper(res,p->right,level+1);
+    // }
+    vector<vector<int>> levelOrder(TreeNode* root){
+        if(root == NULL)
+            return {};
+        vector<vector<int>> res;
+        queue<TreeNode*> helper;//辅助队列每次只存放该层的所有元素
+        TreeNode* p;
+        helper.push(root);//将根节点入队
+        while(helper.empty()==0){//队列不空
+            vector<int> temp;
+            int size = helper.size();
+            for(int i = 0;i < size;i++){//将本层的元素全部加入到temp中并把下一层元素加入队列中
+                p = helper.front();
+                temp.push_back(p->val);
+                helper.pop();
+                if(p->left)
+                    helper.push(p->left);
+                if(p->right)
+                    helper.push(p->right);
+            }
+            res.push_back(temp);
+        }
+        return res;
+    }
+};

@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string fractionToDecimal(int numerator, int denominator) {
+        if(numerator == 0)
+            return "0";//分子为0直接返回0
+        string res;
+        long long num = (long long)numerator;
+        long long deno = (long long)denominator;//转换成long型防止溢出
+        if((num>0&&deno<0) || (num<0&&deno>0))
+            res.push_back('-');
+        num = abs(num);
+        deno = abs(deno);//转换为正数计算
+        res.append(to_string(num/deno));//将整数部分加入
+        num = num%deno;
+        if(num == 0)
+            return res;//能够整除，直接返回
+        res.push_back('.');
+        int index = res.size()-1;//获取小数点位置
+        unordered_map<int,int> record;//map用来记录出现重复数的下标
+        while(num && record.count(num)==0){//当num不为0且未出现重复数字
+            record[num]=++index;
+            num = num*10;
+            res = res + to_string(num/deno);
+            num = num % deno;
+        }
+        if(record.count(num)==1){
+                res.insert(record[num],"(");
+                res.push_back(')');
+        }
+        return res;
+    }
+};

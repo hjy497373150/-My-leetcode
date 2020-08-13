@@ -1,0 +1,46 @@
+class Solution {
+private:
+    int count;
+public:
+    int totalNQueens(int n) {
+        count = 0;
+        vector<string> board(n,string(n,'.'));
+        backtrace(board,0);
+        return count;
+    }
+    void backtrace(vector<string>& board,int row){
+        if(row == board.size()){//已经处理完这一轮得到一种可能的排列
+            count++;
+            return;
+        }
+        int n = board[row].size();//列数
+        for(int col = 0;col<n;col++){
+            if(!isvalid(board,row,col))
+                continue;
+            board[row][col]='Q';
+            backtrace(board,row+1);
+            board[row][col]='.';
+        }
+    }
+    bool isvalid(vector<string>& board,int row,int col){
+        int n = board.size();
+        // 检查列是否有皇后互相冲突
+        for (int i = 0; i < n; i++) {
+            if (board[i][col] == 'Q')
+                return false;
+        }
+        // 检查右上方是否有皇后互相冲突
+        for (int i = row - 1, j = col + 1; 
+                i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+        // 检查左上方是否有皇后互相冲突
+        for (int i = row - 1, j = col - 1;
+                i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+        return true;
+    }
+};

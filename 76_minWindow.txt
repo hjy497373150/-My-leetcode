@@ -1,0 +1,41 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        string res = s;
+        int left = 0,right = 0;//滑动窗口
+        int start = 0;//开始位置
+        int end = INT_MAX;//结束位置
+        //第一步要得到T中的各个元素及个数
+        unordered_map<char,int> needs;
+        for(char c:t)
+            needs[c]++;
+        //第二步在s中找包含T的所有字母的字串
+        unordered_map<char,int> window;
+        int match = 0;
+        while(right < s.size()){
+            char c1 = s[right];
+            if(needs.count(c1)){//如果t中有c1，则把c1加到window中
+                window[c1]++;
+                if(window[c1]==needs[c1])//有足够的c1了
+                    match++;
+            }
+            right++;
+            while(match == needs.size()){//window中的字符已经满足要求了
+                //第三步更新最小字串的位置和长度
+                if(right - left < end){
+                    start = left;
+                    end = right - left;
+                }
+                char c2 = s[left];
+                if(needs.count(c2)){
+                    window[c2]--;
+                    if(window[c2]<needs[c2])
+                        match--;
+                }
+                left++;
+            }
+        }
+        return end == INT_MAX ?
+                "" : s.substr(start, end);
+    }
+};

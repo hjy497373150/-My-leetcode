@@ -1,0 +1,68 @@
+//因为需要O（nlogn）的时间复杂度和常数级的空间复杂度
+//所以要用归并排序
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode dummyHead(0);
+        dummyHead.next = head;
+        auto p = head;
+        int length = 0;//链表长度
+        while(p){
+            ++length;
+            p = p->next;
+        }
+        for(int i = 1;i < length;i = i*2){//每一趟里面要完成排序,先切割再排序
+            auto cur = dummyHead.next;
+            auto tail = &dummyHead;
+            while(cur){//每一次循环排一次序
+                auto left = cur;
+                auto right = cut(cur,i);//right为切割点
+                cur = cut(right,i);//改变cur的值为切割点的后一位
+                tail->next = merge(left,right);//二路归并
+                while(tail->next)
+                    tail = tail->next;
+            }
+        }
+        return dummyHead.next;
+    }
+    ListNode* cut(ListNode* head,int i){
+        auto p = head;
+        while(--i&&p){
+            p = p->next;
+        }//找到此时的最右端
+        if(!p)
+            return NULL;
+        auto next = p->next;
+        p->next = NULL;
+        return next;
+    }
+    ListNode* merge(ListNode* l1,ListNode* l2){
+        ListNode dummyHead(0);
+        auto p = &dummyHead;
+        while(l1&&l2){
+            if(l1->val<=l2->val){
+                p->next = l1;
+                p = l1;
+                l1 = l1->next;
+            }
+            else{
+                p->next = l2;
+                p = l2;
+                l2= l2->next;
+            }
+        }
+        p->next = l1?l1:l2;
+        return dummyHead.next;
+    }
+};

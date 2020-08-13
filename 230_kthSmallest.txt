@@ -1,0 +1,31 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int res;
+    bool find = false;
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int i = 0;
+        in_dfs(root,find,i,k);
+        return res;
+    }
+    void in_dfs(TreeNode* root,bool &find,int &i,int k){
+        if(root == NULL || find)
+            return;
+        in_dfs(root->left,find,i,k);
+        if(++i==k){
+            res = root->val;
+            find = true;
+            return;
+        }
+        in_dfs(root->right,find,i,k);
+    }
+};

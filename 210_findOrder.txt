@@ -1,9 +1,8 @@
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         vector<int> indegree(numCourses,0);//保存每个数字的入度
         vector<vector<int>> ljb(numCourses,vector<int>());//保存每个数字的邻接表
-        int res = 0;//保存入度为0的数字个数，用于判断是否有DAG
         for(auto v:prerequisites){
             indegree[v[0]]++;//初始化入度表
             ljb[v[1]].push_back(v[0]);//初始化邻接表
@@ -13,24 +12,19 @@ public:
             if(indegree[i]==0)
                 que.push(i);//将入度为0的结点入队
         }
+        vector<int> res;
         while(!que.empty()){
             auto x = que.front();//得到队首元素
             que.pop();//队首元素出队
-            res++;//计数+1
+            res.push_back(x);//计数+1
             for(auto y:ljb[x]){//访问该数字的邻接表，将与其相连的数字的入度-1
                 if(--indegree[y]==0)//若-1后为0则入队
                     que.push(y);
             }
         }
-        return res==numCourses;
+        if(res.size()==numCourses)
+            return res;
+        else
+            return {};
     }
 };
-/*
-拓扑排序
-入度：设有向图中有一结点v，其入度即为当前所有从其他结点出发，终点为v的的边的数目。
-出度：设有向图中有一结点v，其出度即为当前所有起点为v，指向其他结点的边的数目。
-每次从入度为0的结点开始，加入队列。入度为0，表示没有前置结点。
-处理入度为0的结点，把这个结点指向的结点的入度-1。
-再把新的入度为0的结点加入队列。
-如果队列都处理完毕，但是和总结点数不符，说明有些结点形成环。
-*/

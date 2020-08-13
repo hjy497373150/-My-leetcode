@@ -1,0 +1,28 @@
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        map<int,int> m;
+        for(auto x:nums)
+            ++m[x];
+        vector<int> ans;
+        backtrace(m,nums,ans);
+        return res;
+    }
+    void backtrace(map<int,int>& m,vector<int>& nums,vector<int>& ans){
+        if(ans.size()==nums.size()){
+            res.push_back(ans);
+            return;
+        }
+        for(auto&p:m){
+            if(p.second == 0)
+                continue;
+            --p.second;
+            ans.push_back(p.first);
+            backtrace(m,nums,ans);
+            ++p.second;
+            ans.pop_back();
+        }
+    }
+};

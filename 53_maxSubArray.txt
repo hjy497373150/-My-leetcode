@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        //贪心法
+        if(nums.size()==1)
+            return nums[0];
+        int maxres = nums[0];
+        int currentmax = nums[0];
+        for(int i = 1;i<nums.size();i++){
+            currentmax = max(currentmax+nums[i],nums[i]);//每进一个数字就计算当前的最大和
+            maxres = max(maxres,currentmax);
+        }
+        return maxres;
+    }
+};

@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        int row[9][10] = {0};
+        int col[9][10] = {0};
+        int smallbox[9][10] = {0};
+        //一次遍历
+        for(int i = 0;i < 9;i++){
+            for(int j = 0;j < 9;j++){
+                //判断这一个数在其所在的行或列或小方格中是否出现过
+                if(board[i][j] == '.')
+                    continue;
+                int temp = board[i][j]-'0';
+                if(row[i][temp] || col[j][temp] || smallbox[j/3 + (i/3)*3][temp])
+                    return false;
+                row[i][temp] = 1;
+                col[j][temp] = 1;
+                smallbox[j/3 + (i/3)*3][temp] = 1;
+            }
+        }
+        return true;
+    }
+};

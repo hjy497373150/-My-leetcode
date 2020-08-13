@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int numDecodings(string s) {
+        if(s[0]=='0')
+            return 0;//以0开头的不能解码
+        int pre = 1,curr = 1;
+        for(int i = 1;i < s.size();i++){
+            int temp = curr;
+            if(s[i]=='0'){
+                if (s[i - 1] == '1' || s[i - 1] == '2') 
+                    curr = pre;//只有一种解码方式
+                else
+                    return 0;//0前数字大于2不能解码
+            }
+            else if(s[i - 1] == '1' || (s[i - 1] == '2' && s[i] >= '1' && s[i] <= '6')){
+                curr = curr + pre;
+            }
+            pre = temp;
+        }
+        return curr;
+    }
+};

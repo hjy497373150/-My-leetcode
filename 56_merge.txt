@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> res;
+        int n = intervals.size();
+        if(n==0)
+            return {};
+        // if(n==1)
+        //     return intervals;
+        sort(intervals.begin(),intervals.end());//按照左区间大小进行排序
+        res.push_back(intervals[0]);//将排好序的第一个区间加入res
+        int index = 0;//res索引便于与interval比较
+        for(int i = 1;i<n;i++){//遍历剩下的区间
+            if(res[index][1] >= intervals[i][0]){//res的右端点大于intervals的左端点则说明有交集
+                if(res[index][1] < intervals[i][1])
+                    res[index][1] =  intervals[i][1];
+            }
+            else{
+                index++;
+                res.push_back(intervals[i]);
+            }
+        }
+        return res;
+    }
+};

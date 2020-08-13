@@ -1,0 +1,13 @@
+class Solution {
+public:
+    //贪心算法,当前最优解
+    int maxProfit(vector<int>& prices) {
+        if(prices.size()==0||prices.size()==1)
+            return 0;
+        int maxpro = 0;
+        for(int i = 0;i < prices.size()-1;i++){
+            maxpro += (prices[i+1]-prices[i] > 0)?(prices[i+1]-prices[i]):0;
+        }
+        return maxpro;
+    }
+};
