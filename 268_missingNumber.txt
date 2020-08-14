@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        //数学方法，累加0-n然后再依次减
+        int sum = (nums.size() * (nums.size()+1))/2;
+        for(int i = 0;i<nums.size();i++){
+            sum = sum - nums[i];
+        }
+        return sum;
+    }
+};

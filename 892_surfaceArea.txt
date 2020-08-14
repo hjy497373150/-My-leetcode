@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int surfaceArea(vector<vector<int>>& grid) {
+        if(grid.size()==0)
+            return 0;
+        int n = grid.size();
+        int res = 0;
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<n;j++){
+                int temp = grid[i][j];
+                if(temp>0){
+                    res += (temp<<2)+2;
+                    if(i>0)
+                        res -= min(temp,grid[i-1][j])<<1;
+                    if(j>0)
+                        res -= min(temp,grid[i][j-1])<<1;
+                }
+            }
+        }
+        return res;
+    }
+};

@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        int res = 0;
+        vector<pair<int,int>> move;
+        //往上下左右腐烂
+        move.push_back(make_pair(0,1));
+        move.push_back(make_pair(0,-1));
+        move.push_back(make_pair(1,0));
+        move.push_back(make_pair(-1,0));
+        queue<pair<int,int>> rot;//记录腐烂橘子的位置
+        set<pair<int,int>> good;//记录好橘子的位置
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j<n;j++){
+                if(grid[i][j]==1)
+                    good.insert(make_pair(i,j));
+                if(grid[i][j]==2)
+                    rot.push(make_pair(i,j));
+            }
+        }
+        while(!rot.empty()){
+            bool flag = false;
+            int size = rot.size();
+            for(int i = 0;i<size;i++){
+                auto [x,y] = rot.front();
+                rot.pop();
+                for(auto couple:move){
+                    auto temp = make_pair(x+couple.first,y+couple.second);
+                    if(good.find(temp)!=good.end()){
+                        good.erase(temp);
+                        rot.push(temp);
+                        flag = true;
+                    }
+                }
+            }
+            if(flag)
+                res++;
+        }
+        if(good.size()>0)
+            return -1;
+        return res;
+    }
+};

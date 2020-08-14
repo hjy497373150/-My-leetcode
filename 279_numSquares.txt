@@ -1,0 +1,25 @@
+dp（背包问题）
+首先想到的就是dp，如果用数组dp来记录n由m个完全平方数组成的话，就是dp[n] = m.
+
+对于数字n，可以进行分解，分解成某个数s和完全平方数的和，于是就有了dp[n] = dp[s] + 1 。
+
+然后我们假设dp(n)表示数字n最少可以表示为dp(n)个完全平方数的和，就能写出状态转移方程：
+
+dp(n) = min{dp(n), dp(n - i * i) + 1}
+dp(n)=min{dp(n),dp(n−i∗i)+1}
+
+
+class Solution {
+public:
+    int numSquares(int n) {
+        //动态规划
+        vector<int> dp(n+1);
+        for(int i = 1;i<=n;i++){
+            dp[i] = i;
+            for(int j = 1;i-j*j>=0;j++){
+                dp[i] = min(dp[i],dp[i-j*j]+1);
+            }
+        }
+        return dp[n];
+    }
+};

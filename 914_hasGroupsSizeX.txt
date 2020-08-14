@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool hasGroupsSizeX(vector<int>& deck) {
+        int count[10001] = {0};
+        for(auto x:deck)
+            count[x]++;
+        int flag = -1;
+        for(int i = 0;i<10001;i++){
+            if(count[i]){
+                if(flag!=-1)
+                    flag = gcd(flag,count[i]);
+                else
+                    flag = count[i];
+            }
+        }
+        return flag>=2; 
+    }
+};

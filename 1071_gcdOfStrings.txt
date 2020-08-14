@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string gcdOfStrings(string str1, string str2) {
+        if(str1[0]!=str2[0])
+            return "";
+        int size1 = str1.size();
+        int size2 = str2.size();
+        for(int i = min(size1,size2);i>=1;i--){
+            if(size1%i == 0&&size2%i==0){
+                string str = str1.substr(0,i);
+                if(check(str,str1)&&check(str,str2))
+                    return str;
+            }
+        }
+        return "";
+    }
+    //判断str1是否能拼接成str2
+    bool check(string str1,string str2){
+        string str = "";
+        int count = str2.size()/str1.size();
+        for(int i = 0;i<count;i++){
+            str += str1;
+        }
+        return str == str2;
+    }
+};

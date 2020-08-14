@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        unordered_set<string> temp(words.begin(),words.end());//set去重
+        for(auto& word:temp){
+            for(int k = 1;k<word.size();k++)
+                temp.erase(word.substr(k));
+        }
+        int res = 0;
+        for(auto& word:temp)
+            res+=word.size()+1;
+        return res;
+    }
+};

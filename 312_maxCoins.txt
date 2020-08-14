@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+        //动态规划
+        //dp[i][j] 指气球编号i到j能得到的最大硬币数
+        int n = nums.size();
+        vector<vector<int>> dp(n+2,vector<int>(n+2));
+        vector<int> val(n+2);
+        val[0] = val[n+1] = 1;
+        for(int i = 1;i<=n;i++)
+            val[i] = nums[i-1];
+        for(int i = n-1;i>=0;i--){
+            for(int j = i+2;j<=n+1;j++){
+                for(int k = i+1;k<j;k++){
+                    int sum = val[k]*val[i]*val[j];
+                    sum += dp[i][k] + dp[k][j];
+                    dp[i][j] = max(dp[i][j],sum);
+                }
+            }
+        }
+        return dp[0][n+1];
+    }
+};

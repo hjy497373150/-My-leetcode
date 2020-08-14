@@ -1,0 +1,42 @@
+通过遍历，找到所有陆地
+判断是否全陆地或全海洋
+使用 bfs
+直接修改原数组，对于距离为 1 的海洋格子，设置为 2 ；对于距离为 2 的海洋格子，设置为 3
+
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        //bfs进行填海造陆
+        queue<pair<int,int>> q;//q中存放陆地格子的位置
+        for(int i = 0;i<grid.size();i++){
+            for(int j = 0;j<grid[0].size();j++){
+                if(grid[i][j]==0)
+                    continue;
+                q.push({i,j});
+            }
+        }
+        //判断是否全为陆地或海洋
+        if(q.empty() || q.size()==grid.size()*grid[0].size())
+            return -1;
+        vector<vector<int>> temp = {{0,1},{0,-1},{1,0},{-1,0}};
+        int res = 0;
+        while(!q.empty()){
+            auto num = q.front();
+            q.pop();
+            res = grid[num.first][num.second];
+            for(auto t:temp){
+                int dx = num.first + t[0];
+                int dy = num.second + t[1];
+                if(dx < 0||dx>=grid.size())
+                    continue;
+                if(dy < 0 || dy>=grid[0].size())
+                    continue;
+                if(grid[dx][dy]!=0)
+                    continue;
+                grid[dx][dy] = res + 1;
+                q.push({dx,dy});
+            }
+        }
+        return res - 1;
+    }
+};

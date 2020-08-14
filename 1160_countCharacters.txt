@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int countCharacters(vector<string>& words, string chars) {
+        unordered_map<char,int> mp_chars;
+        for(int i = 0;i<chars.size();i++){
+            mp_chars[chars[i]]++;
+        }
+        int res = 0;
+        for(int i = 0;i<words.size();i++){
+            unordered_map<char,int> mp_word;
+            for(int j = 0;j<words[i].size();j++){
+                mp_word[words[i][j]]++;
+            }
+            bool flag = true;
+            for(int j = 0;j<words[i].size();j++){
+                if(mp_word[words[i][j]]>mp_chars[words[i][j]]){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+                res += words[i].size();
+        }
+        return res;
+    }
+};

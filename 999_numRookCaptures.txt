@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int numRookCaptures(vector<vector<char>>& board) {
+        bool flag = false;
+        int row = 0;
+        int col = 0;
+        for(int i = 0;i<8;i++){
+            for(int j = 0;j<8;j++){
+                if(board[i][j]=='R'){
+                    row = i;
+                    col = j;
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag)
+                break;
+        }
+        int res = 0;
+        int dx[] = {-1,0,1,0};
+        int dy[] = {0,-1,0,1};
+        for(int i = 0;i<4;i++){
+            int newx = row+dx[i];
+            int newy = col+dy[i];
+            while(newx>=0 && newx < 8 && newy>=0 && newy<8){
+                if(board[newx][newy]!='.'){
+                    if(board[newx][newy]=='p')
+                        res++;
+                    //不论是遇到卒还是遇到象这一轮都结束了
+                    break;
+                }
+                newx += dx[i];
+                newy += dy[i];
+            }
+        }
+        return res;
+    }
+};

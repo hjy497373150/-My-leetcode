@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        //快慢指针，将数组看作一个链表
+        int slow = 0;
+        int fast = 0;
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+        while(slow!=fast){
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+        int helper = 0;
+        //两指针相遇，则设置一个新的指针从头开始与slow指针同步往前走
+        //两者的交点即为重复的整数
+        while(helper!=slow){
+            helper = nums[helper];
+            slow = nums[slow];
+        }
+        return helper;
+    }
+};

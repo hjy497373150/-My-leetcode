@@ -1,0 +1,11 @@
+class Solution {
+public:
+    bool isRectangleOverlap(vector<int>& rec1, vector<int>& rec2) {
+        //重叠的条件，四种情况取其一即可重叠
+        //rec1在x轴上的最大值大于rec2在x轴上的最小值
+        //rec1x最小值小于rec2在x轴上的最大值
+        //rec1y最小值小于rec2在y轴上的最大值
+        //rec1y最大值大于rec2在y轴上的最小值
+        return !(rec1[2]<=rec2[0] || rec1[0]>=rec2[2] || rec1[1] >= rec2[3] || rec1[3] <= rec2[1]);
+    }
+};

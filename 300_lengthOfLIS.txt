@@ -1,0 +1,55 @@
+普通动态规划
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        if(n==0 || n==1)
+            return n;
+        vector<int> helper(n,1);//保存以每一个数字结尾的最长上升序列的长度
+        for(int i = 1;i < n;i++){
+            for(int j = 0;j < i;j++){
+                if(nums[i] > nums[j]){
+                    helper[i] = max(helper[i],helper[j]+1);
+                }
+            }
+        }
+        sort(helper.begin(),helper.end());
+        return helper.back();
+    }
+};
+
+高级动态规划
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int len = nums.size();
+        if (len < 2) {
+            return len;
+        }
+
+        vector<int> tail;
+        tail.push_back(nums[0]);
+        // tail 结尾的那个索引
+        int end = 0;
+
+        for (int i = 1; i < len; ++i) {
+            if (nums[i] > tail[end]) {
+                tail.push_back(nums[i]);
+                end++;
+            } else {
+                int left = 0;
+                int right = end;
+                while (left < right) {
+                    int mid = (left + right) >> 1;
+                    if (tail[mid] < nums[i]) {
+                        left = mid + 1;
+                    } else {
+                        right = mid;
+                    }
+                }
+                tail[left] = nums[i];
+            }
+        }
+        return end + 1;
+    }
+};

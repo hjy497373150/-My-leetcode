@@ -1,0 +1,33 @@
+动态规划
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount + 1, amount + 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins)
+                if (coin <= i)
+                    dp[i] = min(dp[i], dp[i - coin] + 1);
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+};
+
+暴力递归
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        if(amount == 0)
+            return 0;
+        int res = INT_MAX;
+        for(auto coin:coins){
+            if(amount - coin < 0)
+                continue;
+            int subpro = coinChange(coins,amount - coin);
+            if(subpro == -1)
+                continue;
+            res = min(res,subpro+1);
+        }
+        return res == INT_MAX ? -1:res;
+    }
+};

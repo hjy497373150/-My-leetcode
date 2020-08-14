@@ -1,0 +1,37 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        int m = board.size();
+        int n = board[0].size();
+        int helper[3] = {0,-1,1};
+        for(int row = 0;row<m;row++){
+            for(int col = 0;col<n;col++){
+                int livenums = 0;//记录每一个细胞周围的活细胞个数
+                for(int i = 0;i<3;i++){
+                    for(int j = 0;j<3;j++){
+                        //非该细胞本身的其余8个位置
+                        if(!(helper[i]==0 && helper[j]==0)){
+                            int r = row + helper[i];
+                            int c = col + helper[j];
+                            //abs是因为活变死为-1，需要记录上一个状态
+                            if(r>=0 && r<m && c>=0 && c<n && abs(board[r][c])==1)
+                                livenums++;
+                        }
+                    }
+                }
+                if(board[row][col] == 1 && (livenums < 2 || livenums > 3))
+                    board[row][col] = -1;//-1代表由活变死
+                if(board[row][col]==0 && livenums == 3)
+                    board[row][col] = 2;//1代表由死变活
+            }
+        }
+        for(int row = 0;row<m;row++){
+            for(int col = 0;col<n;col++){
+                if(board[row][col] == -1)
+                    board[row][col] = 0;
+                if(board[row][col]==2)
+                    board[row][col] = 1;
+            }
+        }
+    }
+};
