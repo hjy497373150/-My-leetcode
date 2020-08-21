@@ -1,0 +1,23 @@
+class Solution {
+public:
+    const int dx[4] = {-1,1,0,0};
+    const int dy[4] = {0,0,-1,1};
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        //深度优先搜素DFS
+        int curColor = image[sr][sc];
+        if(curColor !=newColor)
+            dfs(image,sr,sc,curColor,newColor);
+        return image;
+    }
+    void dfs(vector<vector<int>>& image, int sr, int sc, int curColor,int newColor){
+        if(image[sr][sc] == curColor){
+            image[sr][sc] = newColor;
+            for(int i = 0;i<4;i++){
+                int newsr = sr + dx[i];
+                int newsc = sc + dy[i];
+                if(newsr>=0 && newsr<image.size() && newsc>=0 && newsc<image[0].size())
+                    dfs(image,newsr,newsc,curColor,newColor);
+            }
+        }
+    }
+};

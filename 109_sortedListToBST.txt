@@ -1,0 +1,40 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        //根据中序遍历还原二叉搜索树
+        if(head==nullptr)
+            return nullptr;
+        if(head->next==nullptr)
+            return new TreeNode(head->val);
+        ListNode* slow = head,*fast = head,*pre=nullptr;
+        //快慢指针找到根结点
+        while(fast!=nullptr && fast->next!=nullptr){
+            pre = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        //将链表一分为二
+        pre->next = nullptr;
+        TreeNode* root = new TreeNode(slow->val);
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(slow->next);
+        return root;
+    }
+};

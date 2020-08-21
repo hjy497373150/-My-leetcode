@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        //中心扩散检查
+        int res = 0;
+        for(int i = 0;i<s.size();i++){
+            //奇数为中心向两边扩散
+            res += check(s,i,i);
+            if(i==s.size()-1)
+                break;
+            //偶数为中心向两边扩散
+            res += check(s,i,i+1);
+        }
+        return res;
+    }
+    int check(string s, int l,int r){
+        int ans = 0;
+        while(l>=0 && r<s.size()&&s[l]==s[r]){
+            l--;
+            r++;
+            ans++;
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        //动态规划，dp[i][j]表示从i到j的范围内是否为回文串
+        if(s.empty())
+            return 0;
+        int n = s.size();
+        int res = 0;
+        vector<vector<bool>> dp(n,vector<bool>(n));
+        for(int i = n-1;i>=0;i--){
+            for(int j = i;j<n;j++){
+                //如果i和j相邻或只隔一个字符或两边各收缩一个字符为true时则为true
+                dp[i][j] = (s[i]==s[j]) && (j-i <=2 || dp[i+1][j-1]);
+                if(dp[i][j])
+                    res++;
+            }
+        }
+        return res;
+    }
+};

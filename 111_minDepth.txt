@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root==nullptr)
+            return 0;
+        //到达叶子结点，返回1
+        if(root->left==nullptr && root->right==nullptr)
+            return 1;
+        int mindepth = INT_MAX;
+        if(root->left!=nullptr){
+            mindepth = min(minDepth(root->left),mindepth);
+        }
+        if(root->right!=nullptr){
+            mindepth = min(minDepth(root->right),mindepth);
+        }
+        return mindepth+1;
+    }
+};
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root==nullptr)
+            return 0;
+        //如果左右节点都不为空
+        if(root->left&&root->right)
+            return 1+min(minDepth(root->left),minDepth(root->right));
+        //否则必有一个为空,返回1+其中不为空的即可
+        return 1+max(minDepth(root->left),minDepth(root->right));
+    }
+};

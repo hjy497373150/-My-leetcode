@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int dx[8] = {-1,-1,-1,0,0,1,1,1};
+    int dy[8] = {-1,0,1,-1,1,-1,0,1};
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        int x = click[0],y=click[1];
+        //挖的是地雷，改为X即可
+        if(board[x][y]=='M')
+            board[x][y] = 'X';
+        //否则进行dfs对board中的相关方块进行修改
+        else{
+            dfs(board,x,y);
+        }
+        return board;
+    }
+    void dfs(vector<vector<char>>& board,int x,int y){
+        int count = 0;//记录地雷数量
+        for(int i = 0;i<8;i++){
+            int newx = x+dx[i];
+            int newy = y+dy[i];
+            //判断范围
+            if(newx<0 || newx>=board.size()||newy<0 || newy>=board[0].size()){
+                continue;
+            }
+            count += board[newx][newy]=='M';
+        }
+        //如果周围有地雷,直接修改
+        if(count>0)
+            board[x][y] = count + '0';
+        //如果周围没有地雷则还要递归揭露周围的方块
+        else{
+            board[x][y] = 'B';
+            for(int i = 0;i<8;i++){
+                int newx = x+dx[i];
+                int newy = y+dy[i];
+                //board[newx][newy]!='E'就说明该方块已经被挖出不需要再做处理
+                if(newx<0 || newx>=board.size()||newy<0 || newy>=board[0].size() || board[newx][newy]!='E')
+                    continue;
+                dfs(board,newx,newy);
+            }
+        }  
+    }
+};
