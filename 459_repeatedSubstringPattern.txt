@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool repeatedSubstringPattern(string s) {
+        //常规解法，枚举
+        int n = s.size();
+        for(int i = 1;i<=n/2;i++){
+            if(n % i==0){
+                bool res = true;
+                for(int j = i;j<n;j++){
+                    if(s[j]!=s[j-i]){
+                        res = false;
+                        break;
+                    }
+                }
+                if(res)
+                    return true;
+            }
+        }
+        return false;
+    }
+};

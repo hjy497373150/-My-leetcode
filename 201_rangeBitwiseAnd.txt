@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int rangeBitwiseAnd(int m, int n) {
+        //问题转换为求M和n的最长公共前缀
+        int count = 0;
+        while(m<n){
+            m >>= 1;
+            n >>= 1;
+            count++;
+        }
+        return m << count;
+    }
+};

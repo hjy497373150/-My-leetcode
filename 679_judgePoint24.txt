@@ -1,0 +1,58 @@
+constexpr double ex = 1e-6;//确定精度
+constexpr double tag = 24;
+class Solution {
+public:
+    bool judgePoint24(vector<int>& nums) {
+        //因为是实数除法所以需要用浮点数运算
+        vector<double> newnums;
+        for(int i = 0;i<nums.size();i++)
+            newnums.push_back(double(nums[i]));
+        return solve(newnums);
+    }
+    bool solve(vector<double>& nums){
+        //没有数字了还未返回true就说明不能得到24，返回false
+        if(nums.size()==0)
+            return false;
+        //只剩一个数就直接判断
+        if(nums.size()==1)
+            return abs(tag-nums[0])<ex;
+        for(int i = 0;i<nums.size();i++){//从剩下的元素中选第一个
+            for(int j = 0;j<nums.size();j++){//选第二个
+                if(i!=j){
+                    vector<double> curnums;//保存剩余元素
+                    for(int k = 0;k<nums.size();k++){
+                        if(k!=i &&k!=j)
+                            curnums.push_back(nums[k]);
+                    }
+                    //a+b
+                    curnums.push_back(nums[i]+nums[j]);
+                    bool flag = solve(curnums);
+                    curnums.pop_back();
+                    if(flag)
+                        return true;
+                    //a-b
+                    curnums.push_back(nums[i]-nums[j]);
+                    flag = solve(curnums);
+                    curnums.pop_back();
+                    if(flag)
+                        return true;
+                    //a*b
+                    curnums.push_back(nums[i]*nums[j]);
+                    flag = solve(curnums);
+                    curnums.pop_back();
+                    if(flag)
+                        return true;
+                    //a/b
+                    if(nums[j]!=0){
+                        curnums.push_back(nums[i] / nums[j]);
+                        flag = solve(curnums);
+                        curnums.pop_back();
+                        if(flag)
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+};
