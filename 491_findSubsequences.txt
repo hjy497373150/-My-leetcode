@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        //回溯法DFS
+        vector<vector<int>> res;
+        vector<int> midnums;
+        dfs(nums,midnums,res,0);
+        return res;
+    }
+    void dfs(vector<int>& nums,vector<int>& midnums,vector<vector<int>>& res,int index){
+        //当中间数组中长度大于1时将其加入结果数组
+        if(midnums.size()>1)
+            res.push_back(midnums);
+        int hash[201] = {0};//记录该元素是否被使用过
+        for(int i = index;i<nums.size();i++){
+            if((midnums.empty() || nums[i] >= midnums.back())&&hash[nums[i]+100]==0){
+                midnums.push_back(nums[i]);
+                dfs(nums,midnums,res,i+1);
+                midnums.pop_back();//回溯到上一步
+                hash[nums[i]+100]=1;
+            }
+        }
+    }
+};
