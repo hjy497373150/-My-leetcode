@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int n = nums.size();
+        if(n <= 2)
+            return n;
+        //惊为天人的双指针法
+        int slow = 1;
+        for(int fast=2;fast<n;fast++){
+            //如果快指针元素不等于慢指针前一位的元素，则说明重复出现的元素超过两个
+            //要将慢指针后移并将快指针指向的元素赋给慢指针指向的元素
+            if(nums[fast]!=nums[slow-1]){
+                slow++;
+                nums[slow]=nums[fast];
+            }
+            //否则只移动快指针即可
+        }
+        return slow+1;
+    }
+};

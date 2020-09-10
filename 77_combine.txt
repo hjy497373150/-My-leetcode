@@ -1,0 +1,22 @@
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> combine(int n, int k) {
+        //经典回溯思想
+        vector<int> track;
+        backtrace(n,k,1,track);
+        return res;
+    }
+    void backtrace(int n,int k,int start,vector<int>& track){
+        if(k==track.size()){
+            res.push_back(track);
+            return;
+        }
+        for(int i = start;i<=n;i++){
+            track.push_back(i);
+            backtrace(n,k,i+1,track);
+            track.pop_back();
+        }
+    }
+};

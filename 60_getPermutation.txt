@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        //除法定位
+        vector<int> factorial(n);//保存阶乘
+        factorial[0] = 1;
+        for(int i = 1;i<n;i++){
+            factorial[i] = i * factorial[i-1];
+        }
+        //数组下标是从 0 开始，k 首先要减去 1
+        k--;
+        string res = "";
+        vector<int> nums;
+        for(int i = 1;i<=n;i++)
+            nums.push_back(i);
+        //得到全排列
+        for(int i=1;i<=n;i++){
+            //类似于剪枝
+            int order = k/factorial[n-i];
+            res += to_string(nums[order]);
+            //修改nums，将order之后的数字前移
+            for(int j = order;j<n-i;j++)
+                nums[j] = nums[j+1];
+            k %= factorial[n-i];
+        }
+        return res;
+    }
+};
