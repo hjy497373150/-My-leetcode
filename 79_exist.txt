@@ -10,6 +10,7 @@ public:
         //或者是当前word字母不匹配或是已经找过了(同一字母不被重复使用)
         if(word[length]!=board[i][j])
             return false;
+        //所有字母已匹配返回true
         if(length == word.size()-1 && word[length]==board[i][j] )
             return true;
         char temp = board[i][j];
@@ -19,6 +20,7 @@ public:
         return flag;
     }
     bool exist(vector<vector<char>>& board, string word) {
+        //深度优先搜索DFS
         for(int i = 0;i < board.size();i++){
             for(int j = 0;j < board[0].size();j++){
                 if(mydfs(board,word,i,j,0))

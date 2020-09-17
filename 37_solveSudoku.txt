@@ -1,0 +1,48 @@
+class Solution {
+private:
+    bool backtrace(vector<vector<char>>& board) {
+        for(int i = 0;i<board.size();i++){
+            for(int j = 0;j<board[0].size();j++){
+                if(board[i][j]!='.')
+                    continue;
+                for(char k = '1';k<='9';k++){
+                    if(isvalid(i,j,k,board)){
+                        board[i][j] = k;
+                        //如果找到一组合适的立刻返回true
+                        if(backtrace(board))
+                            return true;
+                        board[i][j] = '.';
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    bool isvalid(int row,int col,char val,vector<vector<char>>& board){
+        //判断行是否有重复
+        for(int i = 0;i<9;i++){
+            if(board[row][i]==val)
+                return false;
+        }
+        //判断列是否有重复
+        for(int j = 0;j<9;j++){
+            if(board[j][col]==val)
+                return false;
+        }
+        //判断小九方格是否有重复
+        int startrow = (row / 3) * 3;
+        int startcol = (col / 3) * 3;
+        for(int i = startrow;i<startrow+3;i++){
+            for(int j = startcol;j<startcol+3;j++){
+                if(board[i][j]==val)
+                    return false;
+            }
+        }
+        return true;
+    }
+public:
+    void solveSudoku(vector<vector<char>>& board){
+        backtrace(board);
+    }
+};

@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        //回溯法
+        vector<vector<int>> res;
+        vector<int> temp;
+        dfs(temp,res,k,n,1);
+        return res;
+    }
+    void dfs(vector<int>& temp,vector<vector<int>>& res,int k,int n,int cur){
+        if(k==0){
+            if(n==0)
+                res.push_back(temp);
+            return;
+        }
+        for(int i = cur;i<=9;i++){
+            //剪枝
+            if(i>n)
+                break;
+            temp.push_back(i);
+            dfs(temp,res,k-1,n-i,i+1);
+            temp.pop_back();
+        }
+    }
+};

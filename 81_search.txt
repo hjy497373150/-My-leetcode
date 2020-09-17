@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        //关键问题是解决如何二分的问题
+        if(nums.size()==0)
+            return false;
+        int start = 0;
+        int end = nums.size()-1;
+        while(start<=end){
+            int mid = start + (end-start)/2;
+            if(nums[mid] == target)
+                return true;
+            if(nums[start]==nums[mid]){
+                start++;
+                continue;
+            }
+            //前半部分有序
+            else if(nums[start]<nums[mid]){
+                //target恰好就在前半部分
+                if(nums[mid] > target && nums[start]<=target)
+                    end = mid-1;
+                //否则去后半部分找
+                else
+                    start = mid+1;
+            }
+            //后半部分有序
+            else{
+                //target在后半部分
+                if(nums[mid] < target && nums[end]>=target)
+                    start = mid+1;
+                //否则去前半部分找
+                else
+                    end = mid-1;
+            }
+        }
+        return false;
+    }
+};
