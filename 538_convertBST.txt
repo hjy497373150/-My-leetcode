@@ -1,0 +1,25 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int sum = 0;
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        //本质是将当前节点的值转化为自身加上其右子树上的值和
+        //反向中序遍历
+        if(root!=nullptr){
+            convertBST(root->right);
+            sum += root->val;
+            root->val = sum;
+            convertBST(root->left);
+        }
+        return root;
+    }
+};
