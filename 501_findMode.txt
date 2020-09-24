@@ -1,0 +1,84 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    vector<int> temp;
+    vector<int> res;
+    
+public:
+    vector<int> findMode(TreeNode* root) {
+        //不理会额外空间复杂度的要求
+        if(root==nullptr)
+            return {};
+        dfs(root);
+        int base = temp[0],count = 0,maxcount = 0;
+        //遍历temp，base为当前元素，count为当前元素的个数，maxcount为最大重复次数
+        for(int i = 0;i<temp.size();i++){
+            if(temp[i]==base){
+                count++;
+            }
+            else{
+                base = temp[i];
+                count = 1;
+            }
+            if(count==maxcount)
+                res.push_back(base);
+            if(count > maxcount){
+                maxcount = count;
+                res = vector<int>{base};
+            }
+        }
+        return res;
+    }
+    void dfs(TreeNode* root){
+        //中序遍历二叉树得到排好序的各元素
+        if(root!=nullptr){
+            dfs(root->left);
+            temp.push_back(root->val);
+            dfs(root->right);
+        }
+        return;
+    }
+};
+
+//空间复杂度为O（1）的解法
+class Solution {
+private:
+    int curtimes = 1;
+    int maxtimes = 0;
+    vector<int> res;
+    
+public:
+    vector<int> findMode(TreeNode* root) {
+        if(root==nullptr)
+            return {};
+        //维护一个前驱节点
+        TreeNode* pre = nullptr;
+        inorder(root,pre);
+        return res;
+    }
+    void inorder(TreeNode* root,TreeNode*& pre){
+        if(root==nullptr)
+            return;
+        inorder(root->left,pre);
+        if(pre){
+            curtimes = (pre->val==root->val)? curtimes+1 : 1;
+        }
+        if(curtimes==maxtimes)
+            res.push_back(root->val);
+        else if(curtimes > maxtimes){
+            res.clear();
+            res.push_back(root->val);
+            maxtimes = curtimes;
+        }
+        pre = root;
+        inorder(root->right,pre);
+    }
+};

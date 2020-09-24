@@ -1,7 +1,10 @@
 class Solution {
 public:
     void backtrace(int left,int right,int n,string& s,vector<string>& result){
+        //left和right分别表示左右括弧的个数
+        //回溯法
         if(left==n && right ==n){
+            //左右括弧个数都为n则将s加入res
             result.push_back(s);
             return;
         }

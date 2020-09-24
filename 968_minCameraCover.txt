@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int res = 0;
+public:
+    int minCameraCover(TreeNode* root) {
+        //一共有三种状态
+        //0:当前节点无摄像头但可以被监视
+        //1：当前节点无摄像头也不能被监视
+        //2：当前节点有摄像头
+        if(dfs(root)==1){
+            res++;
+        }
+        return res;
+    }
+    int dfs(TreeNode* root){
+        //如果当前节点是叶子结点则它只可能0
+        if(root==nullptr)
+            return 0;
+        int leftstatus = dfs(root->left);
+        int rightstatus = dfs(root->right);
+        //如果两个子节点有一个未被监视，则在root节点放上摄像头
+        if(leftstatus==1 || rightstatus==1){
+            res++;
+            return 2;
+        }
+        //如果两个子节点有一个放上了摄像头，则在改变root节点的状态为0
+        else if(leftstatus==2 || rightstatus==2)
+            return 0;
+        else
+            return 1;
+    }
+};
