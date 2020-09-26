@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    unordered_map<int,int> mp;
+    int root_idx;
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int index = 0;
+        //mp中存放元素值和下标的映射
+        for(auto& x:inorder){
+            mp[x] = index++;
+        }
+        root_idx = postorder.size()-1;
+        return helper(0,root_idx,inorder,postorder);
+    }
+    TreeNode* helper(int lefttree,int righttree,vector<int>& inorder, vector<int>& postorder){
+        // 如果这里没有节点构造二叉树了，就结束
+        if(lefttree > righttree)
+            return nullptr;
+        //确定根节点
+        int root_val = postorder[root_idx];
+        TreeNode* root = new TreeNode(root_val);
+        //根据root_idx分为左右子树
+        int flag = mp[root_val];
+        //后序遍历的最后一个节点为根节点
+        root_idx--;
+        root->right = helper(flag+1,righttree,inorder,postorder);
+        root->left = helper(lefttree,flag-1,inorder,postorder);
+        return root;
+    }
+};
