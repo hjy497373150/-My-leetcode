@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode* res = root;
+        //比较当前遍历到的结点与p、q的值大小
+        while(true){
+            //当前节点比两个节点都大，去左子树查找
+            if(res->val > p->val && res->val > q->val)
+                res = res->left;
+            //当前节点比两个节点都小，去右子树查找
+            else if(res->val < p->val && res->val < q->val)
+                res = res->right;
+            //找到了直接退出循环
+            else
+                break;
+        }
+        return res;
+    }
+};

@@ -1,0 +1,70 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        // //层序遍历,会超时
+        // if(root==nullptr)
+        //     return nullptr;
+        // queue<Node*> q;
+        // q.push(root);
+        // while(!q.empty()){
+        //     int size = q.size();
+        //     Node* last = nullptr;
+        //     for(int i = 1;i<=size;i++){
+        //         Node* node = q.front();
+        //         if(node->left!=nullptr)
+        //             q.push(node->left);
+        //         if(node->right!=nullptr)
+        //             q.push(node->right);
+        //         if(i!=1)
+        //             last->next = node;
+        //         last = node;
+        //     }
+        // }
+        // return root;
+        //利用next指针先确定每一层的next关系再进行遍历
+        if(root==nullptr)
+            return nullptr;
+        Node* start = root;
+        while(start){
+            Node* last = nullptr;
+            Node* nextstart = nullptr;
+            //在第n层处理第n+1层的next节点
+            for(Node* node = start;node!=nullptr;node=node->next){
+                if(node->left)
+                    handle(node->left,last,nextstart);
+                if(node->right)
+                    handle(node->right,last,nextstart);
+            }
+            //改变起点
+            start = nextstart;
+        }
+        return root;
+    }
+    void handle(Node* node,Node*& last,Node*& nextstart){
+        //处理next指针
+        if(last)
+            last->next = node;
+        //确定下一层的起点
+        if(nextstart==nullptr)
+            nextstart = node;
+        last = node;
+    }
+};
