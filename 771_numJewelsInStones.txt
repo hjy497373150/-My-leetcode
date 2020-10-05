@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int numJewelsInStones(string J, string S) {
+        int flag[52] = {0};
+        int res = 0;
+        for(int i = 0;i<J.size();i++){
+            if(isupper(J[i]))
+                flag[J[i]-'A'] = 1;
+            else
+                flag[J[i]-'a'+26] = 1;
+        }
+        for(int i = 0;i<S.size();i++){
+            if((isupper(S[i]) && flag[S[i]-'A']==1) || (islower(S[i]) && flag[S[i]-'a'+26]==1))
+                res++;
+        }
+        return res;
+    }
+};

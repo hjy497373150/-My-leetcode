@@ -3,13 +3,27 @@ public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         int n = nums.size();
         vector<vector<int>> res;
+        //将数组进行排序
         sort(nums.begin(),nums.end());
+        //先确定前两个数i和j
         for(int i = 0;i < n-3;i++){
             if(i>0 && nums[i]==nums[i-1]) 
-                continue;//防止出现重复 
+                continue;//防止出现重复
+            //剪枝1，前四个数已经大于target了则后面的肯定全部大于直接跳出循环
+            if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)
+                break;
+            //剪枝2，当前数和数组的最后三个数之和小于target则需要直接将i后移
+            if (nums[i] + nums[n-1] + nums[n-2] + nums[n-3] <target)
+                continue;
             for(int j = i+1;j < n-2;j++){
                 if(j>i+1 && nums[j]==nums[j-1])
                     continue;
+                //剪枝3,4同上
+                if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target)
+                    break;
+                if (nums[i] + nums[j] + nums[n-1] + nums[n - 2] < target)
+                    continue;
+                //从j的右边和数组的最后一个元素分别开始往中间遍历
                 int l = j+1;
                 int r = n-1;
                 while(l < r){
