@@ -3,6 +3,7 @@ private:
     vector<vector<int>> res;
 public:
     vector<vector<int>> permuteUnique(vector<int>& nums) {
+        //与普通全排列类似，只不过用map来去重,m->first为元素,m->second为元素数量
         map<int,int> m;
         for(auto x:nums)
             ++m[x];

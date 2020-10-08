@@ -6,16 +6,19 @@ public:
         int p0 = 0;
         int current = 0;
         int p2 = nums.size()-1;
-        while(current<=p2){//遍历一遍，
+        while(current<=p2){//遍历一遍
+            //确保最左边的为0
             if(nums[current]==0){//若当前元素为0则p0，current需右移
                 swap(nums[current],nums[p0]);
                 p0++;
                 current++;
             }
+            //确保最右边的为2
             else if(nums[current]==2){//若当前元素为2则p2左移，current不变（因为current可能为1或2需要继续判断）
                 swap(nums[current],nums[p2]);
                 p2--;
             }
+            //剩下的中间的就为1了
             else
                current++;//若当前元素为1则current右移
         }

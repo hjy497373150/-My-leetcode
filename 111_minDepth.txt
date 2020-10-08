@@ -8,20 +8,20 @@
  * };
  */
 class Solution {
+private:
 public:
     int minDepth(TreeNode* root) {
+       //深度优先搜索
         if(root==nullptr)
             return 0;
-        //到达叶子结点，返回1
-        if(root->left==nullptr && root->right==nullptr)
+        //到叶子结点了
+        if(root->left==nullptr&&root->right==nullptr)
             return 1;
         int mindepth = INT_MAX;
-        if(root->left!=nullptr){
-            mindepth = min(minDepth(root->left),mindepth);
-        }
-        if(root->right!=nullptr){
-            mindepth = min(minDepth(root->right),mindepth);
-        }
+        if(root->left!=nullptr)
+            mindepth = min(mindepth,minDepth(root->left));
+        if(root->right!=nullptr)
+            mindepth = min(mindepth,minDepth(root->right));
         return mindepth+1;
     }
 };
