@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        //分割等和子集，可以转换为在数组中选出若干个元素使得和为数组总和的一半
+        //动态规划
+        if(nums.size()==0)
+            return false;
+        int len = nums.size();
+        int sum = 0;
+        for(int num:nums)
+            sum += num;
+        //总和为奇数则不可能等分
+        if(sum & 1)
+            return false;
+        sum = sum/2;
+        //dp[i][j]代表能否从0-i-1的数中选出一部分使其和为j
+        vector<vector<bool>> dp(len,vector<bool>(sum+1,false));
+        dp[0][0] = true;
+        //如果第一个数正好等于sum则直接返回true
+        if(nums[0]==sum)
+            dp[0][sum] = true;
+        for(int i = 1;i<len;i++){
+            for(int j = 0;j<=sum;j++){
+                //如果当前元素小于sum则利用0-1背包问题的思想更新dp[i][j]
+                if(nums[i]<=j)
+                    dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i]];
+                else
+                    dp[i][j] = dp[i-1][j];
+            }
+            if(dp[i][sum])
+                return true;
+        }
+        return dp[len-1][sum];
+    }
+};

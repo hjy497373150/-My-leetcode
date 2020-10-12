@@ -1,0 +1,34 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        //弗洛伊德算法，有环时快慢指针一定在环内相遇
+        //且在相遇点让慢指针与指向头的另一个指针一起往前走，相遇点即是环入口点
+        ListNode* fast = head;
+        ListNode* slow = head;
+        while(fast!=nullptr){
+            if(fast->next!=nullptr && fast->next->next!=nullptr){
+                fast = fast->next->next;
+                slow = slow->next;
+            }
+            else
+                return nullptr;
+            if(fast==slow){
+                ListNode* p = head;
+                while(slow!=p){
+                    slow = slow->next;
+                    p = p->next;
+                }
+                return slow;
+            }
+        }
+        return nullptr;
+    }
+};
