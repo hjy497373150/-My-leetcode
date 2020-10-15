@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& A) {
+        //存放最终在每一个字符串中出现字符的个数
+        int res[26] = {0};
+        //存放每一次遍历时字符串中各字符出现的次数
+        int cur[26] = {0};
+        //得到第一个字符串中各个字符出现的次数
+        for(int i = 0;i<A[0].size();i++)
+            res[A[0][i]-'a']++;
+        for(int i = 1;i<A.size();i++){
+            for(int j = 0;j<A[i].size();j++){
+                cur[A[i][j]-'a']++;
+            }
+            //每一次都更新res
+            for(int k = 0;k<26;k++){
+                res[k] = min(res[k],cur[k]);
+            }
+            //重置cur
+            memset(cur,0,sizeof(cur));
+        }
+        vector<string> ans;
+        string temp = "";
+        for(int i = 0;i<26;i++){
+            while(res[i]!=0){
+                temp = i + 'a';
+                ans.emplace_back(temp);
+                res[i]--;
+            }
+        }
+        return ans;
+    }
+};

@@ -3,38 +3,27 @@
  * struct ListNode {
  *     int val;
  *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
 class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
-        //只有一个或没有节点
-        if(head==NULL||head->next==NULL)
-            return head;
-        //先交换头两个节点
-        ListNode* pre = head;
-        ListNode* now = head->next;
-        pre->next = now->next;
-        now->next = pre;
-        head = now;
-        ListNode* flag = pre;
-        pre = pre->next;
-        if(pre==NULL)
-            return head;
-        now = pre->next;
-        //依次交换之后的相邻节点
-        while(now!=NULL){
-            pre->next = now->next;
-            now->next = pre;
-            flag->next = now;
-            flag = pre;
-            pre = pre->next;
-            if(pre != NULL)
-                now = pre->next;
-            else 
-                break;
+        //利用哑结点，相当于三指针法
+        ListNode* dammynode = new ListNode(0);
+        dammynode->next = head;
+        ListNode* temp = dammynode;
+        //剩下的结点超过两个
+        while(temp->next!=nullptr&&temp->next->next!=nullptr){
+            ListNode* node1 = temp->next;
+            ListNode* node2 = temp->next->next;
+            temp->next = node2;
+            node1->next = node2->next;
+            node2->next = node1;
+            temp = node1;
         }
-        return head;
+        return dammynode->next;
     }
 };
