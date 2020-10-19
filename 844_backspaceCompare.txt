@@ -1,0 +1,75 @@
+class Solution {
+public:
+    bool backspaceCompare(string S, string T) {
+        string newreverseS = newstring(S);
+        string newreverseT = newstring(T);
+        return newreverseS == newreverseT;
+    }
+    //反向遍历得到去除#后的字符串（反向）
+    string newstring(string str){
+        int n = str.size();
+        int count = 0;//记录#的个数
+        string res = "";
+        for(int i = n-1;i>=0;i--){
+            if(str[i]=='#')
+                count++;
+            else{
+                if(count>0)
+                    count--;
+                else
+                    res += str[i];
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    bool backspaceCompare(string S, string T) {
+        //双指针减少空间消耗且提前退出提高效率
+        int indexS = S.size()-1;
+        int indexT = T.size()-1;
+        int countS = 0,countT = 0;
+        //反向遍历S与T
+        while(indexS >= 0 || indexT >= 0){
+            //记录S去掉#的下一个判断位
+            while(indexS >= 0){
+                if(S[indexS]=='#'){
+                    countS++;
+                    indexS--;
+                }
+                else if(countS > 0){
+                    countS--;
+                    indexS--;
+                }
+                else
+                    break;
+            }
+            //记录T去掉#的下一个判断位
+            while(indexT >=0){
+                if(T[indexT]=='#'){
+                    countT++;
+                    indexT--;
+                }
+                else if(countT > 0){
+                    indexT--;
+                    countT--;
+                }
+                else
+                    break;
+            }
+            if(indexS>=0 && indexT>=0){
+                if(S[indexS]!=T[indexT])
+                    return false;
+            }
+            else{
+                if(indexS>=0 || indexT>=0)
+                    return false;
+            }
+            indexS--;
+            indexT--;
+        }
+        return true;
+    }
+};

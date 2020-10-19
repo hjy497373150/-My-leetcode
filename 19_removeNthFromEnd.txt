@@ -9,26 +9,25 @@
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode *p = head;
+        //双指针，先让q走n步，然后从头开始的p与q一起走，
+        //直到q走到链表尾此时p指向的下一个结点就是要删除的结点
         if(head->next==nullptr){
-            delete p;//及时释放减少运行时间
             return nullptr;
         }
         ListNode *q = head;
         while(n-- >= 0){
             if(q == nullptr){
                 head = head->next;
-                delete p;
                 return head;
             }
             q = q->next;
         }
+        ListNode *p = head;
         while(q!=nullptr){
             q = q->next;
             p = p->next;
         }
         p->next = p->next->next;
         return head;
-        
     }
 };

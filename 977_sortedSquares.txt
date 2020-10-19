@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+        //找到负数与非负数的分界线，两侧平方均是有序的，然后利用双指针
+        
+        //指向最后一个负数
+        int negative = -1;
+        int n = A.size();
+        for(int i = 0;i<n;i++){
+            if(A[i] < 0)
+                negative = i;
+            else
+                break;
+        }
+        //i和j分别为最后一个负数和第一个非负数的下标
+        int i = negative,j = negative+1;
+        vector<int> res;
+        while(i>=0 || j<n){
+            //数组中剩下的全是非负数直接从小到大插入即可
+            if(i==-1){
+                res.push_back(A[j]*A[j]);
+                j++;
+            }
+            //数组中剩下的全是负数则反向插入
+            else if(j==n){
+                res.push_back(A[i]*A[i]);
+                i--;
+            }
+            else if(A[i]*A[i] < A[j]*A[j]){
+                res.push_back(A[i]*A[i]);
+                i--;
+            }
+            else{
+                res.push_back(A[j]*A[j]);
+                j++;
+            }
+        }
+        return res;
+    }
+};
