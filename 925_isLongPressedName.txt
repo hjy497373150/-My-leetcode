@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool isLongPressedName(string name, string typed) {
+        int name_size = name.size();
+        int typed_size = typed.size();
+        int i = 0,j = 0;
+        char last = name[0];
+        //双指针检测
+        while(i!=name_size){
+            if(name[i]==typed[j]){
+                last = name[i];
+                i++;
+                j++;
+            }
+            else if(typed[j]==last){
+                j++;
+            }
+            else 
+                return false;
+        }
+        //最后还需要检查typed的最后若干位
+        while(j!=typed_size){
+            if(typed[j]!=last)
+                return false;
+            j++;
+        }
+        return true;
+    }
+};

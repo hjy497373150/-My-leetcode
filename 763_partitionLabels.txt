@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> partitionLabels(string S) {
+        //贪心，每个字母只能出现在同一个片段中，
+        //因此要得到每一个字母最后一次出现的位置
+        int last[26] = {0};//存放字母出现的最后位置
+        for(int i = 0;i < S.size();i++){
+            last[S[i]-'a'] = i;
+        }
+        vector<int> res;
+        int start = 0,end = 0;
+        //从头开始遍历，移动end每当遍历到一个字母需要得到该字母最后出现的位置endc
+        for(int i = 0;i<S.size();i++){
+            end = max(end,last[S[i]-'a']);
+            //此时进行划分
+            if(i==end){
+                res.emplace_back(end-start+1);
+                start = end+1;
+            }
+        }
+        return res;
+    }
+};

@@ -1,0 +1,77 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        //节点个数小于3个则直接返回
+        if(head==nullptr || head->next==nullptr || head->next->next==nullptr)
+            return;
+        //方法1，线性表将链表节点存放在数组中然后对下标进行操作
+        // vector<ListNode*> helper;
+        // ListNode* node = head;
+        // while(node!=nullptr){
+        //     helper.emplace_back(node);
+        //     node = node->next;
+        // }
+        // int front = 0,tail = helper.size()-1;
+        // while(front < tail){
+        //     helper[front]->next = helper[tail];
+        //     front++;
+        //     if(front==tail)
+        //         break;
+        //     helper[tail]->next = helper[front];
+        //     tail--;
+        // }
+        // helper[front]->next = nullptr;
+        // return;
+        //方法2直接对链表操作
+        //第一步找到链表中点，第二步将后半段反转，第三步将前半段与反转的后半段合并
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast->next!=nullptr && fast->next->next!=nullptr){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        ListNode* newhead = slow->next;//newhead为后半段链表的头结点
+        slow->next = nullptr;//在中点断链
+        newhead = reverselist(newhead);
+        mergelist(head,newhead);
+    }
+    //翻转链表
+    ListNode* reverselist(ListNode* head){
+        if(head == nullptr || head->next ==nullptr)
+            return head;
+        ListNode* cur = nullptr;
+        ListNode* q = head;
+        //依次断链再接上
+        while(q!=nullptr){
+            ListNode* t = q->next;
+            q->next = cur;
+            cur = q;
+            q = t;
+        }
+        return cur;
+    }
+    //合并链表
+    void mergelist(ListNode* l1,ListNode* l2){
+        ListNode* l1_temp;
+        ListNode* l2_temp;
+        while(l1!=nullptr && l2!=nullptr){
+            l1_temp = l1->next;
+            l2_temp = l2->next;
+            
+            l1->next = l2;
+            l1 = l1_temp;
+            l2->next = l1;
+            l2 = l2_temp;
+        }
+    }
+};
