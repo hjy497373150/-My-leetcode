@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if(matrix.size()==0 || matrix[0].size()==0)
+            return false;
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        
+        //从左下角开始寻找target
+        for(int row = rows-1;row>=0;row--){
+            for(int col = 0;col<cols;col++){
+                if(target == matrix[row][col])
+                    return true;
+                else if(target < matrix[row][col]){
+                    if(col==0)
+                        break;
+                    else
+                        return false;
+                }
+            }
+        }
+        return false;
+    }
+};
