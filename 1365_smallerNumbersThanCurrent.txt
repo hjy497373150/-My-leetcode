@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+        //最简单的遍历法
+        int n = nums.size();
+        vector<int> res(n,0);
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<n;j++){
+                if(i==j)
+                    continue;
+                if(nums[j]<nums[i])
+                    res[i]++;
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+        //计数排序
+        int n = nums.size();
+        vector<int> res(n,0);
+        //counts[i]存放0~i-1所有数字出现的次数
+        vector<int> counts(101,0);
+        for(auto num:nums)
+            counts[num]++;
+        for(int i = 1;i<101;i++)
+            counts[i] += counts[i-1];
+        for(int i = 0;i<n;i++){
+            res[i] = nums[i]==0?0:counts[nums[i]-1];
+        }
+        return res;
+    }
+};

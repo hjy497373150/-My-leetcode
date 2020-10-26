@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int videoStitching(vector<vector<int>>& clips, int T) {
+        //贪心算法，尽量寻找右端点最大的片段
+        //用一个数组maxn来存放相同左端点的片段的最大右端点
+        vector<int> maxn(T);
+        for(vector<int>& it:clips){
+            //只有当片段的左端点小于T时才考虑
+            if(it[0]<T)
+                maxn[it[0]] = max(it[1],maxn[it[0]]);
+        }
+        //last代表当前能覆盖到的最远端点
+        //上一个被使用的子区间的结束位置为pre
+        int last = 0,res = 0,pre=0;
+        for(int i = 0;i<T;i++){
+            last = max(last,maxn[i]);
+            //如果当前最远只能覆盖到i说明没有片段能够完成任务了
+            if(i==last)
+                return -1;
+            //上一个被使用的片段最远只能到i那么需要加入新的片段了
+            if (i == pre) {
+                res++;
+                pre = last;
+            }
+        }
+        return res;
+    }
+};
