@@ -1,0 +1,25 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+        //递归深度优先搜索dfs
+        return helper(root,0);
+    }
+    //x为上一层节点规定和
+    int helper(TreeNode* root,int x){
+        if(root==nullptr)
+            return 0;
+        int temp = x * 10 + root->val;
+        if(root->left==nullptr && root->right==nullptr)
+            return temp;
+        return helper(root->left,temp) + helper(root->right,temp);
+    }
+};

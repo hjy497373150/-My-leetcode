@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        if(rowIndex==0)
+            return {1};
+        if(rowIndex==1)
+            return {1,1};
+        vector<int> res(rowIndex+1,1);
+        for(int i = 2;i<rowIndex+1;i++){
+             // 从前面一行推后面一行，所以要从第一行开始，也就是每行都要遍历一遍
+            res[i] = 1;// 每一行的末尾的值都是1
+            for(int j=i-1; j>=1; j--){
+                // 处理每一行的元素，从最后一个元素（值为1）前面的元素开始，从后往前处理
+                // 第j个元素的值等于：前一行第j-1个元素的值 + 前一行第j个元素的值
+                res[j] = res[j-1] + res[j];
+            }
+        }
+        return res;
+    }
+};

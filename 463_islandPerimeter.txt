@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        //遍历数学问题，遍历整个数组，为岛屿则+4,岛屿的右边或下边为岛屿则总数-2
+        int res = 0;
+        for(int i = 0;i<grid.size();i++){
+            for(int j = 0;j<grid[0].size();j++){
+                if(grid[i][j]==1){
+                    res += 4;
+                    if(j<grid[i].size()-1 && grid[i][j+1]==1)
+                        res -= 2;
+                    if(i<grid.size()-1 && grid[i+1][j]==1)
+                        res -= 2;
+                }   
+            }
+        }
+        return res;
+    }
+};

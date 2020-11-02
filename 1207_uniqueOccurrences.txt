@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        //首先使用哈希表记录每个数字的出现次数；随后再利用新的哈希表，统计不同的出现次数的数目
+        unordered_map<int,int> counts;
+        for(int i = 0;i<arr.size();i++){
+            counts[arr[i]]++;
+        }
+        unordered_set<int> times;
+        for(auto & x:counts){
+            times.insert(x.second);
+        }
+        return times.size()==counts.size();
+    }
+};
