@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        int left = newInterval[0];
+        int right = newInterval[1];
+        vector<vector<int>> res;
+        bool flag = false;//判断待插入区间是否已经加入res
+        for(int i = 0;i<intervals.size();i++){
+            //在待插入区间的左侧则直接加入到res
+            if(left > intervals[i][1])
+                res.emplace_back(intervals[i]);
+            //在待插入区间的右侧
+            else if(right < intervals[i][0]){
+                //如果是第一次碰到右侧的区间,则需要将我们的待插入区间插入到res了
+                if(!flag){
+                    flag = true;
+                    res.push_back({left,right});//不能调用emplack_back因为需要重新构建
+                }
+                //将待插入区间的右侧区间直接插入
+                res.emplace_back(intervals[i]);
+            }
+            //与待插入区间有交集则更新待插入区间
+            else{
+                left = min(left,intervals[i][0]);
+                right = max(right,intervals[i][1]);
+            }
+        }
+        if(!flag)
+            res.push_back({left,right});
+        return res;
+    }
+};

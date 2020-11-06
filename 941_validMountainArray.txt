@@ -1,0 +1,19 @@
+class Solution {
+    public boolean validMountainArray(int[] A) {
+        int n = A.length;
+        int i = 0;
+        if(n<3)
+            return false;
+        //找到最高点
+        while(i<n-1 && A[i] < A[i+1])
+            i++;
+        //最高点在第一个或者最后一个
+        if(i==0 || i==n-1)
+            return false;
+        //递减扫描
+        while(i<n-1 && A[i]>A[i+1])
+            i++;
+        //正常扫描到最后则说明满足条件
+        return i==n-1;
+    }
+}

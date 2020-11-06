@@ -1,0 +1,14 @@
+class Solution {
+public:
+    string convertToTitle(int n) {
+        //实质是10进制转26进制
+        string res = "";
+        while (n > 0) {
+            n -= 1;
+            res.push_back('A' + (n % 26));
+            n /= 26;
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
