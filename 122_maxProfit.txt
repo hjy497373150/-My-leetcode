@@ -1,3 +1,4 @@
+//C++
 class Solution {
 public:
     //贪心算法,当前最优解
@@ -11,3 +12,22 @@ public:
         return maxpro;
     }
 };
+
+//java
+class Solution {
+    public int maxProfit(int[] prices) {
+        //动态规划用dp[i][0]和dp[i][1]分别表示第i天未持有和已持有股票的收益
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        //初始化第0天的
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for(int i = 1;i<n;i++){
+            //第i天未持有的最大值由前一天未持有与前一天已持有在这一天卖出两者的最大值决定
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1]+prices[i]);
+            //第i天已持有的最大值由前一天已持有与前一天未持有在这一天买入两者的最大值决定
+            dp[i][1] = Math.max(dp[i-1][1],dp[i-1][0]-prices[i]);
+        }
+        return dp[n-1][0];
+    }
+}

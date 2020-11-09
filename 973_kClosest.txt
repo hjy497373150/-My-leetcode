@@ -1,0 +1,39 @@
+//java直接排序
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        //把每一个点按照到原地的欧几里得距离升序排序
+        Arrays.sort(points,new Comparator<int[]>(){
+            public int compare(int[] x,int[] y){
+                return (x[0]*x[0]+x[1]*x[1]) - (y[0]*y[0]+y[1]*y[1]);
+            }
+        });
+        return Arrays.copyOfRange(points,0,K);
+    }
+}
+
+//C++优先队列
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+        //优先队列大根堆
+        priority_queue<pair<int,int>> q;
+        //先将points中的前K个数到原点的距离和下标加入到q中
+        for(int i = 0;i<K;i++)
+            q.emplace(points[i][0]*points[i][0]+points[i][1]*points[i][1],i);
+        //然后从K+1个数开始
+        for(int i = K;i<points.size();i++){
+            int nowdistance = points[i][0]*points[i][0]+points[i][1]*points[i][1];
+            //如果距离小，则弹出队首元素将当前元素加入
+            if(nowdistance < q.top().first){
+                q.pop();
+                q.emplace(nowdistance,i);
+            }
+        }
+        vector<vector<int>> res;
+        while(!q.empty()){
+            res.emplace_back(points[q.top().second]);
+            q.pop();
+        }
+        return res;
+    }
+};
