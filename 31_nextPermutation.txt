@@ -1,0 +1,33 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        //1.从后往前遍历找到第一个满足nums[i]<nums[i+1]的元素，并把nums[i]视为较小数
+        //2.依然从后往前遍历找到第一个大于nums[i]的数视为较大数
+        //3.交换较小数和较大数，然后整理较大数右边的元素使其呈升序排列，即可得到下一个排列
+        int i = nums.length-2;
+        while(i>=0 && nums[i+1]<=nums[i])
+            i--;
+        //处理特殊情况，如果一开始整个数组是降序排列则不需要进行2,3步直接将数组反转
+        if(i>=0){
+            int j = nums.length-1;
+            while(j>=0 && nums[j] <= nums[i])
+                j--;
+            swap(nums,i,j);
+        }
+        reverse(nums,i+1);
+    }
+    public void swap(int[] nums,int i,int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+    public void reverse(int[] nums,int start){
+        int left = start,right = nums.length-1;
+        while(left<right){
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
+    }
+}
