@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        sort(people.begin(),people.end(),cmp);
+        int n = people.size();
+        vector<vector<int>> res(n);
+        for(const vector<int>& person:people){
+            //根据第二个参数得出该person前面应该有几个空位
+            int space = person[1]+1;
+            for(int i = 0;i<n;i++){
+                //如果此处没有被person占有则需要更改space
+                if(res[i].empty()){
+                    space--;
+                    //当space为0时此时的位置分配给当前person
+                    if(space==0){
+                        res[i] = person;
+                        break;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+    //按照第一个参数升序，第二个参数降序排列
+    static bool cmp(const vector<int>& a,const vector<int>& b){
+        return a[0]<b[0] ||(a[0]==b[0] && a[1]>b[1]);
+    }
+};
