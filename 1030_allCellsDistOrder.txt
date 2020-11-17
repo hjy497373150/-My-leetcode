@@ -1,0 +1,32 @@
+class Solution {
+
+public:
+    vector<vector<int>> allCellsDistOrder(int R, int C, int r0, int c0) {
+        //广度优先搜索BFS
+        vector<vector<int>> res(R*C,vector<int>(2));
+        vector<vector<bool>> visited(R,vector<bool>(C,false));//记录该单元格是否已经被加入到res中
+        int index = 1;//记录已加入res的单元格数量
+        int flag = 0;//表示正在处理的单元格
+        //距离最近的单元格是[r0,c0]
+        res[0] = {r0,c0};
+        visited[r0][c0] = true;
+        int direc[4][2] = {{-1,0},{1,0},{0,-1},{0,1}};
+        while(index < R*C){
+            for(int i = 0;i<4;i++){
+                int r1 = res[flag][0] + direc[i][0];
+                int c1 = res[flag][1] + direc[i][1];
+                //验证新单元格是否合法
+                if(r1>=0 && r1<R && c1>=0 && c1<C){
+                    if(!visited[r1][c1]&& index < R*C){
+                        res[index][0] = r1;
+                        res[index][1] = c1;
+                        index++;
+                        visited[r1][c1] = true;
+                    }
+                }
+            }
+            flag++;
+        }
+        return res;
+    }
+};
