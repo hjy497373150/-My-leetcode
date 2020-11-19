@@ -1,11 +1,13 @@
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
-        int count = 0;
+        int count = 0;//记录0的个数
         for(int i = 0;i < nums.size();i++){
+            //将非0的数从数组第一个位置依次往后排
             if(nums[i]!=0)
                 nums[count++] = nums[i];
         }
+        //最后的空位留给0
         for(int j = count;j<nums.size();j++)
             nums[j] = 0;
     }
