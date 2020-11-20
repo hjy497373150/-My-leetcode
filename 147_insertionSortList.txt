@@ -1,0 +1,38 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        //链表为空或者只有一个节点则不用排序直接返回
+        if(head==nullptr ||head->next==nullptr)
+            return head;
+        ListNode* dummynode = new ListNode(0);//又又又使用了哑结点，真好用
+        dummynode->next = head;
+        ListNode* lastsorted = head;//当前已排好序的最后一个元素
+        ListNode* cur = head->next;//当前准备插入的元素
+        while(cur!=nullptr){
+            //已经有序则移动lastsorted即可
+            if(lastsorted->val <= cur->val){
+                lastsorted = cur;
+            }
+            //无序则需要从头节点开始寻找插入位置
+            else{
+                ListNode* pre = dummynode;
+                while(pre->next->val <= cur->val)
+                    pre = pre->next;//此时pre的下一个位置即为插入位置
+                //插入操作
+                lastsorted->next = cur->next;
+                cur->next = pre->next;
+                pre->next = cur;
+            }
+            cur = lastsorted->next;
+        }
+        return dummynode->next;
+    }
+};
