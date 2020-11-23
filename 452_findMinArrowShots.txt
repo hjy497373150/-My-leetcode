@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int findMinArrowShots(vector<vector<int>>& points) {
+        //贪心法
+        int size = points.size();
+        if(size < 2)
+            return size;
+        //按照气球直径开始的位置排序
+        sort(points.begin(),points.end(),cmp);
+        int xend = points[0][1];//可用一支箭解决的气球的最小结束位置
+        int i = 1;
+        int res = 1;
+        //遍历整个数组
+        while(i < size){
+            //如果该气球的开始位置大于之前的最小结束位置
+            //则必须要射出一支新的箭，还要重新设置xend
+            if(xend < points[i][0]){
+                res++;
+                xend = points[i][1];
+            }
+            //如果该气球的开始位置小于之前的最小结束位置
+            //说明该气球可以被前面的一支箭引爆，只需要刷新xend
+            else if(xend >= points[i][0]){
+                xend = min(xend,points[i][1]);
+            }
+            i++;
+        }
+        return res;
+    }
+    //按照xstart从小到大排序，若xstart相等则按xend从小到大
+    static bool cmp(vector<int>& a,vector<int>& b){
+        if(a[0]!=b[0])
+            return a[0]<b[0];
+        else
+            return a[1]<b[1];
+    }
+};
