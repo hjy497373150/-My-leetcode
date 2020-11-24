@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root==nullptr)
+            return 0;
+        int leftlevel = countlevel(root->left);
+        int rightlevel = countlevel(root->right);
+        //完全二叉树左右子树深度相等，说明左子树是满二叉树，
+        //否则不会有节点插入到右子树
+        if(leftlevel==rightlevel){
+            return countNodes(root->right) + (1<<leftlevel);
+        }
+        else
+            return countNodes(root->left) + (1<<rightlevel);
+    }
+    //得到完全二叉树的深度
+    int countlevel(TreeNode* root){
+        int level = 0;
+        while(root!=nullptr){
+            root = root->left;
+            level++;
+        }
+        return level;
+    }
+};
