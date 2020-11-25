@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string sortString(string s) {
+        //桶排序的思想
+        vector<int> counts(26,0);//存放每个字母的个数
+        for(auto c:s){
+            counts[c-'a']++;
+        }
+        string res = "";
+        while(res.size()!=s.size()){
+            //从counts中找到从小到大排序的字符串
+            for(int i = 0;i<26;i++){
+                if(counts[i]){
+                    res.push_back(i+'a');
+                    counts[i]--;
+                }
+            }
+            //从counts中找到从大到小排序的字符串
+            for(int i = 25;i>=0;i--){
+                if(counts[i]){
+                    res.push_back(i+'a');
+                    counts[i]--;
+                }
+            }
+        }
+        return res;
+    }
+};
