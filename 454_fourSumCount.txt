@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
+        //分组+哈希表的思想，考虑A+B = -(C+D)
+        unordered_map<int,int> countAB;
+        //循环遍历A和B，将a+b的值以及该值出现的次数存放在哈希表中
+        for(int a:A){
+            for(int b:B){
+                ++countAB[a+b];
+            }
+        }
+        int res = 0;
+        //遍历C和D,如果a+b=-c-d则说明找到一个符合条件的元组
+        for(int c:C){
+            for(int d:D){
+                if(countAB.count(-c-d))
+                    res += countAB[-c-d];
+            }
+        }
+        return res;
+    }
+};
