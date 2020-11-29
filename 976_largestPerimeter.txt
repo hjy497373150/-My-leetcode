@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int largestPerimeter(vector<int>& A) {
+        //排序+贪心
+        int n = A.size();
+        //先排序
+        sort(A.begin(),A.end());
+        int i = n-3;
+        //再贪心,从后往前遍历，遇到的第一组满足三角形构造条件的三元组即为答案
+        while(i>=0){
+            if(isvalid(A[i],A[i+1],A[i+2]))
+                return A[i]+A[i+1]+A[i+2];
+            i--;
+        }
+        //未找到满足条件的三元组返回0
+        return 0;
+    }
+    //判断能否构成三角形
+    bool isvalid(int a,int b,int c){
+        if(a+b <= c || a+c <= b || b+c <= a)
+            return false;
+        return true;
+    }
+};
