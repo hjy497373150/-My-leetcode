@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string reorganizeString(string S) {
+        //当某一个字母出现的次数大于字符串总长度的一半，则不可行
+        if(S.size()<2)
+            return "";
+        vector<int> counts(26,0);
+        int n = S.size();
+        int maxcount = 0;
+        //计算各个字母出现的次数
+        for(int i = 0;i<n;i++){
+            counts[S[i]-'a']++;
+            maxcount = max(maxcount,counts[S[i]-'a']);
+        }
+        if(maxcount > (n+1)/2)
+            return "";
+        string res(n,' ');
+        int even = 0,odd = 1;
+        //开始重构
+        for(int i = 0;i<26;i++){
+            char c = 'a' + i;
+            //该字母出现的次数大于0且小于等于n/2且奇数下标未满，则把它放在奇数下标位置
+            while(counts[i]>0 && counts[i]<= n/2 && odd<n){
+                res[odd] = c;
+                counts[i]--;
+                odd += 2;
+            }
+            //否则放在偶数下标位置
+            while(counts[i]>0){
+                res[even] = c;
+                counts[i]--;
+                even += 2;
+            }
+        }
+        return res;
+    }
+};
