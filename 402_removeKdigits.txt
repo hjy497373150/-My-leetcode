@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        //单调栈
+        vector<char> stk;
+        //从前往后遍历，如果遍历到的数小于相邻的前一个数则移除前一个数
+        for(auto& digit : num){
+            while(stk.size() > 0 && digit<stk.back() && k!=0){
+                stk.pop_back();
+                k--;
+            }
+            stk.push_back(digit);
+        }
+        //按照上述规则可能没有移除k个数此时需要把尾部的相应数字移除
+        while(k>0){
+            stk.pop_back();
+            k--;
+        }
+        
+        string res = "";
+        bool hasfirstzero = true;
+        for(auto& digit:stk){
+            if(hasfirstzero && digit=='0'){
+                continue;
+            }
+            hasfirstzero = false;
+            res += digit;
+        }
+        return res=="" ? "0" : res;
+    }
+};
