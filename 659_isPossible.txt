@@ -1,0 +1,74 @@
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        //贪心法
+        //时间复杂度O(n),空间复杂度O(n)
+        unordered_map<int,int> numcount;//存放每个数字出现的次数
+        unordered_map<int,int> endtail;//存放以某个数字为结尾的子序列的个数
+        for(int i = 0;i<nums.size();i++)
+            numcount[nums[i]]++;
+        for(int num:nums){
+            //如果该数字已经用完则直接跳过即可
+            if(numcount[num]==0)
+                continue;
+            //如果该数字未用完且以num-1为结尾的子序列个数大于0，则可以把该数字接在后面
+            else if(numcount[num] > 0 && endtail[num-1]>0){
+                numcount[num]--;
+                endtail[num-1]--;
+                endtail[num]++;
+            }
+            //该数字未用完且能与比他大的数字组成大于3的子序列
+            else if(numcount[num] > 0 && numcount[num+1]>0 &&numcount[num+2]>0){
+                numcount[num]--;
+                numcount[num+1]--;
+                numcount[num+2]--;
+                endtail[num+2]++;
+            }
+            else 
+                return false;
+        }
+        return true;
+    }
+};
+
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+        //最优贪心法
+        //时间复杂度O(n),空间复杂度O(1)
+        
+        //分别存放以prev结尾的长度为1,2,>=3的子序列个数
+        int dp1 = 0,dp2 = 0,dp3 = 0;
+        int n = nums.size();
+        int i = 0;
+        while(i<n){
+            int start = i;
+            int x = nums[i];
+            while(i<n && x == nums[i])
+                i++;
+            int count = i-start;//存放当前x的个数
+            //x不等于prev(即前一个数)+1则x不能加入到以prev结尾的子序列中
+            if(start > 0 && x != nums[start-1]+1){
+                //此时如果有以prev为结尾的长度小于3的子序列则说明分割不可行，直接返回false
+                if(dp1 > 0 || dp2 > 0)
+                    return false;
+                //否则重新定义dp,以x为结尾的count个长度为1的子序列
+                else{
+                    dp1 = count;
+                    dp2 = dp3 = 0;
+                }
+            }
+            else{
+                //当前没有足够的x能够满足dp1和dp2延长的需求
+                if(dp1 + dp2 > count)
+                    return false;
+                int left = count-dp1-dp2;//将x加入到每一个dp1和dp2剩余的
+                int keep = min(left,dp3);//取两者之间的最小值延伸x到dp3中
+                dp3 = keep + dp2;
+                dp2 = dp1;//dp1延伸一个x变成dp2
+                dp1 = left-keep;//剩下的作为以x为结尾的新的子序列
+            }
+        }
+        return dp1==0 && dp2==0;
+    }
+};
