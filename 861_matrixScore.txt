@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int matrixScore(vector<vector<int>>& A) {
+        //贪心法，不改变原矩阵仅计算结果
+        //时间复杂度O(mn),空间复杂度O(1)
+        int m = A.size(),n = A[0].size();
+        //先把每一行的第一个数字翻转为1,计算这部分为结果res的贡献
+        int res = m * (1 << n-1);
+        for(int i = 1;i<n;i++){
+            int count1 = 0;//记录该列1的个数
+            for(int j = 0;j<m;j++){
+                //如果该元素所在行的第一个元素为1，说明没有反转
+                if(A[j][0]==1)
+                    count1 += A[j][i];
+                else
+                    count1 += (1-A[j][i]);//否则翻转了则需要加1-A[i][j]
+            }
+            int k = max(count1,m-count1);//如果该列1多就不反转，否则反转
+            res += k * (1 << n-i-1);
+        }
+        return res;
+    }
+};
