@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> splitIntoFibonacci(string S) {
+        //回溯法
+        vector<int> res;
+        backtrace(res,S,S.size(),0,0,0);
+        return res;
+    }
+    bool backtrace(vector<int>& res,string S,int length,int index,long long sum,int prev){
+        if(index==length)
+            return res.size()>=3;
+        long long cur = 0;
+        for(int i = index;i<length;i++){
+            //不能以0开头
+            if(i > index && S[index]=='0')
+                break;
+            cur = cur*10 + S[i]-'0';
+            if(cur > INT_MAX)
+                break;
+            if(res.size()>=2){
+                if(cur < sum)
+                    continue;
+                else if(cur>sum)
+                    break;
+            }
+            res.push_back(cur);
+            if(backtrace(res,S,S.size(),i+1,prev+cur,cur))
+                return true;
+            res.pop_back();
+        }
+        return false;
+    }
+};
