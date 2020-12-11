@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        int n = senate.size();
+        //两次队列存放两个阵营参议院所在的位置
+        queue<int> radiant,dire;
+        for(int i = 0;i<n;i++){
+            if(senate[i]=='R')
+                radiant.push(i);
+            else
+                dire.push(i);
+        }
+        //当两个队列都不为空
+        while(!radiant.empty() && !dire.empty()){
+            //比较最前的参议院序号，序号小的可以禁止序号大的
+            //将获胜的议员号加上n重新加入到队列中进行下一轮的比较
+            if(radiant.front() < dire.front())
+                radiant.push(radiant.front()+n);
+            else
+                dire.push(dire.front()+n);
+            radiant.pop();
+            dire.pop();
+        }
+        return radiant.empty() ? "Dire":"Radiant";
+    }
+};
