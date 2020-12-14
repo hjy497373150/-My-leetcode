@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        //排序加hash,如果两个字母串排序后完全相同那么它们是一组字母异位词
+        vector<vector<string>> res;
+        int sub = 0;//最后一组结果的下标
+        string temp = "";
+        unordered_map<string,int> mp;//判断排好序的str(即temp)是否存在，存在则value为1，否则为0
+        for(const auto& str:strs){
+            temp = str;
+            sort(temp.begin(),temp.end());
+            //如果存在str的字母异位词组，加入即可
+            if(mp.count(temp)){
+                res[mp[temp]].push_back(str);
+            }
+            //不存在则新开一组
+            else{
+                vector<string> vec(1,str);
+                res.push_back(vec);
+                //赋予新开一组异位词的下标
+                mp[temp] = sub++;
+            }
+        }
+        return res;
+    }
+};
