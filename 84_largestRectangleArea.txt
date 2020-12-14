@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        //单调栈
+        //从左向右遍历，记录下标确定当前柱子的最大宽度
+        int n = heights.size();
+        stack<int> stk;
+        int res = 0;
+        for(int i = 0;i<n;i++){
+            while(!stk.empty() && heights[stk.top()] > heights[i]){
+                //确定以i之前一些元素为高度的矩形面积
+                int length = heights[stk.top()];
+                stk.pop();
+                int width = i;
+                if(!stk.empty())
+                    width = i-stk.top()-1;
+                res = max(res,width*length);
+            }
+            stk.push(i);
+        }
+        while(!stk.empty()){
+            int length = heights[stk.top()];
+            stk.pop();
+            int width = n;
+            if(!stk.empty())
+                width = n-stk.top()-1;
+            res = max(res,width*length);
+        }
+        return res;
+    }
+};
