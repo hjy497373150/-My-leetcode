@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        //哈希表，将pattern中的每个字符与s中的字符串一一对应
+        unordered_map<char,string> chtostr;
+        unordered_map<string,char> strtoch;
+        
+        int left = 0;
+        int n = s.length();
+        for(int i = 0;i<pattern.length();i++){
+            if(left > n)
+                return false;
+            int right = left;
+            while(s[right]!=' ' && right < n)
+                right++;
+            //截取当前str中的字符串
+            string temp = s.substr(left,right-left);
+            //如果该字符串之前出现过且对应的字符不是pattern[i]，则错误
+            if(strtoch.count(temp) && strtoch[temp]!=pattern[i])
+                return false;
+            //同样的，如果该字符已经有对应的字符串但不是temp，也错误
+            if(chtostr.count(pattern[i]) && chtostr[pattern[i]]!=temp)
+                return false;
+            strtoch[temp] = pattern[i];
+            chtostr[pattern[i]] = temp;
+            left = right+1;
+        }
+        return left >= n;
+    }
+};
