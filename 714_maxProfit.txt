@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        //动态规划,用两个变量存储当前持有和未持有股票的收益
+        int n = prices.size();
+        int hasprice = -prices[0];
+        int noprice = 0;
+        for(int i = 1;i<n;i++){
+            //有股票取决于 上一次有股票不动 和 上一次没股票减去这一次的值
+            hasprice = max(hasprice,noprice-prices[i]);
+            //没股票取决于 上一次没股票不动 和上一次有股票加上这一次的值再减手续费
+            noprice = max(noprice,prices[i]+hasprice-fee);
+        }
+        return max(hasprice,noprice);
+    }
+};
