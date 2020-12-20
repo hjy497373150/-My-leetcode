@@ -1,7 +1,7 @@
 class Solution {
 public:
     string removeKdigits(string num, int k) {
-        //单调栈
+        //单调栈(利用了栈的特性并非用到真正的栈stack)
         vector<char> stk;
         //从前往后遍历，如果遍历到的数小于相邻的前一个数则移除前一个数
         for(auto& digit : num){
