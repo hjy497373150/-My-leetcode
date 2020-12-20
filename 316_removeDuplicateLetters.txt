@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        //贪心加单调栈
+        vector<int> nums(26,0);//存放字符出现的次数
+        //标记字符在当前结果中是否出现过一次，因为最终要确保每个字符都出现过
+        vector<int> vis(26,0);
+        for(auto& c : s)
+            nums[c-'a']++;
+        string res;
+        for(auto& c:s){
+            //如果该字符还不存在于res中
+            if(!vis[c-'a']){
+                //贪心若上一个字符比当前遍历到的字符大且剩余的出现次数大于0
+                while(!res.empty() && res.back() > c){
+                    if(nums[res.back() - 'a'] > 0){
+                        vis[res.back() - 'a'] = 0;//将前一个字符删除后重新标记为未访问
+                        res.pop_back();
+                    }
+                    else 
+                        break;
+                }
+                vis[c-'a'] = 1;//标记他已经出现过一次
+                res.push_back(c);
+            }
+            //每遍历到一个字符减掉它一次出现次数
+            nums[c-'a']--;
+        }
+        return res;
+    }
+};
