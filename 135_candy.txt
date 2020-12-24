@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        int res = 0;
+        vector<int> candycounts(n,1);//每个人分得的糖果数量
+        //从左往右遍历，每当比左边的人分数高就多分一个糖果
+        for(int i = 1;i<n;i++){
+            if(ratings[i] > ratings[i-1])
+                candycounts[i] = candycounts[i-1]+1;
+        }
+        //从右往左遍历，每当比右边的人高就多分一个糖果
+        for(int i = n-2;i>=0;i--){
+            if(ratings[i] > ratings[i+1])
+                //保证遍历到的每一个人所分到的糖果都比相邻分数低的人多
+                candycounts[i] = max(candycounts[i+1]+1,candycounts[i]);
+            res += candycounts[i];
+        }
+        res += candycounts[n-1];
+        return res;
+    }
+};
