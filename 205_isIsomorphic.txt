@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        //哈希表维护s与t中每一个字符的映射
+        unordered_map<char,char> st;
+        unordered_map<char,char> ts;
+        int n = s.size();
+        for(int i = 0;i<n;i++){
+            char x = s[i];
+            char y = t[i];
+            //边遍历边更新，如果对应出错则返回false
+            if((st.count(x) && st[x]!=y) || (ts.count(y) && ts[y]!=x))
+                return false;
+            st[x] = y;
+            ts[y] = x;
+        }
+        return true;
+    }
+};

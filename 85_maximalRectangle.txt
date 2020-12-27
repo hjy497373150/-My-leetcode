@@ -1,0 +1,84 @@
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        //暴力法
+        int row = matrix.size();
+        if(row == 0){
+            return 0;
+        }
+        int col = matrix[0].size();
+        //存放每一个元素左边的1的个数
+        vector<vector<int>> widths(row,vector<int>(col,0));
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(matrix[i][j]=='1')
+                    widths[i][j] = (j==0?0:widths[i][j-1])+1;
+            }
+        }
+        int res = 0;
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(matrix[i][j]=='0')
+                    continue;
+                int width = widths[i][j];//此时的宽度
+                int area = width;
+                //往上移计算矩形的面积
+                for(int height = i-1;height>=0;height--){
+                    //优化,一旦发现有一个为0就不用再计算了
+                    if(widths[height][j]==0)
+                        break;
+                    width = min(widths[height][j],width);
+                    area = max(area,width*(i-height+1));
+                }
+                res = max(res,area);
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        //参考84题单调栈的方法
+        int row = matrix.size();
+        if(row == 0){
+            return 0;
+        }
+        int col = matrix[0].size();
+        //存放每一个元素左边的1的个数
+        vector<vector<int>> widths(row,vector<int>(col,0));
+        for(int i = 0;i<row;i++){
+            for(int j = 0;j<col;j++){
+                if(matrix[i][j]=='1')
+                    widths[i][j] = (j==0?0:widths[i][j-1])+1;
+            }
+        }
+        int res = 0;
+        // 对于每一列，使用基于柱状图的方法
+        for(int j = 0;j<col;j++){
+            vector<int> down(row,0);
+            vector<int> up(row,0);
+            stack<int> stk;
+            for(int i = 0;i<row;i++){
+                while(!stk.empty() && widths[stk.top()][j] >=widths[i][j])
+                    stk.pop();
+                up[i] = stk.empty() ? -1 : stk.top();
+                stk.push(i);
+            }
+            stk = stack<int>();
+            for(int i = row-1;i>=0;i--){
+                while(!stk.empty() && widths[stk.top()][j] >=widths[i][j])
+                    stk.pop();
+                down[i] = stk.empty() ? row : stk.top();
+                stk.push(i);
+            }
+            for(int i = 0;i<row;i++){
+                int height = down[i]-up[i]-1;
+                int area = height * widths[i][j];
+                res = max(res,area);
+            }
+        }
+        return res;
+    }
+};
