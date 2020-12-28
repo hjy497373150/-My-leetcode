@@ -1,0 +1,63 @@
+//贪心法错误示范，通过用例199/211，因为有k笔交易的限制因此使用贪心并不合适
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if(prices.size() < 2 || k==0)
+            return 0;
+        int n = prices.size(),i = 1;
+        vector<int> profits;
+        int maxprofit = 0;
+        while(i<n){
+            if(prices[i]>prices[i-1]){
+                int profit = 0;
+                while(i<n && prices[i]>prices[i-1]){
+                    profit += (prices[i]-prices[i-1]);
+                    i++;
+                }
+                profits.push_back(profit);
+            }
+            i++;
+        }
+        if(profits.size()<=k){
+            for(int num:profits)
+                maxprofit += num;
+        }
+        else{
+            sort(profits.begin(),profits.end());
+            for(int i = profits.size()-k;i<profits.size();i++){
+                maxprofit += profits[i];
+            }
+        }
+        return maxprofit;
+    }
+};
+
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if(prices.size() < 2 || k==0)
+            return 0;
+        int n = prices.size();
+        k = min(k,n/2);//n天最多只能进行2/n次交易
+        //动态规划buy[i][j]代表第0-i天进行j次交易后且此时持有一只股票的收益
+        //sell[i][j]代表第0-i天进行j次交易后且此时手中没有股票的收益
+        vector<vector<int>> buy(n,vector<int>(k+1));
+        vector<vector<int>> sell(n,vector<int>(k+1));
+        //初始化
+        buy[0][0] = -prices[0];
+        sell[0][0] = 0;
+        for(int i = 1;i<=k;i++){
+            buy[0][i] = sell[0][i] = INT_MIN/2;
+        }
+
+        for(int i = 1;i<n;i++){
+            //初始化不进行操作的buy
+            buy[i][0] = max(buy[i-1][0],sell[i-1][0]-prices[i]);
+            for(int j = 1;j<=k;j++){
+                buy[i][j] = max(buy[i-1][j],sell[i-1][j]-prices[i]);
+                sell[i][j] = max(sell[i-1][j],buy[i-1][j-1]+prices[i]);
+            }
+        }
+        return *max_element(sell[n-1].begin(),sell[n-1].end());
+    }
+};
