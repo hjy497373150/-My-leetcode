@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        //贪心法
+        int len = intervals.size();
+        if(len==0)
+            return 0;
+        //先将全部区间按照终点升序排列
+        sort(intervals.begin(),intervals.end(),[](const auto& a,const auto& b){
+            return a[1]<b[1];
+        });
+        int counts = 1;
+        int right = intervals[0][1];
+        //找出那些起点大于上一个区间终点的区间则该两个区间不重叠，
+        //更新终点进行下一次判断
+        for(int i = 1;i<len;i++){
+            if(intervals[i][0] >= right){
+                counts++;
+                right = intervals[i][1];
+            }
+        }
+        return len-counts;
+    }
+};
