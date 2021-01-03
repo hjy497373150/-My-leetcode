@@ -1,6 +1,7 @@
-//动态规划
+//伪动态规划
 //1、先求出第一个窗口中的最大值
-//2、然后开始滑动，判断最大值是否是窗口最左端的值，若不是，直接比较最大值与下一个元素。否则重新求窗口内的最大值
+//2、然后开始滑动，判断最大值是否是窗口最左端的值，若不是，直接比较最大值与下一个元素。否则重新求窗口内的最大值，缺点是当数组降序排列时的复杂度会接近n^2
+//3、2021.1.3再次遇到本题时会出现超时
 
 
 class Solution {
@@ -23,6 +24,51 @@ public:
             else
                 maxnum = max(maxnum,nums[j]);
             res[j-k+1] = maxnum;
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        //优先队列存放最大值
+        priority_queue<pair<int,int>> q;
+        for(int i = 0;i<k;i++){
+            q.emplace(nums[i],i);
+        }
+        vector<int> res = {q.top().first};
+        for(int i = k;i<nums.size();i++){
+            q.emplace(nums[i],i);
+            //如果最大值已经被滑出了窗口,则弹出
+            while(q.top().second <= i-k)
+                q.pop();
+            res.push_back(q.top().first);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        //单调队列存放下标
+        deque<int> q;
+        for(int i = 0;i<k;i++){
+            //如果新加入的元素大于队尾元素则将队尾元素弹出(因为该元素永远不可能为窗口的最大元素了)
+            while(!q.empty() && nums[i]>=nums[q.back()])
+                q.pop_back();
+            q.push_back(i);
+        }
+        vector<int> res = {nums[q.front()]};
+        for(int i = k;i<nums.size();i++){
+            while(!q.empty() && nums[i]>=nums[q.back()])
+                q.pop_back();
+            q.push_back(i);
+            //如果最大值已经被滑出了窗口,则弹出
+            while(q.front() <= i-k)
+                q.pop_front();
+            res.push_back(nums[q.front()]);
         }
         return res;
     }
