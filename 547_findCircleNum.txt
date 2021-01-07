@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        //广度优先搜索BFS计算连通分量
+        int n = isConnected.size();
+        int res = 0;
+        queue<int> q;
+        vector<int> visited(n,0);
+        for(int i = 0;i<n;i++){
+            //当前城市未被访问
+            if(!visited[i]){
+                q.push(i);
+                //同处一个队列中的元素均是同一个省份的城市
+                while(!q.empty()){
+                    int j = q.front();
+                    q.pop();
+                    visited[j] = 1;
+                    //找到所有与当前城市相连的城市，将它们加入队列
+                    for(int k = 0;k<n;k++){
+                        if(isConnected[j][k]==1 && !visited[k]){
+                            q.push(k);
+                        }
+                    }
+                }
+                res++;
+            }
+        }
+        return res;
+    }
+};
