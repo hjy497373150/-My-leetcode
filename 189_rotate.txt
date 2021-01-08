@@ -1,26 +1,11 @@
-//1.先把整个数组反转
-//2.翻转前k个元素
-//3.翻转后n-k个元素
-
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
-        //暴力法超时
-        // k = k%nums.size();
-        // int temp,tail;
-        // for(int i = 0;i < k;i++){
-        //     tail = nums[nums.size()-1];
-        //     for(int j = 0;j < nums.size();j++){
-        //         temp = nums[j];
-        //         nums[j] = tail;
-        //         tail = temp;
-        //     }
-        // }
-        //翻转
+        //翻转法
         k = k%nums.size();
-        helper(nums,0,nums.size()-1);
-        helper(nums,0,k-1);
-        helper(nums,k,nums.size()-1);
+        helper(nums,0,nums.size()-1);//1.先把整个数组反转
+        helper(nums,0,k-1);//2.翻转前k个元素
+        helper(nums,k,nums.size()-1);//3.翻转后n-k个元素
         
     }
     void helper(vector<int>& nums,int begin,int end){
