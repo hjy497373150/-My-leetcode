@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        if(nums.size()==0)
+            return {};
+        vector<string>res;
+        int left = nums[0],right = nums[0];
+        for(int i = 1;i<nums.size();i++){
+            if(nums[i]!=(right+1)){
+                if(left==right)
+                    res.push_back(to_string(left));
+                else
+                    res.push_back(to_string(left)+"->"+to_string(right));
+                left = nums[i];
+                right = nums[i];
+            }
+            else{
+                right = nums[i];
+            }
+        }
+        if(left==right)
+            res.push_back(to_string(left));
+        else
+            res.push_back(to_string(left)+"->"+to_string(right));
+        return res;
+    }
+};

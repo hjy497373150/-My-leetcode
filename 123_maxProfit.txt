@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        //动态规划维护四个状态
+        //buy1:只进行过一次买操作,sell1：进行过一次买卖操作
+        //buy2:完成一次买卖后又进行了一次买操作,sell2:完成两次买卖操作
+        int buy1 = -prices[0],sell1 = 0;
+        int buy2 = -prices[0],sell2 = 0;
+        //无论题目中是否允许「在同一天买入并且卖出」这一操作，
+        //最终的答案都不会受到影响，这是因为这一操作带来的收益为零
+        for(int i = 1;i<prices.size();i++){
+            buy1 = max(buy1,-prices[i]);
+            sell1 = max(sell1,buy1+prices[i]);
+            buy2 = max(buy2,sell1-prices[i]);
+            sell2 = max(sell2,buy2+prices[i]);
+        }
+        return sell2;
+    }
+};
