@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        //并查集
+        vector<int> index(1001,0);
+        //初始化各个元素的代表节点集合
+        for(int i = 0;i<edges.size();i++)
+            index[i] = i;
+        for(int j = 0;j<edges.size();j++){
+            //找此时遍历的边的两个节点的代表节点
+            int set1 = find(edges[j][0],index);
+            int set2 = find(edges[j][1],index);
+            //两个代表节点相等则这条边是多余的，直接返回结果
+            if(set1==set2)
+                return edges[j];
+            //否则更新代表节点集合
+            else
+                index[set1] = set2;
+        }
+        return {0,0};
+    }
+    //找num的代表节点
+    int find(int num,vector<int>& nums){
+        //如果代表节点不是它本身就一直往下找
+        while(nums[num]!=num)
+            num = nums[num];
+        return num;
+    }
+};
