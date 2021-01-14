@@ -1,0 +1,12 @@
+class Solution {
+public:
+    vector<bool> prefixesDivBy5(vector<int>& A) {
+        vector<bool> res;
+        int num = 0;
+        for(int i = 0;i<A.size();i++){
+            num = ((num<<1)+A[i])%5;//每次保留余数
+            res.push_back(num==0);//余数为0则为true否则为false
+        }
+        return res;
+    }
+};
