@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        //深度优先搜索DFS
+        int n = stones.size();
+        vector<vector<int>> edges(n);
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<n;j++){
+                //如果两块石头在同行或同列则加入到共同边中
+                if(stones[i][0]==stones[j][0] || stones[i][1]==stones[j][1])
+                    edges[i].push_back(j);
+            }
+        }
+        vector<int> visited(n);
+        int num = 0;//连通分量的个数
+        for(int i = 0;i<n;i++){
+            if(!visited[i]){
+                num++;
+                dfs(i,edges,visited);
+            }
+        }
+        return n-num;
+    }
+    void dfs(int i,vector<vector<int>>& edges,vector<int>& visited){
+        visited[i] = true;
+        for(auto &j:edges[i]){
+            if(!visited[j])
+                dfs(j,edges,visited);
+        }
+    }
+};
