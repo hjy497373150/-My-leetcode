@@ -1,0 +1,60 @@
+class Solution {
+private:
+    int numofedge = 0;//边的数量
+    vector<int> parent;//存放每个顶点相连通的点的下标
+public:
+    //存放任意两顶点下标和边的权重
+    struct edge{
+        int a,b,w;
+        //重构<运算符
+        bool operator<(const edge& e) const{
+            return w<e.w;
+        }
+    };
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        //kruscal算法最小生成树,并查集
+        int n = points.size();
+        if(n<2)
+            return 0;
+        vector<edge> connections;
+        for(int i = 0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                connections.push_back({i,j,abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1])});
+            }
+        }
+        return mincost(n,connections);
+    }
+    int mincost(int n,vector<edge>& connections){
+        numofedge = n;
+        parent = vector<int>(n,0);
+        for(int i = 0;i<n;i++)
+            parent[i] = i;
+        sort(connections.begin(),connections.end());
+        int res = 0;
+        for(edge& conn:connections){
+            int pa = find(conn.a);
+            int pb = find(conn.b);
+            if(pa!=pb){
+                uni(conn.a,conn.b);
+                res +=conn.w;
+            }
+            if(numofedge==1)
+                return res;
+        }
+        return -1;
+    }
+    int find(int a){
+        if(parent[a]==a)
+            return a;
+        parent[a] = find(parent[a]);
+        return parent[a];
+    }
+    void uni(int a,int b){
+        int pa = find(a);
+        int pb = find(b);
+        if(pa==pb)
+            return;
+        parent[pa] = pb;
+        numofedge--;
+    }
+};
