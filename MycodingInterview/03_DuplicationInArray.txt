@@ -1,8 +1,8 @@
 class Solution {
 public:
     int findRepeatNumber(vector<int>& nums) {
-        //Ê±¼ä¸´ÔÓ¶ÈO(n),¿Õ¼ä¸´ÔÓ¶ÈO(1)
-        //Ô­µØ½»»»£¬ºËĞÄË¼ÏëÊÇ¼ÆÊıÅÅĞò
+        //æ—¶é—´å¤æ‚åº¦O(n),ç©ºé—´å¤æ‚åº¦O(1)
+        //åŸåœ°äº¤æ¢ï¼Œæ ¸å¿ƒæ€æƒ³æ˜¯è®¡æ•°æ’åº
         for(int i = 0;i<nums.size();i++){
             while(nums[i]!=i){
                 if(nums[nums[i]]==nums[i])
@@ -12,7 +12,7 @@ public:
         }
         return 0;
     }
-    //½»»»nums[i]ºÍnums[j]Á½¸öÔªËØ
+    //äº¤æ¢nums[i]å’Œnums[j]ä¸¤ä¸ªå…ƒç´ 
     void myswap(vector<int>& nums,int i,int j){
         int temp = nums[i];
         nums[i] = nums[j];
