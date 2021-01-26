@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int numEquivDominoPairs(vector<vector<int>>& dominoes) {
+        //哈希映射
+        vector<int> nums(100,0);//存放映射的值的个数
+        int res = 0;
+        for(auto& num:dominoes){
+            //把每一个二元对较小的数当十位，较大的数当个位
+            //就可以唯一确定一个二元对是否等价，然后用哈希表存放
+            int val = (num[0]<num[1])?num[0]*10+num[1]:num[1]*10+num[0];
+            res += nums[val];
+            nums[val]++;
+        }
+        return res;
+    }
+};
