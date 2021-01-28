@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        //从左到右遍历分别计算左右和
+        //注意特殊情况的考虑，以及索引位置的元素不参与计算
+        if(nums.size()==0)
+            return -1;
+        int sum = 0;
+        for(int & num:nums)
+            sum += num;
+        if(sum-nums[0]==0)
+            return 0;
+        int flag = 1;
+        int leftsum = 0,rightsum = 0;
+        while(flag < nums.size()){
+            leftsum += nums[flag-1];
+            rightsum = sum-leftsum-nums[flag];
+            if(leftsum==rightsum){
+                return flag;
+            }
+            flag++;
+        }
+        return -1;
+    }
+};
