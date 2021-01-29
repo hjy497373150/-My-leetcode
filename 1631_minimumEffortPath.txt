@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        //动态规划 + BFS
+        int m = heights.size(),n = heights[0].size();
+        int dir[4][2] = {{1,0},{-1,0},{0,1},{0,-1}};
+        //dp[i][j]表示到(i,j)的最小路径
+        vector<vector<int>> dp(m, vector<int>(n, INT_MAX));
+        queue<pair<int,int>> q;
+        q.emplace(0,0);
+        dp[0][0] = 0;
+        while(!q.empty()){
+            auto [i,j] = q.front();
+            q.pop();
+            for(int k = 0;k<4;k++){
+                int dx = i+dir[k][0];
+                int dy = j+dir[k][1];
+                if(dx>=0 && dy>=0 && dx<m && dy<n){
+                    //cost为到达(dx,dy)的体力消耗值
+                    int cost = max(dp[i][j],abs(heights[i][j]-heights[dx][dy]));
+                    //更改dp值并且加入到队列中
+                    if(dp[dx][dy]>cost){
+                        dp[dx][dy] = cost;
+                        q.emplace(dx,dy);
+                    }
+                }
+                
+            }
+        }
+        return dp[m-1][n-1];
+    }
+};
