@@ -1,0 +1,43 @@
+class Solution {
+private:
+    vector<int> f;
+public:
+    int find(int x){
+        return (f[x]==x)?x:f[x]=find(f[x]);
+    }
+    bool check(string& a,string& b,int m){
+        int num = 0;
+        //相似的条件是字符串中不同字符的个数不能超过2
+        for(int i = 0;i<m;i++){
+            if(a[i]!=b[i])
+                num++;
+            if(num>2)
+                return false;
+        }
+        return true;
+    }
+    int numSimilarGroups(vector<string>& strs) {
+        //并查集
+        //每一个字符串看作点，字符串之间是否相似看作边，目的是求解连通分量的个数
+        int n = strs.size(),m = strs[0].size();
+        f.resize(n);
+        //初始化各个点
+        for(int i = 0;i<n;i++)
+            f[i] = i;
+        for(int i = 0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                int fi = find(i),fj = find(j);
+                if(fi==fj)
+                    continue;
+                if(check(strs[i],strs[j],m))
+                    f[fi] = fj;
+            }
+        }
+        int res = 0;
+        for(int i = 0;i<n;i++){
+            if(f[i]==i)
+                res++;
+        }
+        return res;
+    }
+};
