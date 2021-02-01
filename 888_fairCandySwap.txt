@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> fairCandySwap(vector<int>& A, vector<int>& B) {
+        int sumA = 0,sumB = 0;
+        for(int& num:A)
+            sumA += num;
+        for(int& num:B)
+            sumB += num;
+        unordered_set<int> nums(A.begin(),A.end());
+        vector<int> res;
+        int num = (sumA-sumB)/2;
+        for(int& y:B){
+            int x = y+num;
+            if(nums.count(x)){
+                res = vector<int> {x,y};
+                break;
+            }
+        }
+        return res;
+    }
+};
