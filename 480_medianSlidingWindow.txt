@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+        //multiset在set的基础上可以出现重复元素
+        vector<double> res;
+        multiset<double> window;
+        for(int i = 0;i<nums.size();i++){
+            if(window.size()>=k)
+                window.erase(window.find(nums[i-k]));
+            window.insert(nums[i]);
+            //迭代器的用法
+            if(i>=k-1){
+                auto mid = window.begin();
+                std::advance(mid, k / 2);
+                if(k%2==0)
+                    res.push_back((*mid+*prev(mid,1))/2);
+                else
+                    res.push_back(*mid);
+            }
+        }
+        return res;
+    }
+};
