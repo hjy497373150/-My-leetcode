@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int equalSubstring(string s, string t, int maxCost) {
+        //滑动窗口
+        int len = s.size();
+        int nowcost = 0;//当前窗口内的总花销
+        int res = 0;
+        vector<int> cost(len,0);//存放各位置替换所需要的花销
+        for(int i = 0;i<s.size();i++)
+            cost[i] = abs(s[i]-t[i]);
+        int left = 0;
+        for(int i = 0;i<s.size();i++){
+            nowcost += cost[i];
+            //窗口内花销大于最大花销，则窗口左边界右移
+            while(nowcost > maxCost&&left < len){
+                nowcost -= cost[left];
+                left++;
+            }
+            //当满足条件时更新res
+            if(nowcost <= maxCost)
+                res = max(i-left+1,res);
+        }
+        return res;
+    }
+};
+
+//简化版
+class Solution {
+public:
+    int equalSubstring(string s, string t, int maxCost) {
+        //滑动窗口
+        int len = s.size();
+        int nowcost = 0;//当前窗口内的总花销
+        int left = 0;
+        for(int i = 0;i<s.size();i++){
+            nowcost += abs(s[i]-t[i]);
+            //窗口内花销大于最大花销，则窗口左边界右移
+            if(nowcost > maxCost){
+                nowcost -= abs(s[left]-t[left]);
+                left++;
+            }
+        }
+        return len-left;
+    }
+};
