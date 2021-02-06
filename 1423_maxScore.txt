@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxScore(vector<int>& cardPoints, int k) {
+        //双指针，维护左指针从头开始，右指针从k开始
+        int left = 0,right = cardPoints.size()-k;
+        int leftsum = 0,rightsum = 0;
+        for(int i = right;i<cardPoints.size();i++)
+            rightsum += cardPoints[i];
+        int res = rightsum;
+        while(left < k){
+            leftsum += cardPoints[left];
+            rightsum -= cardPoints[right];
+            res = max(res,leftsum+rightsum);
+            left++;
+            right++;
+        }
+        return res;
+    }
+};
