@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool checkPossibility(vector<int>& nums) {
+        int changecount = 0;
+        for(int i = 0;i<nums.size()-1;i++){
+            //没有明确地对nums[i]进行改变而只是统计改变次数
+            if(nums[i]>nums[i+1]){
+                changecount++;
+                if(changecount>1)
+                    return false;
+                //在保证非递减的情况下nums[i+1]越大越好即nums[i]
+                if(i>0 && nums[i+1]<nums[i-1])
+                    nums[i+1] = nums[i];
+            }
+        }
+        return true;
+    }
+};
