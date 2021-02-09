@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& A, int K) {
+        //最多存在 K 个不同整数的子区间的个数-最多存在 K-1 个不同整数的子区间的个数为
+        //恰好有K个不同整数的子数组个数
+        return getmostdistinct(A,K) - getmostdistinct(A,K-1);
+    }
+    //数组A中最多存在 K 个不同整数的子区间的个数
+    int getmostdistinct(vector<int>& A,int k){
+        int len = A.size();
+        int left = 0,right = 0;
+        int res = 0;
+        int count = 0;//不同整数的个数
+        vector<int> nums(len+1,0);
+        while(right < len){
+            //该整数第一次出现
+            if(nums[A[right]]==0)
+                count++;
+            nums[A[right]]++;
+            right++;
+            //如果此时区间中不同整数的个数大于k，则需要移动左指针
+            while(count>k){
+                nums[A[left]]--;
+                if(nums[A[left]]==0)
+                    count--;
+                left++;
+            }
+            //每次移动right带来的新增满足条件的子数组个数即为right-left（都以right结尾）
+            //例如当满足条件的子数组从 [A,B,C] 增加到 [A,B,C,D] 时，新子数组的长度为 4，
+            //同时增加的子数组为 [D], [C,D], [B,C,D], [A,B,C,D] 也为4。
+            res += (right-left);
+        }
+        return res;
+    }
+};
