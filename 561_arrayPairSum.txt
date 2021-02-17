@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int arrayPairSum(vector<int>& nums) {
+        //尽可能将小的和小的放在一组，大的和大的放在一组
+        sort(nums.begin(),nums.end());
+        int res = 0;
+        for(int i = 0;i<nums.size();i+=2)
+            res += nums[i];
+        return res;
+    }
+};

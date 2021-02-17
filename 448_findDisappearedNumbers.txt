@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> findDisappearedNumbers(vector<int>& nums) {
+        //原数组作哈希表
+        //遍历nums，每遇到一个数 ，就让]nums[x−1] 增加 n。由于nums 中所有数均在[1,n]中，
+        //增加以后，这些数必然大于n最后我们遍历nums，若nums[i] 未大于 n，就说明没有遇到过数 i+1
+        int n = nums.size();
+        for(int & num:nums){
+            int x = (num-1)%n;
+            nums[x] += n;
+        }
+        vector<int> res;
+        for(int i = 0;i<n;i++){
+            if(nums[i]<=n)
+                res.push_back(i+1);
+        }
+        return res;
+    }
+};

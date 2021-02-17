@@ -1,0 +1,13 @@
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        int row = nums.size(),col = nums[0].size();
+        if(row*col != r*c)
+            return nums;
+        vector<vector<int>> res(r,vector<int>(c));
+        for(int x = 0;x<r*c;x++){
+            res[x/c][x%c] = nums[x/col][x%col];
+        }
+        return res;
+    }
+};
