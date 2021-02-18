@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int minKBitFlips(vector<int>& A, int K) {
+        //滑动窗口
+        queue<int> q;//记录当前遍历到的元素需要翻转的次数
+        int n = A.size();
+        int res = 0;
+        for(int i = 0;i<n;i++){
+            if(!q.empty()&&i>=q.front()+K){
+                q.pop();
+            }
+            //当前A[i]是1但是q长度为奇数说明需要翻转才能使之成为1
+            //或者当前A[i]是0但是q长度为偶数也说明需要翻转
+            if(q.size()%2==A[i]){
+                //后面已经没有足够的元素够进行翻转了，所以只能返回-1
+                if(i+K>n)
+                    return -1;
+                q.push(i);
+                res++;
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int minKBitFlips(vector<int>& A, int K) {
+        //贪心超时，每次遇到0就将该位置及之后的一共K个数翻转
+        int n = A.size();
+        int res = 0;
+        for(int i = 0;i<=n-K;i++){
+            if(A[i]==0){
+                for(int j = i;j<i+K;j++)
+                    A[j] = (A[j]==0)?1:0;
+                res++;
+            }
+        }
+        for(int i = 0;i<n;i++){
+            if(A[i]==0)
+                return -1;
+        }
+        return res;
+    }
+};
