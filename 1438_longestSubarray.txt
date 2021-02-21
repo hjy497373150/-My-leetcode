@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        //关键在于如何确定当前窗口内的最大最小值
+        //使用滑动窗口+双端队列维护最大最小值
+        int left = 0;
+        int res = 0;
+        deque<int> nummax,nummin;
+        for(int right = 0;right<nums.size();right++){
+            //nummax从前到后依次是当前窗口从大到小的元素
+            while(!nummax.empty()&&nummax.back()<nums[right])
+                nummax.pop_back();
+            //nummin从前到后依次是当前窗口从小到大的元素
+            while(!nummin.empty()&&nummin.back()>nums[right])
+                nummin.pop_back();
+            nummax.push_back(nums[right]);
+            nummin.push_back(nums[right]);
+            //left滑动时要判断该元素是否是最大或最小值
+            while(!nummax.empty()&&!nummin.empty()&&(nummax.front()-nummin.front())>limit){
+                if(nums[left]==nummax.front())
+                    nummax.pop_front();
+                if(nums[left]==nummin.front())
+                    nummin.pop_front();
+                left++;
+            }
+            res = max(res,right-left+1);
+        }
+        return res;
+    }
+};
