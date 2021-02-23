@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int X) {
+        int n = customers.size();
+        int nums = 0;//不控制情绪的情况下满意的总人数
+        for(int i = 0;i<n;i++){
+            if(grumpy[i]==0)
+                nums += customers[i];
+        }
+        int contrnums = nums;//控制情绪满意的总人数
+        //初始化在前X天控制情绪
+        for(int i = 0;i<X;i++){
+            if(grumpy[i]==1)
+                contrnums += customers[i];
+        }
+        int res = max(contrnums,nums);
+        int left = 0;
+        //双指针滑动窗口，始终保持窗口大小为X
+        for(int right = X;right<n;right++){
+            //窗口左端为1则需要减去控制后的满意人数
+            if(grumpy[left]==1)
+                contrnums -= customers[left];
+            ////窗口右端为1则加上控制后的满意人数
+            if(grumpy[right]==1)
+                contrnums += customers[right];
+            left++;
+            res = max(res,contrnums);
+        }
+        return res;
+    }
+};
