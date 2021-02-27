@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int longestSubstring(string s, int k) {
+        int n = s.size();
+        if(k==1)
+            return n;
+        if(n<k)
+            return 0;
+        return dfs(s,0,n-1,k);
+    }
+    int dfs(string s,int l,int r,int k){
+        vector<int> counts(26,0);//记录每个字符出现的个数
+        for(int i = l;i<=r;i++)
+            counts[s[i]-'a']++;
+        char split = 0;//不满足条件的字符
+        for(int i = 0;i<26;i++){
+            if(counts[i]>0&&counts[i]<k){
+                split = i+'a';
+                break;
+            }
+        }
+        if(split==0)
+            return r-l+1;
+        int i = l;
+        int res = 0;
+        while(i<=r){
+            //去掉不满足条件的字符
+            while(i<=r&&s[i]==split)
+                i++;
+            if(i>r)
+                break;
+            //start是第一个满足条件的字符
+            int start = i;
+            while(i<=r&&s[i]!=split)
+                i++;
+            //处理start —— i之间的一段字符串
+            int length = dfs(s,start,i-1,k);
+            res = max(res,length);
+        }
+        return res;
+    }
+};
