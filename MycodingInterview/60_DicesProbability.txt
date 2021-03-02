@@ -21,3 +21,32 @@ public:
         return dp[n-1];
     }
 };
+
+class Solution {
+public:
+    vector<double> dicesProbability(int n) {
+        //动态规划，dp[n][s]为n个骰子出现点数s的次数
+        vector<vector<int>> dp(n+1,vector<int>(6*n+1,0));
+        //初始化dp
+        for(int i = 1;i<=6;i++)
+            dp[1][i] = 1;
+        //最外层循环是骰子的个数
+        for(int i = 2;i<n+1;i++){
+            //次外层循环是从小到大的点数（最小为i，最大为6i）
+            for(int s = i;s<6*i+1;s++){
+                //内层循环为单个骰子的点数从1-6
+                for(int k = 1;k<=6;k++){
+                    if(s > k)
+                        dp[i][s] += dp[i-1][s-k];
+                    else
+                        break;
+                }
+            }
+        }
+        vector<double> res(n*6-n+1);
+        double Denominator = pow(6.0,n);
+        for(int i = n;i<6*n+1;i++)
+            res[i-n] = dp[n][i] / Denominator;
+        return res;
+    }
+};

@@ -3,30 +3,30 @@ public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         if(nums.size()==0)
             return {};
-        vector<int> res;//存放最终的结果
-        deque<int> dq;
-        //先得到第一个滑动窗口的最大值
+        //滑动窗口
+        vector<int> res;
+        deque<int> q;//双端队列维护窗口内的最大值下标
         for(int i = 0;i<k;i++){
-            while(!dq.empty()&&nums[i]>=nums[dq.back()])
-                dq.pop_back();
-            dq.push_back(i);
+            //如果当前处理的元素大于队列尾的元素则弹出队列尾元素(因为该元素永远不可能为窗口的最大元素了),并将当前元素的下标加入到q中
+            while(!q.empty() && nums[i]>=nums[q.back()])
+                q.pop_back();
+            q.push_back(i);
         }
         for(int i = k;i<nums.size();i++){
-            //精髓在于，我们如何在滑动的同时判断maxnum是否已经滑出
-            //所以我们需要判断当前的maxnun是否在最左边,如果是则我们需要重新计算maxnum
-            res.push_back(nums[dq.front()]);
-            while(!dq.empty()&&nums[i]>nums[dq.back()]){
-                    dq.pop_back();
-            }
-            if(!dq.empty() &&dq.front()<=(i-k))
-                dq.pop_front();
-            dq.push_back(i);
+            res.push_back(nums[q.front()]);
+            while(!q.empty() && nums[i]>=nums[q.back()])
+                q.pop_back();
+            //如果窗口内的最大值已经被滑出，需要在q中弹出这个最大值
+            if(!q.empty() && q.front()<=i-k)
+                q.pop_front();
+            q.push_back(i);
         }
-        res.push_back(nums[dq.front()]);
+        res.push_back(nums[q.front()]);
         return res;
     }
 };
 
+//假滑动窗口的暴力法
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
