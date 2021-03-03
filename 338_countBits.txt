@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> res;
+        for(int i = 0;i<=num;i++){
+            int count = 0;
+            int newnum = i;
+            while(newnum!=0){
+                newnum &= (newnum-1);//把newnum的最右边的1变成0
+                count++;
+            }
+            res.push_back(count);
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> res(num+1);
+        res[0] = 0;
+        for(int i = 1;i<=num;i++){
+            //如果i为奇数，则它一定比小于它的偶数多一个1
+            if(i%2==1){
+                res[i] = res[i-1]+1;
+            }
+            //如果i为偶数，则它一定与i/2的1的个数相同
+            else
+                res[i] = res[i/2];
+        }
+        return res;
+    }
+};
