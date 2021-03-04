@@ -30,3 +30,32 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        if(target<3)
+            return {};
+        vector<vector<int>> res;
+        vector<int> vec;
+        //双指针
+        for(int l = 1,r = 2;l<r;){
+            int sum = (l+r)*(r-l+1)/2;
+            //当sum==target,找到了以 l 为起点得合法解，将[l,r]加到res中，然后左移起点
+            if(sum==target){
+                vec.clear();
+                for(int i = l;i<=r;i++)
+                    vec.push_back(i);
+                res.push_back(vec);
+                l++;
+            }
+            //sum>target，要左移起点，减小sum
+            else if(sum>target)
+                l++;
+            //sum<target,右移终点，增大sum
+            else
+                r++;
+        }
+        return res;
+    }
+};
