@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int calculate(string s) {
+        //栈存放此时的符号
+        stack<int> stk;
+        stk.push(1);
+        int sign = 1;//为1表示+，为-1表示-
+        int i = 0,res = 0;
+        while(i<s.size()){
+            if(s[i]==' ')
+                i++;
+            else if(s[i]=='+'){
+                sign = stk.top();
+                i++;
+            }
+            else if(s[i]=='-'){
+                sign = -stk.top();
+                i++;
+            }
+            //出现()则以之前最后出现的符号为准加入stk
+            else if(s[i]=='('){
+                stk.push(sign);
+                i++;
+            }
+            else if(s[i]==')'){
+                stk.pop();
+                i++;
+            }
+            else{
+                long num = 0;
+                while(i<s.size()&&s[i]>='0'&&s[i]<='9'){
+                    num = num*10+(s[i]-'0');
+                    i++;
+                }
+                res += num*sign;
+            }
+        }
+        return res;
+    }
+};
