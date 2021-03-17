@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int calculate(string s) {
+        vector<int> nums;
+        int num = 0;
+        char preoperator = '+';//记录数字前的运算符
+        for(int i = 0;i<s.size();i++){
+            //是数字则保存下来
+            if(isdigit(s[i])){
+                num = num*10 + int(s[i]-'0');
+            }
+            //不是数字且不是空格 或者 遍历到了最后一位
+            if((!isdigit(s[i]) && s[i]!=' ') || i==s.size()-1){
+                if(preoperator=='+')
+                    nums.push_back(num);
+                else if(preoperator=='-')
+                    nums.push_back(-num);
+                else if(preoperator=='*')
+                    nums.back() = num*nums.back();
+                else
+                    nums.back() = nums.back()/num;
+                num = 0;
+                preoperator = s[i];
+            }
+        }
+        int res = 0;
+        for(int i = 0;i<nums.size();i++)
+            res += nums[i];
+        return res;
+    }
+};
