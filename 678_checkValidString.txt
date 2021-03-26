@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        stack<int> left,star;//两个栈分别存放'('和'*'出现的位置
+        for(int i = 0;i<s.size();i++){
+            //遇到左括号入栈
+            if(s[i]=='(')
+                left.push(i);
+            //否则遇到*也入栈
+            else if(s[i]=='*')
+                star.push(i);
+            //遇到右括号准备开始匹配
+            else{
+                //左括号栈不为空，则弹出栈顶元素与右括号匹配
+                if(!left.empty())
+                    left.pop();
+                //星栈不为空，与上同
+                else if(!star.empty())
+                    star.pop();
+                //不存在与右括号匹配的左括号或者星号
+                else
+                    return false;
+            }
+        }
+        //判断左括号栈和星栈能否匹配
+        while(!left.empty() && !star.empty()){
+            //如果左括号出现在*右边则不能匹配
+            if(left.top() > star.top())
+                return false;
+            //把*看作右括号与左括号匹配
+            left.pop();
+            star.pop();
+        }
+        if(!left.empty())
+            return false;
+        return true;
+    }
+};
