@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int D) {
+        //二分查找转换为判定问题
+        int left = *max_element(weights.begin(),weights.end());//left为最小装载量，它不可能小于weights中的任何一个值
+        int right = accumulate(weights.begin(),weights.end(),0);//right为最大装载量，它不可能大于weights中所有值之和
+        while(left < right){
+            int mid = left+(right-left)/2;
+            int need = 1;//所需的天数
+            int cur = 0;//当前一天运载的总重量
+            for(int weight:weights){
+                //如果当前一天运载的总重量大于mid说明需要用另一天来装
+                if(cur+weight > mid){
+                    need++;
+                    cur = 0;
+                }
+                cur += weight;
+            }
+            if(need <= D)
+                right = mid;
+            else
+                left = mid+1;
+        }
+        return left;
+    }
+};
