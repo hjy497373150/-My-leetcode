@@ -1,0 +1,24 @@
+class Solution {
+private:
+    vector<bool> visited;//访问数组，防止出现自环造成死循环
+    unordered_map<int,unordered_set<int>> mp;//存放每一个节点邻接的节点编号
+public:
+    bool findWhetherExistsPath(int n, vector<vector<int>>& graph, int start, int target) {
+        for(int i = 0;i<graph.size();i++)
+            mp[graph[i][0]].insert(graph[i][1]);
+        visited = vector<bool>(n,false);
+        return dfs(start,target);
+    }
+    bool dfs(int start,int target){
+        if(start==target)
+            return true;
+        if(visited[start])
+            return false;
+        visited[start] = true;
+        for(auto& node:mp[start]){
+            if(dfs(node,target))
+                return true;
+        }
+        return false;
+    }
+};

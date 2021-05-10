@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        int size = bloomDay.size();
+        //需要的花的数量大于花园中花的数量则直接返回-1
+        if(m*k > size)
+            return -1;
+        // int high = *max_element(bloomDay.begin(),bloomDay.end());
+        // int low = *min_element(bloomDay.begin(),bloomDay.end());
+        int high = 0,low = INT_MAX;
+        for(int i = 0;i<size;i++){
+            high = max(bloomDay[i],high);
+            low = min(bloomDay[i],low);
+        }
+        //结果必定落在(low,high)的区间内，用二分
+        while(low < high){
+            int days = low+(high-low)/2;
+            //判断当前天数能否制作符合规定的花，能则减少天数否则增加天数
+            if(canmake(bloomDay,days,m,k))
+                high = days;
+            else
+                low = days+1;
+        }
+        return low;
+    }
+    bool canmake(vector<int>& bloomDay,int days,int m,int k){
+        int flowers = 0;//连续的花的数量
+        int bundle = 0;//当前已经制作几束花
+        for(int i = 0;i<bloomDay.size() && bundle<m;i++){
+            //如果当前花开放的时间小于k则进行判断
+            if(bloomDay[i]<=days){
+                flowers++;
+                //当前已经有连续的k朵花可以制作一束
+                if(flowers==k){
+                    bundle++;
+                    flowers = 0;
+                }
+            }
+            else
+                flowers = 0;
+        }
+        return bundle>=m;
+    }
+};

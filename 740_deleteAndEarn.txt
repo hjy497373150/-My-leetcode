@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        int maxval = 0;
+        for(int val:nums){
+            maxval = max(maxval,val);
+        }
+        //存放每一个数字出现的次数*值，表示删除该数字可以得到的点数
+        vector<int> sum(maxval+1,0);
+        for(int val:nums){
+            sum[val] += val;
+        }
+        //接下来类似于打家劫舍的动态规划
+        int first = sum[0],second = max(sum[0],sum[1]);
+        for(int i = 2;i<=maxval;i++){
+            int temp = second;
+            second = max(first+sum[i],second);
+            first = temp;
+        }
+        return second;
+    }
+};
