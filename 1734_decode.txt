@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> decode(vector<int>& encoded) {
+        //核心是要得到第一个元素
+        int n = encoded.size();
+        int allxor = 0;//1-n的异或结果
+        for(int i = 1;i<=n+1;i++)
+            allxor ^= i;
+        int help = 0;//为encoded中奇数位的异或和
+        for(int i = 1;i<n;i+=2)
+            help ^= encoded[i];
+        vector<int> res(n+1);
+        res[0] = allxor ^ help;
+        for(int i = 1;i<=n;i++)
+            res[i] = res[i-1] ^ encoded[i-1];
+        return res;
+    }
+};
