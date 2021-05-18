@@ -1,0 +1,44 @@
+class Solution {
+public:
+    const int module = 1000000007;
+    int numWays(int steps, int arrLen) {
+        //动态规划
+        int maxlen = min(steps/2+1,arrLen-1);
+        vector<vector<int>> dp(steps+1,vector<int>(maxlen+1));//dp[i][j]代表走了i步之后在j位置的方案数
+        dp[0][0] = 1;
+        for(int i = 1;i<=steps;i++){
+            for(int j = 0;j<=maxlen;j++){
+                dp[i][j] = dp[i-1][j];
+                if(j-1>=0)
+                    dp[i][j] = (dp[i][j]+dp[i-1][j-1]) % module;
+                if(j+1<=maxlen)
+                    dp[i][j] = (dp[i][j]+dp[i-1][j+1]) % module;
+            }
+        }
+        return dp[steps][0];
+    }
+};
+
+
+class Solution {
+public:
+    const int module = 1000000007;
+    int numWays(int steps, int arrLen) {
+        //动态规划
+        int maxlen = min(steps/2+1,arrLen-1);
+        vector<int> dp(maxlen+1);
+        dp[0] = 1;
+        for(int i = 1;i<=steps;i++){
+            vector<int> dpnext(maxlen+1);
+            for(int j = 0;j<=maxlen;j++){
+                dpnext[j] = dp[j];
+                if(j-1>=0)
+                    dpnext[j] = (dpnext[j]+dp[j-1]) % module;
+                if(j+1<=maxlen)
+                    dpnext[j] = (dpnext[j]+dp[j+1]) % module;
+            }
+            dp = dpnext;
+        }
+        return dp[0];
+    }
+};
