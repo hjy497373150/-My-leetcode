@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        //哈希表+按规则排序
+        unordered_map<string,int> mp;
+        for(auto& word:words)
+            mp[word]++;
+        vector<string> res;
+        for(auto& [key,value]:mp)
+            res.emplace_back(key);
+        sort(res.begin(),res.end(),[&](const string& a,const string& b)->bool{
+            return mp[a]==mp[b] ? a<b : mp[a]>mp[b];
+        });
+        //只需要保留前k个元素，将后面的删掉
+        res.erase(res.begin()+k,res.end());
+        return res;
+    }
+};

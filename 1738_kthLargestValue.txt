@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int kthLargestValue(vector<vector<int>>& matrix, int k) {
+        //遇到异或问题十有八九要用到前缀异构和
+        int m = matrix.size(),n = matrix[0].size();
+        vector<vector<int>> dp(m+1,vector<int>(n+1));//dp[i][j]代表坐标为(i,j)的值
+        priority_queue<int,vector<int>,greater<int> > q;//小顶堆存放k个数，堆顶元素即为第k大的数
+        for(int i = 1;i<=m;i++){
+            for(int j = 1;j<=n;j++){
+                dp[i][j] = dp[i-1][j] ^ dp[i][j-1] ^ dp[i-1][j-1] ^ matrix[i-1][j-1];
+                //队列没满，直接插入
+                if(q.size() < k)
+                    q.push(dp[i][j]);
+                else if(q.top() < dp[i][j]){
+                    q.pop();
+                    q.push(dp[i][j]);
+                }
+            }
+        }
+        return q.top();
+    }
+};
