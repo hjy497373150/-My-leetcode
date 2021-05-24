@@ -1,0 +1,13 @@
+class Solution {
+public:
+    bool xorGame(vector<int>& nums) {
+        //数学推理
+        //当nums长度为偶数 或 nums的异或和为0时Alice必赢
+        if(nums.size() % 2==0)
+            return true;
+        int xorsum = 0;
+        for(int& num:nums)
+            xorsum ^= num;
+        return xorsum == 0;
+    }
+};
