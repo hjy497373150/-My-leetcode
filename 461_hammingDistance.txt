@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int z = x ^ y;//先异或
+        int res = 0;
+        //再统计不同位置数目
+        while(z!=0){
+            res += (z&1 == 1);
+            z >>= 1;
+        }
+        return res;
+    }
+};
