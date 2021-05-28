@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int totalHammingDistance(vector<int>& nums) {
+        //暴力法超时
+        int n = nums.size();
+        int res = 0;
+        for(int i = 0;i<n-1;i++){
+            for(int j = i+1;j<n;j++){
+                int xornum = nums[i] ^ nums[j];
+                while(xornum != 0)
+                    res += (xornum&1)==1;
+                    xornum >>= 1;
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int totalHammingDistance(vector<int>& nums) {
+        //统计每一位1出现的次数，在该位对汉明距离总和的贡献是(1的个数c * 0的个数n-c)
+        int n = nums.size();
+        int res = 0;
+        for(int i = 0;i<30;i++){
+            int c = 0;
+            for(auto& num:nums)
+                c += (num>>i)&1;
+            res += c*(n-c);
+        }
+        return res;
+    }
+};
