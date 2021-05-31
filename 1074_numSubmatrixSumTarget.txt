@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        //前缀和+哈希表
+        unordered_map<int,int> mp;//键：前缀和 值：该前缀和出现的次数
+        mp[0] = 1;
+        int pre = 0,count = 0;
+        for(auto& num:nums){
+            pre += num;
+            if(mp.find(pre-k) != mp.end())
+                count += mp[pre-k];
+            mp[pre]++;
+        }
+        return count;
+    }
+
+    int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size(),n = matrix[0].size();
+        int res = 0;
+        for(int i = 0;i<m;i++){
+            vector<int> sum(n);
+            for(int j = i;j<m;j++){
+                for(int c = 0;c<n;c++)
+                    sum[c] += matrix[j][c];
+                res += subarraySum(sum,target); 
+            }
+        }
+        return res;
+    }
+};

@@ -1,0 +1,7 @@
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        //4的幂数有两条性质，1是二进制表示中只有一个1，2是除以3的余数为1
+        return n>0 && (n&(n-1))==0 && n%3==1;
+    }
+};
