@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        //前缀和+哈希表存放余数
+        int n = nums.size();
+        if(n < 2)
+            return false;
+        unordered_map<int,int> mp;//(key,value) = (除k的余数，该余数第一次出现的下标)
+        mp[0] = -1;
+        int remain = 0;
+        for(int i = 0;i<n;i++){
+            remain = (remain + nums[i])%k;
+            if(mp.count(remain)){
+                int preindex = mp[remain];
+                if(i-preindex >= 2)
+                    return true;
+            }
+            else
+                mp[remain] = i;
+        }
+        return false;
+    }
+};
