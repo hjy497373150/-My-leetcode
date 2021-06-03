@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int findMaxLength(vector<int>& nums) {
+        //前缀和+哈希表
+        //把1看作1，0看作-1可以转化为求合为0的最长连续子数组
+        unordered_map<int,int> mp;//存放前缀和以及改前缀和第一次出现的位置
+        mp[0] = -1;
+        int presum = 0;
+        int maxlength = 0;
+        for(int i = 0;i<nums.size();i++){
+            if(nums[i]==0)
+                presum--;
+            else
+                presum++;
+            if(mp.count(presum)){
+                int preindex = mp[presum];
+                maxlength = max(i-preindex,maxlength);
+            }
+            else
+                mp[presum] = i;
+        }
+        return maxlength;
+    }
+};
