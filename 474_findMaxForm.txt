@@ -1,0 +1,58 @@
+class Solution {
+public:
+    //获取字符串中0的个数
+    int getstr0(string& str){
+        int res = 0;
+        for(int i = 0;i<str.size();i++){
+            res += (str[i]=='0')?1:0;
+        }
+        return res;
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        //动态规划
+        int len = strs.size();
+        //dp[i][j][k]代表前i个字符串 使用j 个 0 和 k 个 1 的情况下最多可以得到的字符串数量
+        vector<vector<vector<int>>> dp(len+1,vector<vector<int>>(m+1,vector<int>(n+1)));
+        for(int i = 1;i<=len;i++){
+            int numsof0 = getstr0(strs[i-1]);
+            int numsof1 = strs[i-1].size() - numsof0;
+            for(int j = 0;j<=m;j++){
+                for(int k = 0;k<=n;k++){
+                    dp[i][j][k] = dp[i-1][j][k];
+                    if(j>=numsof0 && k>=numsof1)
+                        dp[i][j][k] = max(dp[i-1][j][k],dp[i-1][j-numsof0][k-numsof1]+1);
+                }
+            }
+        }
+        return dp[len][m][n];
+    }
+};
+
+
+class Solution {
+public:
+    //获取字符串中0的个数
+    int getstr0(string& str){
+        int res = 0;
+        for(int i = 0;i<str.size();i++){
+            res += (str[i]=='0')?1:0;
+        }
+        return res;
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        //动态规划
+        int len = strs.size();
+        //空间优化,滚动数组
+        vector<vector<int>> dp(m+1,vector<int>(n+1));
+        for(int i = 0;i<len;i++){
+            int numsof0 = getstr0(strs[i]);
+            int numsof1 = strs[i].size() - numsof0;
+            for(int j = m;j>=numsof0;j--){
+                for(int k = n;k>=numsof1;k--){
+                    dp[j][k] = max(dp[j][k],dp[j-numsof0][k-numsof1]+1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
