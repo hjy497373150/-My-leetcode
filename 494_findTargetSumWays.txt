@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        //动态规划
+        int sum = 0;
+        for(int& num:nums)
+            sum += num;
+        int diff = sum - target;//设'-'数之和为neg，则'+'之和为target-neg，则(target-neg)-neg=sum
+        //diff必须要为非负整数才能保证neg是非负整数
+        if(diff < 0 || diff%2!=0)
+            return 0;
+        int len = nums.size(),neg = diff/2;
+        vector<vector<int>> dp(len+1,vector<int>(neg+1));//dp[i][j]表示从0-i个元素中得到合为j的方案个数
+        dp[0][0] = 1;
+        //转换为0-1背包问题
+        for(int i = 1;i<=len;i++){
+            int num = nums[i-1];
+            for(int j = 0;j<=neg;j++){
+                if(j<num)
+                    dp[i][j] = dp[i-1][j];
+                else{
+                    dp[i][j] = dp[i-1][j] + dp[i-1][j-num];
+                }
+            }
+        }
+        return dp[len][neg];
+    }
+};
