@@ -1,0 +1,40 @@
+class Solution {
+    int res = 0;
+    int visited[26] = {0};
+    string str;
+
+public:
+    int maxLength(vector<string>& arr) {
+        dfs(arr,0);
+        return res;
+    }
+    void dfs(vector<string>& arr, int start){
+        for(int i = start;i<arr.size();i++){
+            int temp[26] = {0};
+            int flag = 1;
+            for(int j = 0;j<arr[i].size();j++){
+                //该字符串自己出现重复字符或者跟str存在相同字符则不可备选
+                if(visited[arr[i][j]-'a'] || temp[arr[i][j]-'a']){
+                    flag = 0;
+                    break;
+                }
+                temp[arr[i][j]-'a'] = 1;
+            }
+
+            if(flag){
+                str += arr[i];
+                for(int j = 0;j<arr[i].size();j++)
+                    visited[arr[i][j]-'a'] = 1;
+                dfs(arr,i+1);
+                //回溯恢复状态
+                for(int j = 0;j<arr[i].size();j++){
+                    visited[arr[i][j]-'a'] = 0;
+                    str.pop_back();
+                }   
+            }
+        }
+        int len = str.size();
+        res = max(len,res);
+        return;
+    }
+};

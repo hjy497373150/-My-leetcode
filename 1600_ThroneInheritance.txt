@@ -1,0 +1,40 @@
+class ThroneInheritance {
+private:
+    unordered_map<string,vector<string> > tree;//哈希表(k,v)存放当前人名k和k的孩子集合
+    unordered_set<string> dead;//存放死亡的人
+    string king;//当前国王
+public:
+    ThroneInheritance(string kingName) {
+        king = kingName;
+        tree[king] = vector<string>();
+    }
+    
+    void birth(string parentName, string childName) {
+        tree[parentName].push_back(childName);
+        tree[childName] = vector<string>();
+    }
+    
+    void death(string name) {
+        dead.insert(name);
+    }
+
+    void preorder(string& root,vector<string>& ans){
+        if(!dead.count(root))
+            ans.push_back(root);
+        for(string& child:tree[root])
+            preorder(child,ans);
+    }
+    vector<string> getInheritanceOrder() {
+        vector<string> ans;
+        preorder(king,ans);
+        return ans;
+    }
+};
+
+/**
+ * Your ThroneInheritance object will be instantiated and called as such:
+ * ThroneInheritance* obj = new ThroneInheritance(kingName);
+ * obj->birth(parentName,childName);
+ * obj->death(name);
+ * vector<string> param_3 = obj->getInheritanceOrder();
+ */
