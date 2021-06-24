@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<string> readBinaryWatch(int turnedOn) {
+        //二进制枚举
+        if(turnedOn >= 9)
+            return {};
+        vector<string> res;
+        for(int i = 0;i < 12;i++){
+            for(int j = 0;j<60;j++){
+                if((numof1(i) + numof1(j)) == turnedOn)
+                    res.push_back(to_string(i)+":"+(j < 10 ? "0"+to_string(j) :to_string(j)));
+            }
+        }
+        return res;
+    }
+    int numof1(int num){
+        int res = 0;
+        while(num!=0){
+            res += (num & 1);
+            num >>= 1;
+        }
+        return res;
+    }
+};
