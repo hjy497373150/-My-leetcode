@@ -1,0 +1,62 @@
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        if(target=="0000")
+            return 0;
+        //哈希表存放死亡数字
+        unordered_set<string> dead(deadends.begin(),deadends.end());
+        //如果0000为死亡数字，则一开始就锁住了不能开锁返回-1
+        if(dead.find("0000")!=dead.end())
+            return -1;
+        unordered_set<string> visited;
+        queue<string> q;
+        q.push("0000");
+        visited.insert("0000");
+        int res = 0;
+        while(!q.empty()){
+            int size = q.size();
+            for(int i = 0;i<size;i++){
+                string x = q.front();
+                q.pop();
+                //如果到了解锁数字直接返回res
+                if(x==target)
+                    return res;
+                //如果当前数子是死亡数字则跳过该数字
+                if(dead.find(x)!=dead.end())
+                    continue;
+                //枚举每一位可以进行的加减操作
+                for(int j = 0;j<4;j++){
+                    string y = plusone(x,j);
+                    //当前位没有被访问过可以加入
+                    if(visited.find(y)==visited.end()){
+                        q.push(y);
+                        visited.insert(y);
+                    }
+                    y = subone(x,j);
+                    if(visited.find(y)==visited.end()){
+                        q.push(y);
+                        visited.insert(y);
+                    }
+                }
+            }
+            res++;
+        }
+        return -1;
+    }
+    //进行一次+操作
+    string plusone(string s,int i){
+        if(s[i]=='9')
+            s[i] = '0';
+        else
+            s[i]++;
+        return s;
+    }
+    //进行一次-操作
+    string subone(string s,int i){
+        if(s[i]=='0')
+            s[i] = '9';
+        else
+            s[i]--;
+        return s;
+    }
+};
