@@ -1,0 +1,88 @@
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        //起点与重点相同，直接返回0
+        if(source == target)
+            return 0;
+        int n = routes.size();
+        unordered_map<int,unordered_set<int> > mp;//哈希表存放每个站经过的哪些路线(站，路线)
+        //处理哈希表存放数据
+        for(int i = 0;i<n;i++){
+            for(auto& station:routes[i]){
+                mp[station].insert(i);
+            }
+        }
+        queue<int> q;//准备遍历每一个站
+        vector<int> visited(n,false);//每一条线路只会访问一次
+        for(auto& i:mp[source]){
+            q.push(i);
+            visited[i] = true;
+        }
+        int step = 0;
+        while(!q.empty()){
+            int len = q.size();
+            for(int i = 0;i<len;i++){
+                int route = q.front();
+                q.pop();
+                for(auto& j:routes[route]){
+                    if(target == j)
+                        return step+1;
+                    for(auto& k:mp[j]){
+                        if(visited[k]==false){
+                            visited[k] = true;
+                            q.push(k);
+                        }
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+};
+
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        if (source == target) {
+            return 0;
+        }
+
+        int n = routes.size();
+        vector<vector<int>> edge(n, vector<int>(n));
+        unordered_map<int, vector<int>> rec;
+        for (int i = 0; i < n; i++) {
+            for (auto& site : routes[i]) {
+                for (auto& j : rec[site]) {
+                    edge[i][j] = edge[j][i] = true;
+                }
+                rec[site].push_back(i);
+            }
+        }
+
+        vector<int> dis(n, -1);
+        queue<int> que;
+        for (auto& site : rec[source]) {
+            dis[site] = 1;
+            que.push(site);
+        }
+        while (!que.empty()) {
+            int x = que.front();
+            que.pop();
+            for (int y = 0; y < n; y++) {
+                if (edge[x][y] && dis[y] == -1) {
+                    dis[y] = dis[x] + 1;
+                    que.push(y);
+                }
+            }
+        }
+
+        int ret = INT_MAX;
+        for (auto& site : rec[target]) {
+            if (dis[site] != -1) {
+                ret = min(ret, dis[site]);
+            }
+        }
+        return ret == INT_MAX ? -1 : ret;
+    }
+};

@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = board.size();
+        vector<bool> visited(n*n+1,false);//标记该位置是否被访问过，每个位置最多访问一次
+        queue<pair<int,int>> q;//pair存放(当前位置,当前走的步数)
+        q.push({1,0});
+        while(!q.empty()){
+            auto p = q.front();
+            q.pop();
+            for(int i = 1;i<=6;i++){
+                int nextpos = p.first + i;//得到下一个位置
+                //超出边界
+                if(nextpos > n*n)
+                    break;
+                //得到下一步的行列
+                auto rc = nextrowandcol(nextpos,n);
+                if(board[rc.first][rc.second] != -1)
+                    nextpos = board[rc.first][rc.second];
+                if(nextpos == n * n)
+                    return p.second + 1;
+                if(!visited[nextpos]){
+                    visited[nextpos] = true;
+                    q.push({nextpos,p.second + 1});
+                }
+            }
+        }
+        return -1;
+    }
+    pair<int,int> nextrowandcol(int pos,int n){
+        int row = (pos-1)/n;
+        int col = (pos-1)%n;
+        if(row%2==1){
+            col = n - col - 1;
+        }
+        return {n-1-row,col};
+    }
+};
