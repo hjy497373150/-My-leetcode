@@ -12,3 +12,18 @@ public:
         return res;
     }
 };
+
+//2021.6.29每日一题
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        string res = "";
+        while(columnNumber > 0){
+            columnNumber--;
+            res += ('A' + columnNumber % 26);
+            columnNumber /= 26;
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
