@@ -1,0 +1,26 @@
+class Solution {
+public:
+    string frequencySort(string s) {
+        //桶排序
+        unordered_map<char,int> counts;//统计每一个字符出现的次数
+        int maxfre = 0;//最高频率
+        for(int i = 0;i<s.size();i++){
+            counts[s[i]]++;
+            maxfre = max(maxfre,counts[s[i]]);
+        }
+        vector<string> frecount(maxfre+1);
+        for(auto &[ch, num] : counts){
+            frecount[num].push_back(ch);
+        }
+        string res;
+        for(int i = maxfre;i>0;i--){
+            string str = frecount[i];
+            for(auto & ch:str){
+                for(int k = 0;k<i;k++){
+                    res += ch;
+                }
+            }
+        }
+        return res;
+    }
+};

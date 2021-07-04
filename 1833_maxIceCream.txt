@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int maxIceCream(vector<int>& costs, int coins) {
+        if(costs.size()==0)
+            return 0;
+        //计数排序+贪心
+        vector<int> counts(1000001);
+        for(int i = 0;i<costs.size();i++)
+            counts[costs[i]]++;
+        int res = 0;
+        for(int i = 1;i<1000001;i++){
+            if(coins >= i){
+                int curcount = min(counts[i],coins/i);
+                res += curcount;
+                coins -= curcount*i;
+            }
+            else
+                break;
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int maxIceCream(vector<int>& costs, int coins) {
+        if(costs.size()==0)
+            return 0;
+        //排序+贪心
+        sort(costs.begin(),costs.end());
+        int res = 0;
+        for(int i = 0;i<costs.size();i++){
+            if(coins < costs[i])
+                break;
+            res++;
+            coins -= costs[i];
+        }
+        return res;
+    }
+};
