@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<string>> displayTable(vector<vector<string>>& orders) {
+        set<string> foodname;//存放菜品名
+        map<int,map<string,int>> mp;//存放桌号以及对应的菜品名及数量
+        for(auto& order:orders){
+            foodname.insert(order[2]);
+            mp[stoi(order[1])][order[2]]++;
+        }
+        vector<vector<string>> res;
+        vector<string> title = {"Table"};
+        for(auto& food:foodname)
+            title.push_back(food);
+        res.push_back(title);
+        for(auto& p:mp){
+            vector<string> str = {to_string(p.first)};
+            for(auto& food:foodname){
+                str.push_back(to_string(p.second[food]));
+            }
+            res.push_back(str);
+        }
+        return res;
+    }
+};
