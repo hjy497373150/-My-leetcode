@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        //利用单调栈
+        int n = nums.size();
+        int left = n,right = 0;
+        stack<int> stk;
+        for(int i = 0;i<n;i++){
+            while(!stk.empty() && nums[stk.top()] > nums[i]){
+                left = min(left,stk.top());
+                stk.pop();
+            }
+            stk.push(i);
+        }
+        //清空栈
+        while(!stk.empty())
+            stk.pop();
+        for(int i = n-1;i>=0;i--){
+            while(!stk.empty() && nums[stk.top()] < nums[i]){
+                right = max(right,stk.top());
+                stk.pop();
+            }
+            stk.push(i);
+        }
+        return (right-left>0 ? right-left+1:0);
+    }
+};
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        vector<int> newnums(nums.size(),0);
+        for(int i = 0;i<nums.size();i++){
+            newnums[i] = nums[i];
+        }
+        sort(newnums.begin(),newnums.end());
+        int start = nums.size(),end = 0;
+        for(int i = 0;i<nums.size();i++ ){
+            if(nums[i]!=newnums[i]){
+                start = min(start,i);
+                end = max(end,i);
+            }
+        }
+        return (end-start>=0 ?end-start+1:0);
+    }
+};

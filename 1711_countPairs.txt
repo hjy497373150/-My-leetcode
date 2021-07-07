@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int countPairs(vector<int>& deliciousness) {
+        //哈希表保存每道餐品出现的次数
+        const int MOD = 1000000007;
+        int maxnum = *max_element(deliciousness.begin(),deliciousness.end());
+        int maxsum = maxnum*2;//两数最大的和不会超过最大元素的两倍
+        unordered_map<int,int> mp;
+        int res = 0;
+        //由于遍历数组时，哈希表中已有的元素的下标一定小于当前元素的下标，因此任意一对元素之和等于 22 的幂的元素都不会被重复计算。
+        for(auto& num:deliciousness){
+            for(int sum = 1;sum<=maxsum;sum<<=1){
+                int biglaunch = mp.count(sum-num) ? mp[sum-num]:0;
+                res = (res+biglaunch) % MOD; 
+            }
+            mp[num]++;
+        }
+        return res;
+    }
+};
