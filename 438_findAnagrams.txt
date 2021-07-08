@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        //滑动窗口+双指针
+        int s_size = s.size(),p_size = p.size();
+        vector<int> scount(26,0);
+        vector<int> pcount(26,0);
+        for(int i = 0;i<p_size;i++)
+            pcount[p[i]-'a']++;
+        int left = 0,right = 0;
+        vector<int> res;
+        for(right = 0;right<s_size;right++){
+            scount[s[right]-'a']++;
+            //right当前遍历到的字符加入s_cnt后不满足p_cnt的字符数量要求，将滑动窗口左侧字符不断弹出，也就是left不断右移，直到符合要求为止。
+            while(scount[s[right]-'a'] > pcount[s[right]-'a']){
+                scount[s[left]-'a']--;
+                left++;
+            }
+            //当滑动窗口的长度等于p的长度时，这时的s子字符串就是p的异位词。
+            if(right-left+1==p_size)
+                res.push_back(left);
+        }
+        return res;
+    }
+};

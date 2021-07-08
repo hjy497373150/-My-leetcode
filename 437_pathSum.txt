@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int res = 0;
+    unordered_map<int,int> prefixsum;//<前缀和，该前缀和出现的次数>
+    void prefixpath(TreeNode* node,int targetSum,int cursum){
+        if(node==nullptr)
+            return;
+        cursum += node->val;
+        if(prefixsum.find(cursum-targetSum)!=prefixsum.end()){
+            res += prefixsum[cursum-targetSum];
+        }
+        //更新前缀和
+        prefixsum[cursum]++;
+        //递归左右子树
+        prefixpath(node->left,targetSum,cursum);
+        prefixpath(node->right,targetSum,cursum);
+        //回溯
+        prefixsum[cursum]--;
+    }
+    int pathSum(TreeNode* root, int targetSum) {
+        //回溯+前缀和
+        if(root==nullptr)
+            return 0;
+        prefixsum[0] = 1;
+        prefixpath(root,targetSum,0);
+        return res;
+    }
+};
