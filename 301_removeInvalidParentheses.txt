@@ -1,0 +1,54 @@
+class Solution {
+public:
+    unordered_set<string> temp;
+    vector<string> removeInvalidParentheses(string s) {
+        //回溯
+        int n = s.size();
+        int leftremove = 0,rightremove = 0;//记录需要删除的左右括号的数量
+        for(int i = 0;i<n;i++){
+            if(s[i]=='(')
+                leftremove++;
+            else if(s[i]==')'){
+                //碰到右括号，如果没有与之匹配的左括号则right++，否则更新left即可
+                if(leftremove==0)
+                    rightremove++;
+                else
+                    leftremove--;
+            }
+        }
+        string path = "";
+        backtrace(0,leftremove,rightremove,0,0,path,s);
+        vector<string> res(temp.begin(),temp.end());
+        return res;
+    }
+    void backtrace(int idx,int leftremove,int rightremove,int leftcount,int rightcount,string& path,string& s){
+        //到达字符串尾部，判断当前需要删除的左右括号是否为0，为0说明是一个可能的结果
+        if(idx == s.size()){
+            if(leftremove == 0 && rightremove==0)
+                temp.insert(path);
+            return;
+        }
+        //可能的处理1：删除遇到的左右括号
+        if(s[idx]=='(' && leftremove > 0){
+            backtrace(idx+1,leftremove-1,rightremove,leftcount,rightcount,path,s);
+        }
+        if(s[idx]==')' && rightremove > 0){
+            backtrace(idx+1,leftremove,rightremove-1,leftcount,rightcount,path,s);
+        }
+        //可能的处理2：保存当前遍历到的字符
+        path.push_back(s[idx]);
+        //不是左右括号，直接递归
+        if(s[idx]!='(' && s[idx]!=')')
+            backtrace(idx+1,leftremove,rightremove,leftcount,rightcount,path,s);
+        //是左括号直接更新leftcount
+        else if(s[idx]=='(')
+             backtrace(idx+1,leftremove,rightremove,leftcount+1,rightcount,path,s);
+        //如果是右括号，必须还要满足当前的rightcount要小于leftcount才能继续递归
+        else{
+            if(leftcount > rightcount){
+                backtrace(idx+1,leftremove,rightremove,leftcount,rightcount+1,path,s);
+            }
+        }
+        path.pop_back();
+    }
+};

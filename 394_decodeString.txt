@@ -1,0 +1,40 @@
+class Solution {
+public:
+    string decodeString(string s) {
+        int n = s.size();
+        stack<int> nums;
+        stack<string> str;
+        string res = "";
+        int num = 0;
+        for(int i = 0;i<n;i++){
+            //若是数字，更新数字
+            if(s[i] >= '0' && s[i]<='9'){
+                num = 10*num + s[i]-'0';
+            }
+            //若是字母，加入res
+            else if(s[i]>='a' && s[i]<='z'){
+                res += s[i];
+            }
+            //碰到左括号，将数字和字母串分别加入到数字栈和字符串栈，并重置
+            else if(s[i]=='['){
+                nums.push(num);
+                num = 0;
+                str.push(res);
+                res = "";
+            }
+            //碰到右括号，需要出栈进行处理
+            else{
+                int count = nums.top();
+                nums.pop();
+                for(int i = 0;i<count;i++){
+                    str.top() += res;
+                }
+                //之后若还是字母，就会直接加到res之后，因为它们是同一级的运算
+                //若是左括号，res会被压入strs栈，作为上一层的运算
+                res = str.top();
+                str.pop();
+            }
+        }
+        return res;
+    }
+};
