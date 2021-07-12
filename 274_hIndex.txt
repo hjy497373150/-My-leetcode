@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int n = citations.size(), tot = 0;
+        vector<int> counter(n + 1);//count[i]代表引用次数超过i的论文篇数
+        //计数排序
+        for (int i = 0; i < n; i++) {
+            if (citations[i] >= n) {
+                counter[n]++;
+            } else {
+                counter[citations[i]]++;
+            }
+        }
+        //从后往前遍历，当tot大于i说明我们找到了最大的满足条件的h值
+        for (int i = n; i >= 0; i--) {
+            tot += counter[i];
+            if (tot >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+};
