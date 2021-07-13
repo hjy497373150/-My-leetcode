@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<pair<int, int>> height;
+        for (auto &b : buildings) {
+            // 正负用于判别是左边界还是右边界，同时保证排序后：
+            // 左边界相同时，最高的楼排在前面，insert的一定是相同左边界中最大的高度
+            // 右边界相同时，最低的楼排在前面，erase的时候不会改变最大高度
+            height.push_back({b[0], -b[2]}); // 左边界
+            height.push_back({b[1], b[2]});  // 右边界
+        }
+        sort(height.begin(), height.end());
+        // 维护当前最大高度
+        multiset<int> heap;
+        heap.insert(0);
+        vector<vector<int>> res;
+        // pre 表示遇到一个边界之前的最大高度
+        // cur 表示遇到一个边界之后的当前最大高度
+        int pre = 0, cur = 0;
+        for (auto &h : height) {
+            if (h.second < 0) { // 左边界
+                heap.insert(-h.second);
+            } else { // 右边界
+                heap.erase(heap.find(h.second));
+            }
+            
+            cur = *heap.rbegin();
+            // 最大高度发生改变，一定是一个 key point，即一个水平线段的左端点
+            if (cur != pre) {
+                res.push_back({h.first, cur});
+                pre = cur;
+            }
+        }
+        return res;
+    }
+};
