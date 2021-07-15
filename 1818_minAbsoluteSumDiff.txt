@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minAbsoluteSumDiff(vector<int>& nums1, vector<int>& nums2) {
+        //排序+二分
+        const int MOD = 1000000007;
+        vector<int> temp(nums1);
+        sort(temp.begin(),temp.end());
+        int n = nums1.size();
+        int sum = 0;
+        int maxdiff = 0;//该值代表替换前后的差值，该值越大说明最终得到的绝对差值和越小
+        for(int i = 0;i<n;i++){
+            int diff = abs(nums1[i]-nums2[i]);
+            sum = (sum+diff)%MOD;
+            //需要在temp中找到与nums2[i]最接近的数字nums[j]，该值可能大于也可能小于nums2[i]
+            int j = lower_bound(temp.begin(),temp.end(),nums2[i])-temp.begin();
+            //如果找到一个值大于nums2[i]
+            if(j<n)
+                maxdiff = max(maxdiff,diff-temp[j]+nums2[i]);
+            //找到一个小与nums2[i]的数，为temp[j-1]
+            if(j>0)
+                maxdiff = max(maxdiff,diff-nums2[i]+temp[j-1]);
+        }
+        return (sum - maxdiff + MOD)%MOD;
+    }
+};
