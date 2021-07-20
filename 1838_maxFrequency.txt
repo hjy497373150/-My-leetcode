@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        //排序+滑动窗口
+        sort(nums.begin(),nums.end());
+        int res = 1;//最终结果
+        long total = 0;//目前已经使用的操作次数
+        int l = 0;
+        for(int r = 1;r<nums.size();r++){
+            //右指针右移更新total
+            total += long(nums[r]-nums[r-1])*(r-l);
+            //如果更新后的total大于k则需要移动左指针
+            while(total > k){
+                total -= nums[r]-nums[l];//移动左指针更新total
+                l++;
+            }
+            res = max(res,r-l+1);
+        }
+        return res;
+    }
+};
