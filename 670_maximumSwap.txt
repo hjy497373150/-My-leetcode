@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maximumSwap(int num) {
+        //贪心找身后最大值
+        string str = to_string(num);
+        vector<int> index(10,0);//标记每一个数字最后出现的下标
+        for(int i = 0;i<str.size();i++){
+            index[str[i]-'0'] = i;
+        }
+        for(int i = 0;i<str.size()-1;i++){
+            for(int d = 9;d>str[i]-'0';d--){
+                if(index[d] > i){
+                    myswap(str,i,index[d]);
+                    return stoi(str);
+                }
+            }
+        }
+        return stoi(str);
+    }
+    void myswap(string& str,int i,int j ){
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+    }
+};

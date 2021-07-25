@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        //哈希确定数组首尾元素
+        unordered_map<int,vector<int>> mp;//存放每一个数字相邻的元素
+        for(auto& adjacent:adjacentPairs){
+            mp[adjacent[0]].push_back(adjacent[1]);
+            mp[adjacent[1]].push_back(adjacent[0]);
+        }
+        vector<int> res(adjacentPairs.size()+1);
+        //找到第一个只有一个相邻元素的作为数组的头尾
+        for(auto& [e,adj]:mp){
+            if(adj.size()==1){
+                res[0] = e;
+                res[1] = adj[0];
+                break;
+            }
+        }
+        for(int i = 2;i<res.size();i++){
+            auto& adj = mp[res[i-1]];
+            res[i] = res[i-2]==adj[0] ? adj[1]:adj[0];
+        }
+        return res;
+    }
+};
