@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int findSecondMinimumValue(TreeNode* root) {
+        //核心思路是根节点的值不大于它左右子树的任意一个节点
+        //根节点是最小值
+        int rootvalue = root->val;
+        int res = -1;
+        dfs(root,res,rootvalue);
+        return res;
+    }
+    void dfs(TreeNode* node,int& res,int rootvalue){
+        if(!node)
+            return;
+        //如果当前遍历到的节点大于等于res那么直接return，因为以当前节点为根的树不存在比res更小的节点了
+        if(res != -1 && node->val >= res)
+            return;
+        if(node->val > rootvalue)
+            res = node->val;
+        dfs(node->left,res,rootvalue);
+        dfs(node->right,res,rootvalue);
+    }
+};

@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minOperations(vector<int>& target, vector<int>& arr) {
+        //贪心+二分+利用下标
+        int n = target.size();
+        unordered_map<int,int> mp;//存放target中每一个元素与对应下标的映射
+        for(int i = 0;i<n;i++)
+            mp[target[i]] = i;
+        vector<int> d;
+        for(int val:arr){
+            if(mp.count(val)){
+                int index = mp[val];
+                auto it = lower_bound(d.begin(),d.end(),index);
+                if(it!=d.end())
+                    *it = index;
+                else
+                    d.push_back(index);
+            }
+        }
+        return n-d.size();
+    }
+};
