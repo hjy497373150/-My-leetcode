@@ -1,0 +1,35 @@
+class Solution {
+public
+    label处于偶数行时得到它本该在的位置（比如14，如果正常的话他应该是9所在的位置）
+    int getReverse(int label, int row) {
+        return (1  row - 1) + (1  row) - 1 - label;
+    }
+
+    vectorint pathInZigZagTree(int label) {
+        数学法
+        int row = 1, rowStart = 1;
+        先确定label在哪一行row
+        while (rowStart  2 = label) {
+            row++;
+            rowStart = 2;
+        }
+        如果是在偶数行需要得到
+        if (row % 2 == 0) {
+            label = getReverse(label, row);
+        }
+        vectorint path;
+        自底向上确定每一行的数字
+        while (row  0) {
+            if (row % 2 == 0) {
+                path.push_back(getReverse(label, row));
+            } else {
+                path.push_back(label);
+            }
+            row--;
+            label = 1;
+        }
+        最终将结果翻转记为从根节点到label的路径
+        reverse(path.begin(), path.end());
+        return path;
+    }
+};

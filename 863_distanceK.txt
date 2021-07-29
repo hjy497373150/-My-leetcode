@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    unordered_map<int,TreeNode*> parents;//记录每一个节点的父节点
+    vector<int> res;
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        //深度优先搜索+哈希表
+        findparents(root);
+        findRes(target,nullptr,0,k);
+        return res;
+    }
+    //第一次DFS记录所有节点的父节点
+    void findparents(TreeNode* node){
+        if(node->left!=nullptr){
+            parents[node->left->val] = node;
+            findparents(node->left);
+        }
+        if(node->right!=nullptr){
+            parents[node->right->val] = node;
+            findparents(node->right);
+        }
+    }
+    //第二次DFS从target开始找符合条件的节点，from记录来源节点是为了防止从上往下找过一次后又从下往上找
+    void findRes(TreeNode* node,TreeNode* from,int depth,int k){
+        if(node==nullptr)
+            return;
+        if(depth==k){
+            res.push_back(node->val);
+            return;
+        }
+        //往左子树找
+        if(node->left!=from){
+            findRes(node->left,node,depth+1,k);
+        }
+        //往右子树找
+        if(node->right!=from){
+            findRes(node->right,node,depth+1,k);
+        }
+        //往父节点找
+        if(parents[node->val]!=from){
+            findRes(parents[node->val],node,depth+1,k);
+        }
+            
+    }
+};

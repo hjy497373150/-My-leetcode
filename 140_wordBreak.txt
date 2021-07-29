@@ -1,0 +1,32 @@
+class Solution {
+private:
+    unordered_set<string> wordset;//存放wordDict中的字符串(不重复)
+    unordered_map<int,vector<string>> res;//存储字符串 s 的每个下标和从该下标开始的部分可以组成的句子列表
+
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        wordset = unordered_set(wordDict.begin(),wordDict.end());
+        backtrace(s,0);
+        return res[0];
+    }
+    void backtrace(string s,int index){
+        //碰到已经遍历过的下标就不用处理了
+        if(!res.count(index)){
+            if(index == s.size()){
+                res[index] = {""};
+                return;
+            }
+            res[index] = {};
+            for(int i = index+1;i<=s.size();i++){
+                string word = s.substr(index,i-index);
+                //如果出现了该字符串，说明找到了一个可能的匹配
+                if(wordset.count(word)){
+                    backtrace(s,i);//进入下一层
+                    for(const string& succ: res[i]){
+                        res[index].push_back(succ.empty() ? word : word + " " + succ);
+                    }
+                }
+            }
+        }
+    }
+};
