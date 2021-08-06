@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int triangleNumber(vector<int>& nums) {
+        //暴力解法超时
+        int n = nums.size();
+        int res = 0;
+        for(int i = 0;i<n-2;i++){
+            if(nums[i]==0)
+                continue;
+            for(int j = i+1;j<n-1;j++){
+                if(nums[j]==0)
+                    continue;
+                for(int k = j+1;k<n;k++){
+                    if(nums[k]==0)
+                        continue;
+                    if(nums[i]+nums[j] > nums[k] && nums[i]+nums[k] > nums[j] && nums[k]+nums[j] > nums[i])
+                        res++;
+                }
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int triangleNumber(vector<int>& nums) {
+        //先排序再双指针
+        int n = nums.size();
+        int res = 0;
+        sort(nums.begin(),nums.end());
+        for(int i = 0;i<n-2;i++){
+            if(nums[i]==0)
+                continue;
+            //设置j与k的双指针，每次j移一位让k不断右移使得 k 是最大的满足nums[k] < nums[i] + nums[j]的下标
+            int k = i;
+            for(int j = i+1;j<n;j++){
+                while(k+1 < n && nums[i]+nums[j] > nums[k+1])
+                    k++;
+                res += max(k-j,0);
+            }
+        }
+        return res;
+    }
+};

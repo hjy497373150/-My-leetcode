@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        //邻接表+优先队列
+        //迪杰特斯拉算法
+        int res = 0;
+        vector<vector<pair<int,int>> > ljb(n+1);
+        vector<int> visited(n+1);//标记哪些节点已经被访问过
+        for(auto& x:times){
+            ljb[x[0]].emplace_back(x[1],x[2]);
+        }
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>> > q;//优先队列（小根堆）存放与起点最近的节点
+        q.emplace(0,k);
+        while(!q.empty()){
+            auto [time,now] = q.top();
+            q.pop();
+            //如果当前节点已经被访问过，则跳过
+            if(visited[now])
+                continue;
+            visited[now] = true;
+            res = max(res,time);
+            //访问当前节点的邻接表，更新q
+            for(auto &[next,nextime]:ljb[now]){
+                if(!visited[next]){
+                    q.emplace(time+nextime,next);
+                }
+            }
+        }
+        //遍历visited表，如果存在没被访问过的节点则返回-1
+        for(int i = 1;i<=n;i++){
+            if(!visited[i])
+                return -1;
+        }
+        return res;
+    }
+};

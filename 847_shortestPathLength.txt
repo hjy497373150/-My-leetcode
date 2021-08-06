@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int shortestPathLength(vector<vector<int>>& graph) {
+        //状态压缩+BFS
+        int n = graph.size();
+        //tuple(u,mask,dist)分别是：当前访问的节点编号，长度为n的二进制数表示每一个节点是否经过，目前的路径长度
+        queue<tuple<int,int,int>> q;
+        vector<vector<int>> visited(n,vector<int>(1<<n));//记录(u,mask)是否访问过
+        for(int i = 0;i<n;i++){
+            q.emplace(i,1<<i,0);
+            visited[i][1<<i] = 1;
+        }
+        int res = 0;
+        //开始BFS
+        while(!q.empty()){
+            auto [u,mask,dist] = q.front();
+            q.pop();
+            //当mask等于2^n-1时说明所有的节点都已经过，直接退出
+            if(mask == (1<<n)-1){
+                res = dist;
+                break;
+            }
+            //搜索相邻的节点
+            for(int v:graph[u]){
+                //将mask的v位置置为1
+                int mask_v = mask | (1<<v);
+                if(!visited[v][mask_v]){
+                    q.emplace(v,mask_v,dist+1);
+                    visited[v][mask_v] = 1;
+                }
+            } 
+        }
+        return res;
+    }
+};

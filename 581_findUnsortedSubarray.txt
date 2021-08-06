@@ -44,3 +44,25 @@ public:
         return (end-start>=0 ?end-start+1:0);
     }
 };
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        //核心思想是要确定最左和最右大小关系相反的位置
+        int n = nums.size();
+        int maxleft = INT_MIN,minright = INT_MAX;
+        int left = -1,right = -1;
+        for(int i = 0;i<n;i++){
+            if(nums[i] < maxleft)
+                right = i;
+            else
+                maxleft = nums[i];
+            if(nums[n-i-1] > minright)
+                left = n-i-1;
+            else
+                minright = nums[n-i-1];
+        }
+        //当right=-1说明原数组本身已经有序
+        return (right==-1)?0:(right-left+1);
+    }
+};

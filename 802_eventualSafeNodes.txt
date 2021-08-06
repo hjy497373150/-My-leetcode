@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        //实质是如果节点处于某个环中那么它一定不是安全的
+        //拓扑排序找出入度为0的节点，本题中是要找出度为0的节点为安全点
+        int n = graph.size();
+        vector<vector<int>> new_graph(n);//反图邻接表
+        vector<int> inter(n,0);
+        for(int i = 0;i<n;i++){
+            for(int& x:graph[i]){
+                new_graph[x].push_back(i);
+            }
+            // 原数组记录的节点出度，在反图中就是入度
+            inter[i] = graph[i].size();
+        }
+        queue<int> q;
+        //将入度为0的节点加入q
+        for(int i = 0;i<n;i++){
+            if(!inter[i])
+                q.push(i);
+        }
+        while(!q.empty()){
+            int cur = q.front();
+            q.pop();
+            // 将以其为起点的有向边删除，更新终点入度
+            for(auto& x:new_graph[cur]){
+                inter[x]--;
+                if(!inter[x])
+                    q.push(x);
+            }
+        }
+        // 最终入度（原图中出度）为 0 的所有点均为安全点
+        vector<int> res;
+        for(int i = 0;i<n;i++){
+            if(!inter[i])
+                res.push_back(i);
+        }
+        return res;
+    }
+};
