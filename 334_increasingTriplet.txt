@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        if(nums.size() < 3)
+            return false;
+        int minnum = INT_MAX;
+        int midnum = INT_MAX;
+        for(int i = 0;i<nums.size();i++){
+            if(nums[i] <= minnum){
+                minnum = nums[i];
+            }
+            else if(nums[i] <= midnum){
+                midnum = nums[i];
+            }
+            else if(nums[i]> midnum){
+                return true;
+            }
+        }
+        return false;
+    }
+};

@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool circularArrayLoop(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> visited(n,0);
+        for(int i = 0;i<n;i++){
+            //如果当前元素已经在之前的某一次访问过，则跳出
+            if(visited[i])
+                continue;
+            unordered_map<int,int> mp;
+            int prepos = i;
+            while(1){
+                int nextpos = ((prepos+nums[prepos])%n+n)%n;//得到下一个元素下标
+                //如果当前元素自成环 或 方向不一致则不可能存在符合条件的循环
+                if(nextpos == prepos || nums[prepos]*nums[nextpos] < 0)
+                    break;
+                //如果已经遍历过一次nextpos则说明出现循环了
+                if(mp.count(nextpos))
+                    return true;
+                mp[prepos] = nextpos;
+                visited[prepos] = 1;
+                prepos = nextpos;
+            }
+        }
+        return false;
+    }
+};

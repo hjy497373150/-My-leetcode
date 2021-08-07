@@ -11,3 +11,18 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    int titleToNumber(string columnTitle) {
+        //相当于进制转换，26进制
+        int res = 0;
+        long multible = 1;
+        for(int i = columnTitle.size()-1;i>=0;i--){
+            int k = columnTitle[i]-'A'+1;
+            res += k * multible;
+            multible *= 26; 
+        } 
+        return res;
+    }
+};
