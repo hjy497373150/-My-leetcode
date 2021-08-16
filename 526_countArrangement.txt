@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int res = 0;
+    int countArrangement(int n) {
+        //回溯
+        vector<bool> visited(n+1,false);
+        backtrace(n,1,visited);
+        return res;
+    }
+    void backtrace(int n,int index,vector<bool>& visited){
+        if(index == n+1){
+            res++;
+            return;
+        }
+        for(int i = 1;i<=n;i++){
+            if(!visited[i] && (index%i==0 || i%index==0)){
+                visited[i] = true;
+                backtrace(n,index+1,visited);
+                visited[i] = false;
+            }
+        }
+
+    }
+};

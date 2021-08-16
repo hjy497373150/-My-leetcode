@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int unhappyFriends(int n, vector<vector<int>>& preferences, vector<vector<int>>& pairs) {
+        int res = 0;
+        vector<vector<int>> order(n,vector<int>(n));//order[i][j]表示j在i的朋友列表中对应的亲密程度下标
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<n-1;j++){
+                order[i][preferences[i][j]] = j; 
+            }
+        }
+        vector<int> match(n);//配对表
+        for(auto& pair:pairs){
+            match[pair[0]] = pair[1];
+            match[pair[1]] = pair[0];
+        }
+        for(int x = 0;x<n;x++){
+            //找到与朋友 x 配对的朋友 y
+            int y = match[x];
+            //找到朋友 y 在朋友 x 的朋友列表中的亲近程度下标，记为index。
+            int index = order[x][y];
+            //朋友 x 的朋友列表中的下标从0 到1index−1 的朋友都是可能的u。遍历每个可能的u，找到与朋友u 配对的朋友v。
+            for(int i = 0;i<index;i++){
+                int u = preferences[x][i];
+                int v = match[u];
+                //如果order[u][x]<order[u][v]，则 x 是不开心的朋友。
+                if(order[u][x] < order[u][v]){
+                    res++;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};
