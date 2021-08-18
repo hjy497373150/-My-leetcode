@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool checkRecord(string s) {
+        int len = s.size();
+        int absentcount = 0;
+        int latecount = 0;
+        int p = 0;
+        while(p<len){
+            if(s[p]=='A'){
+                absentcount++;
+                if(absentcount >= 2)
+                    return false;
+                p++;
+            }
+            else if(s[p]=='L'){
+                while(s[p]=='L' && p<len){
+                    latecount++;
+                    p++;
+                }
+                if(latecount >= 3)
+                    return false;
+                latecount = 0;
+            }
+            else
+                p++;
+        }
+        return true;
+    }
+};
