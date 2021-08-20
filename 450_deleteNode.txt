@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* getnext(TreeNode*root)//找到右子树的后继结点
+    {
+        while(root->left)
+        {
+            root=root->left;
+        }
+        return root;
+    }
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        //递归找到待删除的节点，并调整整个搜索树
+        if(root==nullptr)
+            return root;
+        //key比当前节点大，去右子树查找
+        if(root->val < key)
+            root->right = deleteNode(root->right,key);
+        //key比当前节点小，去左子树查找
+        else if(root->val > key)
+            root->left = deleteNode(root->left,key);
+        //找到了，开始处理
+        else{
+            //如果是叶子节点则直接释放
+            if(root->left==nullptr && root->right==nullptr){
+                delete root;
+                return nullptr;
+            }
+            //左子树为空，则将该节点的右子节点接上
+            else if(root->left==nullptr){
+                TreeNode*temp= root->right;
+                delete root;
+                return temp;
+            }
+            //右子树为空，则将该节点的左子节点接上
+            else if(root->right==nullptr){
+                TreeNode*temp= root->left;
+                delete root;
+                return temp;
+            }
+            //都不空，找到后继结点替换，之后再删除后继结点
+            else{
+                TreeNode* temp=getnext(root->right);
+                root->val=temp->val;
+                root->right=deleteNode(root->right,temp->val);
+            }
+        }
+        return root;
+    }
+};

@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string reverseStr(string s, int k) {
+        int n = s.size();
+        int p = 0;
+        while(p < n){
+            if(p + k < n){
+                reverse(s.begin()+p,s.begin()+p+k);
+            }
+            else
+                reverse(s.begin()+p,s.end());
+            p += 2*k;
+        }
+        return s;
+    }
+};
