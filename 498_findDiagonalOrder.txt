@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
+        //利用下标和相等的规律
+        int m = mat.size(), n = mat[0].size();
+        int sum = 0;//当前的行与列数之和
+        vector<int> res;
+        while(sum < m+n){
+            //奇数趟
+            int x1 = (sum<m)?sum:m-1;
+            int y1 = sum-x1;
+            while(x1 >= 0 && y1 < n){
+                res.push_back(mat[x1][y1]);
+                x1--;
+                y1++;
+            }
+            sum++;
+            if(sum >= m+n)
+                break;
+            //偶数趟
+            int y2 = (sum<n)?sum:n-1;
+            int x2 = sum-y2;
+            while(y2 >= 0 && x2 < m){
+                res.push_back(mat[x2][y2]);
+                y2--;
+                x2++;
+            }
+            sum++;
+
+        }
+        return res;
+    }
+};

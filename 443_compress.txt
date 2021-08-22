@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+        //原地压缩+双指针
+        int len = chars.size();
+        int write = 0;
+        int left = 0;
+        for(int read = 0;read<len;read++){
+            if(read == len-1 || chars[read]!=chars[read+1]){
+                chars[write++] = chars[read];
+                int count = read-left+1;
+                if(count > 1){
+                    int anchor = write;
+                    while(count > 0){
+                        chars[write++] = count%10 +'0';
+                        count /= 10;
+                    }
+                    // reverse(chars.begin()+anchor,chars.begin()+anchor+write);
+                    reverse(&chars[anchor], &chars[write]);
+                }
+                left = read+1;
+            }
+        }
+        return write;
+    }
+};

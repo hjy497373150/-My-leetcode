@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool escapeGhosts(vector<vector<int>>& ghosts, vector<int>& target) {
+        //曼哈顿距离
+        //如果我到目的的曼哈顿距离小于鬼到目的地，那么一定可以逃脱，鬼不可能在我到达目的地的中途拦截
+        vector<int> source(2,0);
+        int mydis = mahattendis(source,target);
+        int ghostdis = INT_MAX;
+        for(int i = 0;i<ghosts.size();i++){
+            int tempdis = mahattendis(ghosts[i],target);
+            ghostdis = min(tempdis,ghostdis);
+        }
+        return mydis < ghostdis;
+    }
+    int mahattendis(vector<int>& point1,vector<int>& point2){
+        return abs(point1[0]-point2[0]) + abs(point1[1]-point2[1]);
+    }
+};

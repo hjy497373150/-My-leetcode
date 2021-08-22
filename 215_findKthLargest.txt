@@ -13,3 +13,44 @@ public:
         return result;
     }
 };
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        //快排分治思想可以把复杂度压缩到O(n)
+        int len = nums.size();
+        int left = 0,right = len-1;
+        int target = len-k;//第k大的下标为len-k
+        while(true){
+            int index = partition(left,right,nums);
+            if(index < target)
+                left = index+1;
+            else if(index > target)
+                right = index-1;
+            else
+                return nums[index];
+        }
+    }
+    int partition(int left, int right, vector<int>& nums){
+        if(right > left){
+            //随机选择哨兵
+            int randomindex = left + 1 + (rand() % (right-left));
+            swap(left,randomindex,nums);
+        }
+        int priviot = nums[left];
+        int j = left;
+        for(int i = left + 1;i<=right;i++){
+            if(priviot > nums[i]){
+                j++;
+                swap(j,i,nums);
+            }
+        }
+        swap(left,j,nums);
+        return j;
+    }
+    void swap(int index1,int index2,vector<int>& nums){
+        int temp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = temp;
+    }
+};
