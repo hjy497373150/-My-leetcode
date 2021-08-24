@@ -1,0 +1,19 @@
+class Solution {
+public:
+    static constexpr int INF = 10000 * 101 + 1;
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        //动态规划
+        vector<vector<int>> dp(k+2,vector<int>(n,INF));//dp[i][j]代表通过i次航班，从src出发到达j的最小花费
+        dp[0][src] = 0;
+        for(int t = 1;t<=k+1;t++){
+            for(auto& flight:flights){
+                int j = flight[0], i = flight[1], cost = flight[2];
+                dp[t][i] = min(dp[t][i],dp[t-1][j]+cost);
+            }
+        }
+        int res = INF;
+        for(int t = 1;t<=k+1;t++)
+            res = min(res,dp[t][dst]);
+        return res==INF ? -1: res;
+    }
+};
