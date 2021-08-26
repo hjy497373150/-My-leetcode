@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        //DFS
+        vector<int> temp;
+        temp.push_back(0);
+        dfs(graph,0,temp);
+        return res;
+    }
+    void dfs(vector<vector<int>>& graph,int index,vector<int>& temp){
+        //当前节点没有出度直接返回
+        if(graph[index].size() == 0)
+            return;
+        for(int i = 0;i<graph[index].size();i++){
+            temp.push_back(graph[index][i]);
+            if(graph[index][i] == graph.size()-1)
+                res.push_back(temp);
+            else{
+                dfs(graph,graph[index][i],temp);
+            }
+            temp.pop_back();
+        }
+    }
+};
