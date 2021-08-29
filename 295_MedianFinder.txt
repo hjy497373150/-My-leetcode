@@ -1,20 +1,31 @@
 双堆法
 class MedianFinder {
 private:
-    priority_queue<int> min_max;//较小部分数的大顶推
-    priority_queue<int,vector<int>,greater<int>> max_min;//较大数字的小顶堆
+    //维护两个堆，分别存放较大部分数字的最小值，较小部分数字的最大值，保证大顶堆中的数字数量不少于小顶堆
+    priority_queue<int, vector<int>, less<int>> min_max;//较小部分数字的大顶堆
+    priority_queue<int, vector<int>, greater<int>> max_min;//较大部分数字的最小值
 public:
     /** initialize your data structure here. */
     MedianFinder() {
+
     }
     
     void addNum(int num) {
-        min_max.push(num);//加入到大顶堆中
-        max_min.push(min_max.top());//把较小数字的最大数插入到小顶堆中
-        min_max.pop();//从大顶堆中弹出这个数字
-        if(min_max.size()<max_min.size()){
-            min_max.push(max_min.top());
-            max_min.pop();
+        //如果大顶堆为空 或者 该数小于大顶堆堆顶的值
+        if(min_max.empty() || num <= min_max.top()){
+            min_max.push(num);
+            if(max_min.size()+1 < min_max.size()){
+                max_min.push(min_max.top());
+                min_max.pop();
+            }
+        }
+        else{
+            max_min.push(num);
+            //如果小顶堆中的数大于大顶堆，则要把数移到大顶堆中
+            if(min_max.size() < max_min.size()){
+                min_max.push(max_min.top());
+                max_min.pop();
+            }
         }
     }
     
@@ -22,6 +33,13 @@ public:
         return min_max.size()>max_min.size()?(double)min_max.top():(min_max.top()+max_min.top())*0.5;
     }
 };
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
 
 /**
  * Your MedianFinder object will be instantiated and called as such:
