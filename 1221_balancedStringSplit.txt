@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int balancedStringSplit(string s) {
+        //贪心
+        int right = 0,left = 0;
+        int res = 0;
+        for(auto& c:s){
+            if(c=='R')
+                right++;
+            else
+                left++;
+            if(left==right){
+                left = 0;
+                right = 0;
+                res++;
+            }
+        }
+        return res;
+    }
+};
